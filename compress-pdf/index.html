@@ -23,7 +23,7 @@
 <a href="/#image">Image Tools</a><a href="/#pdf">PDF Tools</a><a href="/#date">Date &amp; Time</a>
 <a href="/#text">Text &amp; Generators</a><a href="/#calc">Calculators</a><a href="/about/">About</a>
 </nav>
-<button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-panel"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
+<button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-panel"><svg class="ic-open" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="ic-close" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="menu-btn-label">Menu</span></button>
 </div>
 <div class="menu-panel" id="menu-panel" hidden><div class="wrap">
 <div class="menu-grid">
@@ -45,19 +45,19 @@
 </ul></div>
 <div class="menu-group"><a class="menu-cat" href="/#date">Date & Time Tools</a><ul>
 <li><a href="/age-calculator/">Age Calculator</a></li>
-<li><a href="/age-on-date/">Age on a Specific Date</a></li>
+<li><a href="/age-on-date/">Age on Specific Date</a></li>
 <li><a href="/days-between-dates/">Days Between Dates</a></li>
 <li><a href="/days-until-christmas/">Days Until Christmas</a></li>
 <li><a href="/days-until-new-year/">Days Until New Year</a></li>
 <li><a href="/days-until-ramadan/">Days Until Ramadan</a></li>
 <li><a href="/days-until/">Days Until Any Date</a></li>
-<li><a href="/timer/">Online Timer & Stopwatch</a></li>
+<li><a href="/timer/">Timer & Stopwatch</a></li>
 </ul></div>
 <div class="menu-group"><a class="menu-cat" href="/#text">Text & Generator Tools</a><ul>
 <li><a href="/word-counter/">Word Counter</a></li>
 <li><a href="/qr-code-generator/">QR Code Generator</a></li>
-<li><a href="/youtube-thumbnail-downloader/">YouTube Thumbnail Downloader</a></li>
-<li><a href="/random-number-generator/">Random Number Generator</a></li>
+<li><a href="/youtube-thumbnail-downloader/">Thumbnail Downloader</a></li>
+<li><a href="/random-number-generator/">Random Numbers</a></li>
 </ul></div>
 <div class="menu-group"><a class="menu-cat" href="/#calc">Converters & Calculators</a><ul>
 <li><a href="/unit-converter/">Unit Converter</a></li>
@@ -73,7 +73,7 @@
 </div>
 <p class="menu-note">Every tool is free and runs in your browser — no sign-up, and your files never leave your device.</p>
 </div></div>
-<script>(function(){var b=document.getElementById("menu-btn"),p=document.getElementById("menu-panel");if(!b||!p)return;function close(){p.hidden=true;b.setAttribute("aria-expanded","false");b.setAttribute("aria-label","Open menu");}b.addEventListener("click",function(){var open=p.hidden;p.hidden=!open;b.setAttribute("aria-expanded",open?"true":"false");b.setAttribute("aria-label",open?"Close menu":"Open menu");});p.addEventListener("click",function(e){if(e.target.closest("a"))close();});document.addEventListener("click",function(e){if(!p.hidden&&!e.target.closest(".site-header"))close();});document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!p.hidden){close();b.focus();}});})();</script>
+<script>(function(){var b=document.getElementById("menu-btn"),p=document.getElementById("menu-panel");if(!b||!p)return;var lbl=b.querySelector(".menu-btn-label");function close(){p.hidden=true;b.setAttribute("aria-expanded","false");b.setAttribute("aria-label","Open menu");if(lbl)lbl.textContent="Menu";}function open(){p.hidden=false;b.setAttribute("aria-expanded","true");b.setAttribute("aria-label","Close menu");if(lbl)lbl.textContent="Close";}b.addEventListener("click",function(){if(p.hidden)open();else close();});p.addEventListener("click",function(e){if(e.target.closest("a"))close();});document.addEventListener("click",function(e){if(!p.hidden&&!e.target.closest(".site-header"))close();});document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!p.hidden){close();b.focus();}});})();</script>
 </header>
 <main class="wrap">
 <div class="page-head"><h1>Compress PDF to 200KB or 100KB</h1><p class="lede">Upload forms reject big PDFs. Shrink yours to a target size — we keep pages as readable as the limit allows, and we tell you honestly what changed.</p></div><div class="privacy-badge"><strong>Private by design:</strong> this tool runs entirely in your browser. Your files are never uploaded to a server, and nothing is stored.</div>
