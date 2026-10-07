@@ -12,17 +12,69 @@
 <meta property="og:description" content="Free online word counter: words, characters (with and without spaces), sentences, paragraphs and reading/speaking time — counted live as you type.">
 <meta property="og:url" content="https://toolpixi.github.io/word-counter/">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'&gt;&lt;rect width='64' height='64' rx='14' fill='%234f46e5'/&gt;&lt;text x='32' y='44' font-size='36' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'&gt;T&lt;/text&gt;&lt;/svg&gt;">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="stylesheet" href="/assets/css/style.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Word Counter \u2014 Words, Characters, Sentences & Reading Time", "url": "https://toolpixi.github.io/word-counter/", "description": "Free online word counter: words, characters (with and without spaces), sentences, paragraphs and reading/speaking time \u2014 counted live as you type.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How is reading time calculated?", "acceptedAnswer": {"@type": "Answer", "text": "At about 200 words per minute, the average adult silent-reading speed. Speaking time uses roughly 130 words per minute for presentations and voiceovers."}}, {"@type": "Question", "name": "Does it work for essays and word limits?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 paste your draft and watch the count live. It is handy for school essays, application statements, social posts and subtitles."}}, {"@type": "Question", "name": "Is my text saved or uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Counting happens in your browser as you type; your text never leaves the page."}}]}]}</script>
 </head>
 <body>
 <header class="site-header"><div class="wrap">
-<a class="logo" href="/"><span class="logo-mark">T</span><span>Tool<em>Pixi</em></span></a>
-<nav class="main-nav">
+<a class="logo" href="/" aria-label="ToolPixi — home"><span class="logo-mark"><svg viewBox="0 0 64 64" role="img" aria-label="ToolPixi logo"><defs><linearGradient id="lg-head" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b4fe0"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lg-head)"/><rect x="13" y="13" width="12" height="12" rx="2.5" fill="#ffffff"/><rect x="26" y="13" width="12" height="12" rx="2.5" fill="#fbbf24"/><rect x="39" y="13" width="12" height="12" rx="2.5" fill="#ffffff"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="#ffffff"/><rect x="26" y="39" width="12" height="12" rx="2.5" fill="#ffffff"/></svg></span><span class="logo-word">Tool<em>Pixi</em></span></a>
+<nav class="main-nav" aria-label="Tool categories">
 <a href="/#image">Image Tools</a><a href="/#pdf">PDF Tools</a><a href="/#date">Date &amp; Time</a>
 <a href="/#text">Text &amp; Generators</a><a href="/#calc">Calculators</a><a href="/about/">About</a>
-</nav></div></header>
+</nav>
+<button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-panel"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
+</div>
+<div class="menu-panel" id="menu-panel" hidden><div class="wrap">
+<div class="menu-grid">
+<div class="menu-group"><a class="menu-cat" href="/#image">Image Tools</a><ul>
+<li><a href="/image-compressor/">Image Compressor to KB</a></li>
+<li><a href="/png-to-jpg/">PNG to JPG</a></li>
+<li><a href="/jpg-to-png/">JPG to PNG</a></li>
+<li><a href="/webp-to-jpg/">WebP to JPG</a></li>
+<li><a href="/webp-to-png/">WebP to PNG</a></li>
+<li><a href="/jpg-to-webp/">JPG to WebP</a></li>
+<li><a href="/heic-to-jpg/">HEIC to JPG</a></li>
+</ul></div>
+<div class="menu-group"><a class="menu-cat" href="/#pdf">PDF Tools</a><ul>
+<li><a href="/jpg-to-pdf/">JPG to PDF</a></li>
+<li><a href="/merge-pdf/">Merge PDF</a></li>
+<li><a href="/split-pdf/">Split PDF</a></li>
+<li><a href="/pdf-to-jpg/">PDF to JPG</a></li>
+<li><a href="/compress-pdf/">Compress PDF</a></li>
+</ul></div>
+<div class="menu-group"><a class="menu-cat" href="/#date">Date & Time Tools</a><ul>
+<li><a href="/age-calculator/">Age Calculator</a></li>
+<li><a href="/age-on-date/">Age on a Specific Date</a></li>
+<li><a href="/days-between-dates/">Days Between Dates</a></li>
+<li><a href="/days-until-christmas/">Days Until Christmas</a></li>
+<li><a href="/days-until-new-year/">Days Until New Year</a></li>
+<li><a href="/days-until-ramadan/">Days Until Ramadan</a></li>
+<li><a href="/days-until/">Days Until Any Date</a></li>
+<li><a href="/timer/">Online Timer & Stopwatch</a></li>
+</ul></div>
+<div class="menu-group"><a class="menu-cat" href="/#text">Text & Generator Tools</a><ul>
+<li><a href="/word-counter/">Word Counter</a></li>
+<li><a href="/qr-code-generator/">QR Code Generator</a></li>
+<li><a href="/youtube-thumbnail-downloader/">YouTube Thumbnail Downloader</a></li>
+<li><a href="/random-number-generator/">Random Number Generator</a></li>
+</ul></div>
+<div class="menu-group"><a class="menu-cat" href="/#calc">Converters & Calculators</a><ul>
+<li><a href="/unit-converter/">Unit Converter</a></li>
+<li><a href="/bmi-calculator/">BMI Calculator</a></li>
+<li><a href="/percentage-calculator/">Percentage Calculator</a></li>
+<li><a href="/tip-calculator/">Tip Calculator</a></li>
+</ul></div>
+<div class="menu-group"><span class="menu-cat">ToolPixi</span><ul>
+<li><a href="/about/">About</a></li>
+<li><a href="/privacy/">Privacy</a></li>
+<li><a href="/contact/">Contact</a></li>
+</ul></div>
+</div>
+<p class="menu-note">Every tool is free and runs in your browser — no sign-up, and your files never leave your device.</p>
+</div></div>
+<script>(function(){var b=document.getElementById("menu-btn"),p=document.getElementById("menu-panel");if(!b||!p)return;function close(){p.hidden=true;b.setAttribute("aria-expanded","false");b.setAttribute("aria-label","Open menu");}b.addEventListener("click",function(){var open=p.hidden;p.hidden=!open;b.setAttribute("aria-expanded",open?"true":"false");b.setAttribute("aria-label",open?"Close menu":"Open menu");});p.addEventListener("click",function(e){if(e.target.closest("a"))close();});document.addEventListener("click",function(e){if(!p.hidden&&!e.target.closest(".site-header"))close();});document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!p.hidden){close();b.focus();}});})();</script>
+</header>
 <main class="wrap">
 <div class="page-head"><h1>Word Counter</h1><p class="lede">Paste or type your text and see words, characters, sentences and how long it takes to read — updating with every keystroke.</p></div><div class="tool-panel" id="word-counter">
   <div class="field"><label>Your text</label>
@@ -53,7 +105,7 @@
 <footer class="site-footer"><div class="wrap">
 <div class="foot-grid">
 <div class="foot-brand">
-<a class="logo" href="/" style="color:#fff"><span class="logo-mark">T</span><span>Tool<em style="color:#a5b4fc">Pixi</em></span></a>
+<a class="logo" href="/" aria-label="ToolPixi — home"><span class="logo-mark"><svg viewBox="0 0 64 64" role="img" aria-label="ToolPixi logo"><defs><linearGradient id="lg-foot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b4fe0"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#lg-foot)"/><rect x="13" y="13" width="12" height="12" rx="2.5" fill="#ffffff"/><rect x="26" y="13" width="12" height="12" rx="2.5" fill="#fbbf24"/><rect x="39" y="13" width="12" height="12" rx="2.5" fill="#ffffff"/><rect x="26" y="26" width="12" height="12" rx="2.5" fill="#ffffff"/><rect x="26" y="39" width="12" height="12" rx="2.5" fill="#ffffff"/></svg></span><span class="logo-word">Tool<em>Pixi</em></span></a>
 <p>Free online tools that run entirely in your browser. No sign-up, no uploads to a server — your files stay on your device.</p>
 </div>
 <div><h4>Image Tools</h4><a href="/image-compressor/">Image Compressor to KB</a>
