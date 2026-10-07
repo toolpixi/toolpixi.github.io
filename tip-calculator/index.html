@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tip Calculator — Split the Bill Fairly | ToolPixi</title>
+<meta name="description" content="Work out the tip (10%, 15%, 18%, 20% or custom) and split the total per person. Free tip calculator for restaurants, taxis and deliveries.">
+<link rel="canonical" href="https://toolpixi.github.io/tip-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ToolPixi">
+<meta property="og:title" content="Tip Calculator — Split the Bill Fairly | ToolPixi">
+<meta property="og:description" content="Work out the tip (10%, 15%, 18%, 20% or custom) and split the total per person. Free tip calculator for restaurants, taxis and deliveries.">
+<meta property="og:url" content="https://toolpixi.github.io/tip-calculator/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'&gt;&lt;rect width='64' height='64' rx='14' fill='%234f46e5'/&gt;&lt;text x='32' y='44' font-size='36' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'&gt;T&lt;/text&gt;&lt;/svg&gt;">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Tip Calculator \u2014 Split the Bill Fairly", "url": "https://toolpixi.github.io/tip-calculator/", "description": "Work out the tip (10%, 15%, 18%, 20% or custom) and split the total per person. Free tip calculator for restaurants, taxis and deliveries.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much should I tip?", "acceptedAnswer": {"@type": "Answer", "text": "In the US, 15\u201320% of the pre-tax bill is customary for table service, 18% is a common middle ground. Customs differ by country \u2014 in much of Europe 5\u201310% or rounding up is normal, and in Japan tipping is not expected."}}, {"@type": "Question", "name": "How does splitting work?", "acceptedAnswer": {"@type": "Answer", "text": "We add the tip to the bill, then divide the total equally among the number of people. Everyone pays the same fair share."}}, {"@type": "Question", "name": "Should the tip be on the pre-tax or post-tax amount?", "acceptedAnswer": {"@type": "Answer", "text": "Traditionally pre-tax, though many people tip on the total for simplicity. The difference is small either way."}}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+<a class="logo" href="/"><span class="logo-mark">T</span><span>Tool<em>Pixi</em></span></a>
+<nav class="main-nav">
+<a href="/#image">Image Tools</a><a href="/#pdf">PDF Tools</a><a href="/#date">Date &amp; Time</a>
+<a href="/#text">Text &amp; Generators</a><a href="/#calc">Calculators</a><a href="/about/">About</a>
+</nav></div></header>
+<main class="wrap">
+<div class="page-head"><h1>Tip Calculator</h1><p class="lede">Enter the bill, pick the tip, say how many people — get each person's fair share in one tap.</p></div><div class="tool-panel" id="tip-calc">
+  <div class="row">
+    <div class="field"><label>Bill amount</label><input type="number" id="tip-bill" placeholder="e.g. 86.50" step="any" min="0"></div>
+    <div class="field"><label>Number of people</label><input type="number" id="tip-people" value="1" min="1" max="100"></div>
+  </div>
+  <div class="field"><label>Tip</label>
+    <div class="chip-row">
+      <button class="chip" data-tip="10">10%</button>
+      <button class="chip on" data-tip="15">15%</button>
+      <button class="chip" data-tip="18">18%</button>
+      <button class="chip" data-tip="20">20%</button>
+      <button class="chip" data-tip="25">25%</button>
+      <button class="chip" data-tip="-1">Custom…</button>
+    </div>
+    <input type="number" id="tip-custom" placeholder="Custom tip %" style="display:none" min="0" step="any">
+  </div>
+  <div class="result" id="tip-result">
+    <table>
+      <tr><td>Tip amount</td><td id="tip-amt">—</td></tr>
+      <tr><td>Total bill (with tip)</td><td id="tip-total">—</td></tr>
+      <tr><td>Each person pays</td><td id="tip-per">—</td></tr>
+    </table>
+  </div>
+</div>
+<section class="section"><h2>How to use it</h2><div class="steps"><div class="step"><strong>Type the bill total</strong> and how many people are sharing.</div><div class="step"><strong>Pick a tip percentage</strong> — 15–20% is the US restaurant norm — or enter your own.</div><div class="step"><strong>Read each person's share.</strong> The tip and total are shown too, so nobody has to trust anybody's mental maths.</div></div></section><section class="section"><h2>Ending the table-side maths debate</h2>
+<p>Few moments are as reliably awkward as a table of friends doing long division over a restaurant bill. Tip customs vary by country and situation, but the arithmetic should not: tip on the bill, add it on, divide by people. This calculator does it in the time it takes to type the total — and because it updates live, you can test 15% against 18% and settle on a number everyone feels good about.</p></section>
+<section class="section"><h2>Related tools</h2><div class="related"><a href="/percentage-calculator/">Percentage Calculator</a>
+<a href="/unit-converter/">Unit Converter</a>
+<a href="/bmi-calculator/">BMI Calculator</a>
+<a href="/days-between-dates/">Days Between Dates</a></div></section>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand">
+<a class="logo" href="/" style="color:#fff"><span class="logo-mark">T</span><span>Tool<em style="color:#a5b4fc">Pixi</em></span></a>
+<p>Free online tools that run entirely in your browser. No sign-up, no uploads to a server — your files stay on your device.</p>
+</div>
+<div><h4>Image Tools</h4><a href="/image-compressor/">Image Compressor to KB</a>
+<a href="/png-to-jpg/">PNG to JPG</a>
+<a href="/jpg-to-png/">JPG to PNG</a>
+<a href="/webp-to-jpg/">WebP to JPG</a>
+<a href="/webp-to-png/">WebP to PNG</a>
+<a href="/jpg-to-webp/">JPG to WebP</a>
+<a href="/heic-to-jpg/">HEIC to JPG</a></div>
+<div><h4>PDF Tools</h4><a href="/jpg-to-pdf/">JPG to PDF</a>
+<a href="/merge-pdf/">Merge PDF</a>
+<a href="/split-pdf/">Split PDF</a>
+<a href="/pdf-to-jpg/">PDF to JPG</a>
+<a href="/compress-pdf/">Compress PDF</a></div>
+<div><h4>More Tools</h4>
+<a href="/age-calculator/">Age Calculator</a><a href="/word-counter/">Word Counter</a>
+<a href="/qr-code-generator/">QR Code Generator</a><a href="/unit-converter/">Unit Converter</a>
+<a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a>
+</div>
+</div>
+<div class="foot-bottom"><span>© 2026 ToolPixi. Free tools, no sign-up.</span><span>Made to work on any phone or computer.</span></div>
+</div></footer>
+<script src="/assets/js/common.js"></script>
+<script src="/assets/js/converters.js"></script>
+</body>
+</html>

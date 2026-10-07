@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compress PDF to 200KB or 100KB — Free Online | ToolPixi</title>
+<meta name="description" content="Shrink a PDF toward 200KB or 100KB for upload forms. Free, in your browser, no sign-up. Honest image-based compression that keeps pages readable.">
+<link rel="canonical" href="https://toolpixi.github.io/compress-pdf/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ToolPixi">
+<meta property="og:title" content="Compress PDF to 200KB or 100KB — Free Online | ToolPixi">
+<meta property="og:description" content="Shrink a PDF toward 200KB or 100KB for upload forms. Free, in your browser, no sign-up. Honest image-based compression that keeps pages readable.">
+<meta property="og:url" content="https://toolpixi.github.io/compress-pdf/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'&gt;&lt;rect width='64' height='64' rx='14' fill='%234f46e5'/&gt;&lt;text x='32' y='44' font-size='36' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'&gt;T&lt;/text&gt;&lt;/svg&gt;">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Compress PDF to 200KB or 100KB \u2014 Free Online", "url": "https://toolpixi.github.io/compress-pdf/", "description": "Shrink a PDF toward 200KB or 100KB for upload forms. Free, in your browser, no sign-up. Honest image-based compression that keeps pages readable.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How does this compression work?", "acceptedAnswer": {"@type": "Answer", "text": "Each page is re-drawn as a high-quality image at a carefully chosen size, then the pages are rebuilt into a much smaller PDF. We try gentler settings first and only go smaller until your target is met."}}, {"@type": "Question", "name": "What changes in my PDF?", "acceptedAnswer": {"@type": "Answer", "text": "Pages look the same and print the same, but text becomes part of the page image \u2014 you cannot select or copy it afterwards, and links stop being clickable. Keep your original for editing."}}, {"@type": "Question", "name": "Why can't it reach 100KB for my file?", "acceptedAnswer": {"@type": "Answer", "text": "Photo-heavy or many-page PDFs have a size floor: pages need a minimum amount of image data to stay readable. If we cannot reach your target without making pages blurry, we give you the smallest readable result and tell you honestly."}}, {"@type": "Question", "name": "Is my document uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser tab."}}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+<a class="logo" href="/"><span class="logo-mark">T</span><span>Tool<em>Pixi</em></span></a>
+<nav class="main-nav">
+<a href="/#image">Image Tools</a><a href="/#pdf">PDF Tools</a><a href="/#date">Date &amp; Time</a>
+<a href="/#text">Text &amp; Generators</a><a href="/#calc">Calculators</a><a href="/about/">About</a>
+</nav></div></header>
+<main class="wrap">
+<div class="page-head"><h1>Compress PDF to 200KB or 100KB</h1><p class="lede">Upload forms reject big PDFs. Shrink yours to a target size — we keep pages as readable as the limit allows, and we tell you honestly what changed.</p></div><div class="privacy-badge"><strong>Private by design:</strong> this tool runs entirely in your browser. Your files are never uploaded to a server, and nothing is stored.</div>
+<div class="tool-panel" id="compress-pdf" data-worker="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+  <div class="drop" id="cp-drop"><div class="big">Tap to choose a PDF — or drop it here</div>
+  <div class="small">One PDF file</div></div>
+  <input type="file" class="hidden" id="cp-file">
+  <div class="file-list" id="cp-list"></div>
+  <div class="field"><label>Target size</label>
+    <div class="chip-row">
+      <button class="chip" data-kb="500">500 KB</button>
+      <button class="chip on" data-kb="200">200 KB</button>
+      <button class="chip" data-kb="100">100 KB</button>
+      <button class="chip" data-kb="50">50 KB</button>
+    </div></div>
+  <button class="btn" id="cp-go" disabled>Compress PDF</button>
+  <progress id="cp-progress" max="100" value="0" style="display:none;margin-top:12px"></progress>
+  <div class="err" id="cp-err"></div>
+  <div class="result" id="cp-result">
+    <table>
+      <tr><td>Original size</td><td id="cp-orig">—</td></tr>
+      <tr><td>Compressed size</td><td id="cp-new">—</td></tr>
+    </table>
+    <p class="note" id="cp-note" style="margin-top:10px"></p>
+  </div>
+</div>
+<div class="warn"><strong>Please know:</strong> this compression re-renders pages as images. The PDF looks and prints the same, but text can no longer be selected or copied. Keep your original file if you need to edit the text later.</div>
+<section class="section"><h2>How to use it</h2><div class="steps"><div class="step"><strong>Choose the PDF</strong> the form rejected.</div><div class="step"><strong>Pick the form's limit</strong> — 200KB and 100KB are the most common.</div><div class="step"><strong>Compress and download.</strong> Upload the new file; keep the original as your editable copy.</div></div></section><section class="section"><h2>Made for strict upload limits</h2>
+<p>Job portals, universities, banks and government sites routinely cap PDF uploads at 200KB or even 100KB — while a scanned document from a phone is easily 5–15MB. This tool closes that gap: it re-renders each page at the highest quality that fits your target, stepping down only as far as needed. If your PDF simply cannot go that small without turning unreadable, we say so and still give you the smallest clean result, instead of a blurry file that gets rejected anyway.</p></section>
+<section class="section"><h2>Related tools</h2><div class="related"><a href="/image-compressor/">Image Compressor to KB</a>
+<a href="/jpg-to-pdf/">JPG to PDF</a>
+<a href="/split-pdf/">Split PDF</a>
+<a href="/merge-pdf/">Merge PDF</a></div></section>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand">
+<a class="logo" href="/" style="color:#fff"><span class="logo-mark">T</span><span>Tool<em style="color:#a5b4fc">Pixi</em></span></a>
+<p>Free online tools that run entirely in your browser. No sign-up, no uploads to a server — your files stay on your device.</p>
+</div>
+<div><h4>Image Tools</h4><a href="/image-compressor/">Image Compressor to KB</a>
+<a href="/png-to-jpg/">PNG to JPG</a>
+<a href="/jpg-to-png/">JPG to PNG</a>
+<a href="/webp-to-jpg/">WebP to JPG</a>
+<a href="/webp-to-png/">WebP to PNG</a>
+<a href="/jpg-to-webp/">JPG to WebP</a>
+<a href="/heic-to-jpg/">HEIC to JPG</a></div>
+<div><h4>PDF Tools</h4><a href="/jpg-to-pdf/">JPG to PDF</a>
+<a href="/merge-pdf/">Merge PDF</a>
+<a href="/split-pdf/">Split PDF</a>
+<a href="/pdf-to-jpg/">PDF to JPG</a>
+<a href="/compress-pdf/">Compress PDF</a></div>
+<div><h4>More Tools</h4>
+<a href="/age-calculator/">Age Calculator</a><a href="/word-counter/">Word Counter</a>
+<a href="/qr-code-generator/">QR Code Generator</a><a href="/unit-converter/">Unit Converter</a>
+<a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a>
+</div>
+</div>
+<div class="foot-bottom"><span>© 2026 ToolPixi. Free tools, no sign-up.</span><span>Made to work on any phone or computer.</span></div>
+</div></footer>
+<script src="/assets/js/common.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="/assets/js/image-tools.js"></script>
+<script src="/assets/js/pdf-render.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Compressor to 50KB, 100KB, 200KB — Free Online | ToolPixi</title>
+<meta name="description" content="Compress a JPG or PNG photo to exactly 50KB, 100KB, 200KB, 500KB or any custom size. Free, no sign-up, works in your browser — files never leave your device.">
+<link rel="canonical" href="https://toolpixi.github.io/image-compressor/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ToolPixi">
+<meta property="og:title" content="Image Compressor to 50KB, 100KB, 200KB — Free Online | ToolPixi">
+<meta property="og:description" content="Compress a JPG or PNG photo to exactly 50KB, 100KB, 200KB, 500KB or any custom size. Free, no sign-up, works in your browser — files never leave your device.">
+<meta property="og:url" content="https://toolpixi.github.io/image-compressor/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'&gt;&lt;rect width='64' height='64' rx='14' fill='%234f46e5'/&gt;&lt;text x='32' y='44' font-size='36' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'&gt;T&lt;/text&gt;&lt;/svg&gt;">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Image Compressor to 50KB, 100KB, 200KB \u2014 Free Online", "url": "https://toolpixi.github.io/image-compressor/", "description": "Compress a JPG or PNG photo to exactly 50KB, 100KB, 200KB, 500KB or any custom size. Free, no sign-up, works in your browser \u2014 files never leave your device.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I compress an image to exactly 50KB?", "acceptedAnswer": {"@type": "Answer", "text": "Choose your photo, tap the 50KB button (or type any size in the custom box), then press Compress. The tool lowers quality and, only if needed, dimensions until the file fits your target."}}, {"@type": "Question", "name": "Why do forms ask for a photo under 50KB or 200KB?", "acceptedAnswer": {"@type": "Answer", "text": "Many exam, visa, job and government application forms set strict upload limits \u2014 often 50KB for a photo and 20\u2013200KB for documents. This tool is built for exactly those limits."}}, {"@type": "Question", "name": "Will my photo look worse?", "acceptedAnswer": {"@type": "Answer", "text": "We always try the gentlest setting that fits your target first, so quality stays as high as the size allows. Small dimension changes only happen when quality alone cannot reach the size."}}, {"@type": "Question", "name": "Are my photos uploaded anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. Compression happens on your device, in this browser tab. Nothing is sent to a server and nothing is stored."}}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+<a class="logo" href="/"><span class="logo-mark">T</span><span>Tool<em>Pixi</em></span></a>
+<nav class="main-nav">
+<a href="/#image">Image Tools</a><a href="/#pdf">PDF Tools</a><a href="/#date">Date &amp; Time</a>
+<a href="/#text">Text &amp; Generators</a><a href="/#calc">Calculators</a><a href="/about/">About</a>
+</nav></div></header>
+<main class="wrap">
+<div class="page-head"><h1>Compress Image to 50KB, 100KB or 200KB</h1><p class="lede">Shrink a photo to the exact file size your form asks for — 50KB, 100KB, 200KB, 500KB, or any custom size. Free, instant, and private: the photo never leaves your device.</p></div><div class="privacy-badge"><strong>Private by design:</strong> this tool runs entirely in your browser. Your files are never uploaded to a server, and nothing is stored.</div>
+<div class="tool-panel" id="kb-compressor">
+  <div class="drop" id="kb-drop"><div class="big">Tap to choose a photo — or drop it here</div>
+  <div class="small">JPG, PNG, WebP and most other image formats</div></div>
+  <input type="file" class="hidden" id="kb-file">
+  <div class="file-list" id="kb-list"></div>
+  <div class="field"><label>Target size</label>
+    <div class="chip-row">
+      <button class="chip on" data-kb="50">50 KB</button>
+      <button class="chip" data-kb="100">100 KB</button>
+      <button class="chip" data-kb="200">200 KB</button>
+      <button class="chip" data-kb="500">500 KB</button>
+      <button class="chip" data-kb="custom">Custom…</button>
+    </div>
+    <input type="number" id="kb-custom" placeholder="Type a size in KB, e.g. 30" min="5" max="5000" style="display:none">
+  </div>
+  <button class="btn" id="kb-go" disabled>Compress image</button>
+  <progress id="kb-progress" max="100" value="0" style="display:none;margin-top:12px"></progress>
+  <div class="err" id="kb-err"></div>
+  <div class="result" id="kb-result">
+    <table>
+      <tr><td>Original size</td><td id="kb-orig-size">—</td></tr>
+      <tr><td>Compressed size</td><td id="kb-new-size">—</td></tr>
+      <tr><td>You saved</td><td id="kb-saved">—</td></tr>
+    </table>
+    <p style="margin:12px 0"><img class="thumb-preview" id="kb-preview" alt="Compressed photo preview"></p>
+    <p class="note" id="kb-note"></p>
+    <button class="btn" id="kb-download">Download compressed image</button>
+  </div>
+</div>
+<section class="section"><h2>How to use it</h2><div class="steps"><div class="step"><strong>Choose your photo.</strong> Tap the box above and pick any JPG, PNG or WebP image.</div><div class="step"><strong>Pick a target size.</strong> 50KB, 100KB, 200KB and 500KB presets cover most form limits, or type your own.</div><div class="step"><strong>Compress and download.</strong> The tool finds the best quality that fits, then hands you the file.</div></div></section><section class="section"><h2>Built for application forms</h2>
+<p>Exam portals, visa applications, job sites and government forms around the world reject photos that are even slightly too large — and their limits are almost always in kilobytes: 50KB for a passport-style photo, 100KB or 200KB for a scanned document. Phone photos are usually 2–8 <em>mega</em>bytes, a hundred times too big. This compressor closes that gap in one tap, without installing an app.</p>
+<p>How it works: the tool re-saves your photo as a JPEG, testing quality levels from high to low and measuring the real file size each time. Only if the smallest sensible quality is still too big does it gently reduce the dimensions as well. The result stays as sharp as your target size allows.</p></section>
+<section class="section"><h2>Related tools</h2><div class="related"><a href="/png-to-jpg/">PNG to JPG</a>
+<a href="/heic-to-jpg/">HEIC to JPG</a>
+<a href="/compress-pdf/">Compress PDF</a>
+<a href="/jpg-to-pdf/">JPG to PDF</a></div></section>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand">
+<a class="logo" href="/" style="color:#fff"><span class="logo-mark">T</span><span>Tool<em style="color:#a5b4fc">Pixi</em></span></a>
+<p>Free online tools that run entirely in your browser. No sign-up, no uploads to a server — your files stay on your device.</p>
+</div>
+<div><h4>Image Tools</h4><a href="/image-compressor/">Image Compressor to KB</a>
+<a href="/png-to-jpg/">PNG to JPG</a>
+<a href="/jpg-to-png/">JPG to PNG</a>
+<a href="/webp-to-jpg/">WebP to JPG</a>
+<a href="/webp-to-png/">WebP to PNG</a>
+<a href="/jpg-to-webp/">JPG to WebP</a>
+<a href="/heic-to-jpg/">HEIC to JPG</a></div>
+<div><h4>PDF Tools</h4><a href="/jpg-to-pdf/">JPG to PDF</a>
+<a href="/merge-pdf/">Merge PDF</a>
+<a href="/split-pdf/">Split PDF</a>
+<a href="/pdf-to-jpg/">PDF to JPG</a>
+<a href="/compress-pdf/">Compress PDF</a></div>
+<div><h4>More Tools</h4>
+<a href="/age-calculator/">Age Calculator</a><a href="/word-counter/">Word Counter</a>
+<a href="/qr-code-generator/">QR Code Generator</a><a href="/unit-converter/">Unit Converter</a>
+<a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a>
+</div>
+</div>
+<div class="foot-bottom"><span>© 2026 ToolPixi. Free tools, no sign-up.</span><span>Made to work on any phone or computer.</span></div>
+</div></footer>
+<script src="/assets/js/common.js"></script>
+<script src="/assets/js/image-tools.js"></script>
+</body>
+</html>

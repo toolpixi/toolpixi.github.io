@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BMI Calculator — Metric & Imperial (kg/cm and lb/feet) | ToolPixi</title>
+<meta name="description" content="Calculate your Body Mass Index (BMI) from height and weight — metric or imperial — with the healthy-weight range for your height. Free and instant.">
+<link rel="canonical" href="https://toolpixi.github.io/bmi-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ToolPixi">
+<meta property="og:title" content="BMI Calculator — Metric & Imperial (kg/cm and lb/feet) | ToolPixi">
+<meta property="og:description" content="Calculate your Body Mass Index (BMI) from height and weight — metric or imperial — with the healthy-weight range for your height. Free and instant.">
+<meta property="og:url" content="https://toolpixi.github.io/bmi-calculator/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'&gt;&lt;rect width='64' height='64' rx='14' fill='%234f46e5'/&gt;&lt;text x='32' y='44' font-size='36' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'&gt;T&lt;/text&gt;&lt;/svg&gt;">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "BMI Calculator \u2014 Metric & Imperial (kg/cm and lb/feet)", "url": "https://toolpixi.github.io/bmi-calculator/", "description": "Calculate your Body Mass Index (BMI) from height and weight \u2014 metric or imperial \u2014 with the healthy-weight range for your height. Free and instant.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is a healthy BMI?", "acceptedAnswer": {"@type": "Answer", "text": "For most adults, 18.5\u201324.9 is the generally healthy range; below 18.5 is underweight, 25\u201329.9 overweight, and 30+ obese. This tool shows the healthy weight range for your height too."}}, {"@type": "Question", "name": "Is BMI the whole story?", "acceptedAnswer": {"@type": "Answer", "text": "No. BMI does not distinguish muscle from fat, and it is only a screening guide for adults \u2014 athletes, pregnant people and children need different measures. Talk to a doctor for medical advice."}}, {"@type": "Question", "name": "Can I use pounds and feet?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 switch to Imperial and enter feet, inches and pounds."}}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+<a class="logo" href="/"><span class="logo-mark">T</span><span>Tool<em>Pixi</em></span></a>
+<nav class="main-nav">
+<a href="/#image">Image Tools</a><a href="/#pdf">PDF Tools</a><a href="/#date">Date &amp; Time</a>
+<a href="/#text">Text &amp; Generators</a><a href="/#calc">Calculators</a><a href="/about/">About</a>
+</nav></div></header>
+<main class="wrap">
+<div class="page-head"><h1>BMI Calculator</h1><p class="lede">Your Body Mass Index from height and weight — in kilograms and centimetres, or feet, inches and pounds.</p></div><div class="tool-panel" id="bmi-calc">
+  <div class="seg" role="group" aria-label="Units">
+    <button data-mode="metric" class="on">Metric (kg, cm)</button>
+    <button data-mode="imperial">Imperial (lb, ft/in)</button>
+  </div>
+  <div id="bmi-metric">
+    <div class="row" style="margin-top:12px">
+      <div class="field"><label>Weight (kg)</label><input type="number" id="bmi-kg" placeholder="e.g. 70" step="any"></div>
+      <div class="field"><label>Height (cm)</label><input type="number" id="bmi-cm" placeholder="e.g. 175" step="any"></div>
+    </div>
+  </div>
+  <div id="bmi-imperial" style="display:none">
+    <div class="row" style="margin-top:12px">
+      <div class="field"><label>Feet</label><input type="number" id="bmi-ft" placeholder="5"></div>
+      <div class="field"><label>Inches</label><input type="number" id="bmi-in" placeholder="9"></div>
+      <div class="field"><label>Weight (lb)</label><input type="number" id="bmi-lbs" placeholder="e.g. 154" step="any"></div>
+    </div>
+  </div>
+  <button class="btn" id="bmi-go">Calculate BMI</button>
+  <div class="err" id="bmi-err"></div>
+  <div class="result" id="bmi-result">
+    <div class="big-num"><span id="bmi-value">—</span></div>
+    <p style="margin:4px 0"><strong id="bmi-cat">—</strong></p>
+    <p class="note" id="bmi-range"></p>
+  </div>
+</div>
+<div class="warn">BMI is a general screening guide for adults, not a medical diagnosis. It can misread muscular builds, and it does not apply to children or during pregnancy. For health decisions, see a qualified professional.</div>
+<section class="section"><h2>How to use it</h2><div class="steps"><div class="step"><strong>Choose your units</strong> — metric or imperial.</div><div class="step"><strong>Enter height and weight.</strong></div><div class="step"><strong>Get your BMI, its category,</strong> and the healthy weight range for your height.</div></div></section><section class="section"><h2>How BMI works</h2>
+<p>BMI is your weight in kilograms divided by your height in metres, squared. Doctors use it as a first screening step because it correlates with body-fat risk across large populations. Its blind spots are real — a rugby player and a couch fan can share a BMI with very different health — so treat the number as a starting point for a conversation, not a verdict. We show your figure next to the healthy <em>weight</em> range for your height, which most people find more actionable than the index alone.</p></section>
+<section class="section"><h2>Related tools</h2><div class="related"><a href="/unit-converter/">Unit Converter</a>
+<a href="/age-calculator/">Age Calculator</a>
+<a href="/percentage-calculator/">Percentage Calculator</a>
+<a href="/tip-calculator/">Tip Calculator</a></div></section>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand">
+<a class="logo" href="/" style="color:#fff"><span class="logo-mark">T</span><span>Tool<em style="color:#a5b4fc">Pixi</em></span></a>
+<p>Free online tools that run entirely in your browser. No sign-up, no uploads to a server — your files stay on your device.</p>
+</div>
+<div><h4>Image Tools</h4><a href="/image-compressor/">Image Compressor to KB</a>
+<a href="/png-to-jpg/">PNG to JPG</a>
+<a href="/jpg-to-png/">JPG to PNG</a>
+<a href="/webp-to-jpg/">WebP to JPG</a>
+<a href="/webp-to-png/">WebP to PNG</a>
+<a href="/jpg-to-webp/">JPG to WebP</a>
+<a href="/heic-to-jpg/">HEIC to JPG</a></div>
+<div><h4>PDF Tools</h4><a href="/jpg-to-pdf/">JPG to PDF</a>
+<a href="/merge-pdf/">Merge PDF</a>
+<a href="/split-pdf/">Split PDF</a>
+<a href="/pdf-to-jpg/">PDF to JPG</a>
+<a href="/compress-pdf/">Compress PDF</a></div>
+<div><h4>More Tools</h4>
+<a href="/age-calculator/">Age Calculator</a><a href="/word-counter/">Word Counter</a>
+<a href="/qr-code-generator/">QR Code Generator</a><a href="/unit-converter/">Unit Converter</a>
+<a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a>
+</div>
+</div>
+<div class="foot-bottom"><span>© 2026 ToolPixi. Free tools, no sign-up.</span><span>Made to work on any phone or computer.</span></div>
+</div></footer>
+<script src="/assets/js/common.js"></script>
+<script src="/assets/js/converters.js"></script>
+</body>
+</html>

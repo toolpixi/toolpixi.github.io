@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit Converter — cm to Inches, kg to lbs, °C to °F, km to Miles | ToolPixi</title>
+<meta name="description" content="Convert length, weight, temperature and distance units instantly: cm↔inches, kg↔lbs, °C↔°F, km↔miles, feet, stone, ounces and more. Free unit converter.">
+<link rel="canonical" href="https://toolpixi.github.io/unit-converter/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ToolPixi">
+<meta property="og:title" content="Unit Converter — cm to Inches, kg to lbs, °C to °F, km to Miles | ToolPixi">
+<meta property="og:description" content="Convert length, weight, temperature and distance units instantly: cm↔inches, kg↔lbs, °C↔°F, km↔miles, feet, stone, ounces and more. Free unit converter.">
+<meta property="og:url" content="https://toolpixi.github.io/unit-converter/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'&gt;&lt;rect width='64' height='64' rx='14' fill='%234f46e5'/&gt;&lt;text x='32' y='44' font-size='36' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'&gt;T&lt;/text&gt;&lt;/svg&gt;">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Unit Converter \u2014 cm to Inches, kg to lbs, \u00b0C to \u00b0F, km to Miles", "url": "https://toolpixi.github.io/unit-converter/", "description": "Convert length, weight, temperature and distance units instantly: cm\u2194inches, kg\u2194lbs, \u00b0C\u2194\u00b0F, km\u2194miles, feet, stone, ounces and more. Free unit converter.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How many cm are in an inch?", "acceptedAnswer": {"@type": "Answer", "text": "Exactly 2.54 cm \u2014 it is the international definition of the inch, so this converter's answer matches everywhere."}}, {"@type": "Question", "name": "How do I convert kg to pounds?", "acceptedAnswer": {"@type": "Answer", "text": "Choose Weight above (or type here): 1 kg = 2.20462 lb. A 70 kg person weighs about 154 lb."}}, {"@type": "Question", "name": "Is the temperature conversion exact?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. \u00b0F = \u00b0C \u00d7 9/5 + 32, and Kelvin is included for science work."}}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+<a class="logo" href="/"><span class="logo-mark">T</span><span>Tool<em>Pixi</em></span></a>
+<nav class="main-nav">
+<a href="/#image">Image Tools</a><a href="/#pdf">PDF Tools</a><a href="/#date">Date &amp; Time</a>
+<a href="/#text">Text &amp; Generators</a><a href="/#calc">Calculators</a><a href="/about/">About</a>
+</nav></div></header>
+<main class="wrap">
+<div class="page-head"><h1>Unit Converter</h1><p class="lede">Centimetres to inches, kilograms to pounds, Celsius to Fahrenheit, kilometres to miles — every everyday conversion in one place.</p></div><div class="tool-panel" id="unit-converter">
+  <div class="err" id="uc-err"></div>
+  <div class="row">
+    <div class="field"><label>What are you measuring?</label><select id="uc-cat"></select></div>
+    <div class="field"><label>Value</label><input type="number" id="uc-val" value="10" step="any"></div>
+  </div>
+  <div class="row" style="align-items:end">
+    <div class="field"><label>From</label><select id="uc-from"></select></div>
+    <div style="flex:0 0 auto;padding-bottom:4px"><button class="btn ghost" id="uc-swap" type="button">⇄ Swap</button></div>
+    <div class="field"><label>To</label><select id="uc-to"></select></div>
+  </div>
+  <div class="result show">
+    <div class="big-num" id="uc-out">—</div>
+    <p class="note" id="uc-formula" style="margin-top:6px"></p>
+  </div>
+</div>
+<section class="section"><h2>Popular conversions</h2>
+<div class="related">
+<a href="/unit-converter/?c=length&amp;from=cm&amp;to=inches">cm to inches</a>
+<a href="/unit-converter/?c=length&amp;from=inches&amp;to=cm">inches to cm</a>
+<a href="/unit-converter/?c=weight&amp;from=kg&amp;to=lbs">kg to lbs</a>
+<a href="/unit-converter/?c=weight&amp;from=lbs&amp;to=kg">lbs to kg</a>
+<a href="/unit-converter/?c=temperature&amp;from=°C&amp;to=°F">°C to °F</a>
+<a href="/unit-converter/?c=temperature&amp;from=°F&amp;to=°C">°F to °C</a>
+<a href="/unit-converter/?c=distance&amp;from=km&amp;to=miles">km to miles</a>
+<a href="/unit-converter/?c=distance&amp;from=miles&amp;to=km">miles to km</a>
+</div></section>
+<section class="section"><h2>How to use it</h2><div class="steps"><div class="step"><strong>Pick a category</strong> — length, weight, temperature or distance.</div><div class="step"><strong>Type your value</strong> and set the from/to units. Results update as you type.</div><div class="step"><strong>Swap in one tap</strong> to convert back the other way.</div></div></section><section class="section"><h2>Built on the exact definitions</h2>
+<p>Most conversions here are not approximations: since 1959 the inch is defined as exactly 2.54 cm and the pound as exactly 0.45359237 kg, so your answers match official tables. Temperature uses the standard formulas. Whether you are buying fabric in metres for an American pattern, checking a suitcase against a kilogram limit, or reading a Fahrenheit forecast, the number you get is the number that is true.</p></section>
+<section class="section"><h2>Related tools</h2><div class="related"><a href="/bmi-calculator/">BMI Calculator</a>
+<a href="/percentage-calculator/">Percentage Calculator</a>
+<a href="/tip-calculator/">Tip Calculator</a>
+<a href="/days-between-dates/">Days Between Dates</a></div></section>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand">
+<a class="logo" href="/" style="color:#fff"><span class="logo-mark">T</span><span>Tool<em style="color:#a5b4fc">Pixi</em></span></a>
+<p>Free online tools that run entirely in your browser. No sign-up, no uploads to a server — your files stay on your device.</p>
+</div>
+<div><h4>Image Tools</h4><a href="/image-compressor/">Image Compressor to KB</a>
+<a href="/png-to-jpg/">PNG to JPG</a>
+<a href="/jpg-to-png/">JPG to PNG</a>
+<a href="/webp-to-jpg/">WebP to JPG</a>
+<a href="/webp-to-png/">WebP to PNG</a>
+<a href="/jpg-to-webp/">JPG to WebP</a>
+<a href="/heic-to-jpg/">HEIC to JPG</a></div>
+<div><h4>PDF Tools</h4><a href="/jpg-to-pdf/">JPG to PDF</a>
+<a href="/merge-pdf/">Merge PDF</a>
+<a href="/split-pdf/">Split PDF</a>
+<a href="/pdf-to-jpg/">PDF to JPG</a>
+<a href="/compress-pdf/">Compress PDF</a></div>
+<div><h4>More Tools</h4>
+<a href="/age-calculator/">Age Calculator</a><a href="/word-counter/">Word Counter</a>
+<a href="/qr-code-generator/">QR Code Generator</a><a href="/unit-converter/">Unit Converter</a>
+<a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a>
+</div>
+</div>
+<div class="foot-bottom"><span>© 2026 ToolPixi. Free tools, no sign-up.</span><span>Made to work on any phone or computer.</span></div>
+</div></footer>
+<script src="/assets/js/common.js"></script>
+<script src="/assets/js/converters.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online Timer with Alarm + Stopwatch — Free | ToolPixi</title>
+<meta name="description" content="A free online countdown timer with presets, an alarm sound and a lap stopwatch. Works in any browser — cooking, workouts, study and exams.">
+<link rel="canonical" href="https://toolpixi.github.io/timer/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ToolPixi">
+<meta property="og:title" content="Online Timer with Alarm + Stopwatch — Free | ToolPixi">
+<meta property="og:description" content="A free online countdown timer with presets, an alarm sound and a lap stopwatch. Works in any browser — cooking, workouts, study and exams.">
+<meta property="og:url" content="https://toolpixi.github.io/timer/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'&gt;&lt;rect width='64' height='64' rx='14' fill='%234f46e5'/&gt;&lt;text x='32' y='44' font-size='36' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'&gt;T&lt;/text&gt;&lt;/svg&gt;">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Online Timer with Alarm + Stopwatch \u2014 Free", "url": "https://toolpixi.github.io/timer/", "description": "A free online countdown timer with presets, an alarm sound and a lap stopwatch. Works in any browser \u2014 cooking, workouts, study and exams.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does the timer work if I switch tabs?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 it counts real elapsed time, not screen frames, so it stays accurate in the background. Keep the tab open and your sound on for the alarm."}}, {"@type": "Question", "name": "Why is there no sound?", "acceptedAnswer": {"@type": "Answer", "text": "Browsers only allow sound after you interact with the page \u2014 pressing Start is enough. Also check your device volume and silent mode."}}, {"@type": "Question", "name": "What are presets for?", "acceptedAnswer": {"@type": "Answer", "text": "One-tap timers for the classics: 1 minute for tea, 5 for a break, 10\u201330 for workouts and study sessions, 60 for an exam hour."}}]}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+<a class="logo" href="/"><span class="logo-mark">T</span><span>Tool<em>Pixi</em></span></a>
+<nav class="main-nav">
+<a href="/#image">Image Tools</a><a href="/#pdf">PDF Tools</a><a href="/#date">Date &amp; Time</a>
+<a href="/#text">Text &amp; Generators</a><a href="/#calc">Calculators</a><a href="/about/">About</a>
+</nav></div></header>
+<main class="wrap">
+<div class="page-head"><h1>Online Timer & Stopwatch</h1><p class="lede">A countdown timer with an alarm for the kitchen, the desk and the gym — plus a stopwatch with laps.</p></div><div class="tool-panel" id="timer-tool">
+  <h2 style="margin-top:0">Countdown timer</h2>
+  <div class="chip-row">
+    <button class="chip" data-min="1">1 min</button>
+    <button class="chip" data-min="5">5 min</button>
+    <button class="chip" data-min="10">10 min</button>
+    <button class="chip" data-min="15">15 min</button>
+    <button class="chip" data-min="20">20 min</button>
+    <button class="chip" data-min="30">30 min</button>
+    <button class="chip" data-min="60">60 min</button>
+  </div>
+  <div class="row">
+    <div class="field"><label>Hours</label><input type="number" id="tm-h" min="0" max="99" value="0"></div>
+    <div class="field"><label>Minutes</label><input type="number" id="tm-m" min="0" max="59" value="5"></div>
+    <div class="field"><label>Seconds</label><input type="number" id="tm-s" min="0" max="59" value="0"></div>
+  </div>
+  <div class="timer-face" id="tm-face">05:00</div>
+  <div class="progress-line"><i id="tm-bar"></i></div>
+  <p class="note" id="tm-done" style="display:none"><strong>Time is up!</strong></p>
+  <div class="row">
+    <div><button class="btn" id="tm-start">Start</button></div>
+    <div><button class="btn ghost" id="tm-reset">Reset</button></div>
+  </div>
+  <div class="err" id="tm-err"></div>
+  <hr style="border:none;border-top:1px solid var(--line);margin:26px 0">
+  <h2>Stopwatch</h2>
+  <div class="timer-face" id="sw-face">00:00.00</div>
+  <div class="row" style="margin-top:10px">
+    <div><button class="btn" id="sw-start">Start</button></div>
+    <div><button class="btn ghost" id="sw-lap">Lap</button></div>
+    <div><button class="btn ghost" id="sw-reset">Reset</button></div>
+  </div>
+  <div class="file-list" id="sw-laps"></div>
+</div>
+<section class="section"><h2>How to use it</h2><div class="steps"><div class="step"><strong>Set the time</strong> with a preset or type hours, minutes and seconds.</div><div class="step"><strong>Press Start.</strong> The bar fills as time runs out; Pause and Resume anytime.</div><div class="step"><strong>Listen for the alarm.</strong> A clear beep repeats until you reset — keep your sound on.</div></div></section><section class="section"><h2>Why a browser timer?</h2>
+<p>No app to install, nothing to sign into, and it works the same on a phone, a school Chromebook or a work laptop. Because it measures real elapsed time rather than counting screen refreshes, it stays accurate even if you switch tabs to check a recipe or an exercise. The stopwatch keeps hundredth-of-a-second laps for workouts, cooking stages and classroom activities.</p></section>
+<section class="section"><h2>Related tools</h2><div class="related"><a href="/days-until-christmas/">Days Until Christmas</a>
+<a href="/random-number-generator/">Random Number Generator</a>
+<a href="/days-between-dates/">Days Between Dates</a>
+<a href="/word-counter/">Word Counter</a></div></section>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand">
+<a class="logo" href="/" style="color:#fff"><span class="logo-mark">T</span><span>Tool<em style="color:#a5b4fc">Pixi</em></span></a>
+<p>Free online tools that run entirely in your browser. No sign-up, no uploads to a server — your files stay on your device.</p>
+</div>
+<div><h4>Image Tools</h4><a href="/image-compressor/">Image Compressor to KB</a>
+<a href="/png-to-jpg/">PNG to JPG</a>
+<a href="/jpg-to-png/">JPG to PNG</a>
+<a href="/webp-to-jpg/">WebP to JPG</a>
+<a href="/webp-to-png/">WebP to PNG</a>
+<a href="/jpg-to-webp/">JPG to WebP</a>
+<a href="/heic-to-jpg/">HEIC to JPG</a></div>
+<div><h4>PDF Tools</h4><a href="/jpg-to-pdf/">JPG to PDF</a>
+<a href="/merge-pdf/">Merge PDF</a>
+<a href="/split-pdf/">Split PDF</a>
+<a href="/pdf-to-jpg/">PDF to JPG</a>
+<a href="/compress-pdf/">Compress PDF</a></div>
+<div><h4>More Tools</h4>
+<a href="/age-calculator/">Age Calculator</a><a href="/word-counter/">Word Counter</a>
+<a href="/qr-code-generator/">QR Code Generator</a><a href="/unit-converter/">Unit Converter</a>
+<a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a>
+</div>
+</div>
+<div class="foot-bottom"><span>© 2026 ToolPixi. Free tools, no sign-up.</span><span>Made to work on any phone or computer.</span></div>
+</div></footer>
+<script src="/assets/js/common.js"></script>
+<script src="/assets/js/timer.js"></script>
+</body>
+</html>
