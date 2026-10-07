@@ -49,9 +49,16 @@ img{max-width:100%}
   color:var(--primary-dark);margin:0 0 4px}
 a.menu-cat:hover{color:var(--primary);text-decoration:none}
 .menu-group ul{list-style:none;margin:0;padding:0}
-.menu-group li a{display:flex;align-items:center;min-height:46px;padding:10px;border-radius:9px;
-  color:var(--muted);font-size:15.5px;font-weight:550;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.menu-group li a{display:flex;align-items:center;gap:11px;min-height:48px;padding:7px 10px;border-radius:9px;
+  color:var(--muted);font-size:15.5px;font-weight:550;border-bottom:1px solid #f3f2fa;
+  transition:background .12s ease,color .12s ease}
+.menu-group li:last-child a{border-bottom:none}
 .menu-group li a:hover{background:var(--primary-soft);color:var(--primary-dark);text-decoration:none}
+.menu-group li a:active{background:#e2def9;color:var(--primary-dark)}
+.menu-group .mic{width:34px;height:34px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 0 0 1px rgba(23,20,46,.05)}
+.menu-group .mic svg{width:18px;height:18px;display:block}
+.menu-group .mtxt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .menu-note{margin:14px 0 0;color:var(--faint);font-size:13px;border-top:1px dashed var(--line);padding-top:12px}
 
 /* Hero */
