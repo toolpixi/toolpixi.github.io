@@ -197,3 +197,54 @@ function tpNoLib(id) {
     } finally { btn.disabled = false; btn.textContent = "Split into single pages"; }
   });
 })();
+
+// ==== PURE: rotation maths ====
+/* New rotation for a page whose current rotation is `current` degrees,
+   after turning it `turn` more degrees clockwise. Always 0/90/180/270. */
+function tpNextRotation(current, turn) {
+  var c = ((current % 360) + 360) % 360, t = ((turn % 360) + 360) % 360;
+  return (c + t) % 360;
+}
+
+// ==== DOM: Rotate PDF (turn every page the same way) ====
+(function () {
+  var panel = document.getElementById("rotate-pdf");
+  if (!panel) return;
+  var file = null, angle = 90;
+  panel.querySelectorAll("[data-angle]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-angle]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      angle = parseInt(b.getAttribute("data-angle"), 10);
+    });
+  });
+  tpDropzone("rp-drop", "rp-file", {
+    accept: "application/pdf", multiple: false,
+    onFiles: function (f) {
+      tpHideError("rp-err"); file = f[0]; tpFileList("rp-list", [file]);
+      document.getElementById("rp-go").disabled = false;
+    }
+  });
+  document.getElementById("rp-go").addEventListener("click", async function () {
+    tpHideError("rp-err");
+    if (!tpLibsReady()) { tpNoLib("rp-err"); return; }
+    var btn = this; btn.disabled = true; btn.textContent = "Rotating…";
+    try {
+      var src = await PDFLib.PDFDocument.load(await file.arrayBuffer());
+      var out = await PDFLib.PDFDocument.create();
+      var pages = await out.copyPages(src, src.getPageIndices());
+      pages.forEach(function (p) {
+        p.setRotation(PDFLib.degrees(tpNextRotation(p.getRotation().angle, angle)));
+        out.addPage(p);
+      });
+      var bytes = await out.save();
+      tpDownload(new Blob([bytes], { type: "application/pdf" }), tpStripExt(file.name) + "-rotated.pdf");
+      var res = document.getElementById("rp-result");
+      res.classList.add("show");
+      res.querySelector(".note").textContent = pages.length + " page(s) turned " + angle +
+        "° clockwise · " + tpFormatBytes(bytes.length) + ". The rotation is saved in the file, so every viewer shows it upright.";
+    } catch (e) {
+      tpShowError("rp-err", "This PDF could not be opened. It may be password-protected or damaged.");
+    } finally { btn.disabled = false; btn.textContent = "Rotate & download PDF"; }
+  });
+})();

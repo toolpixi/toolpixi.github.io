@@ -141,6 +141,11 @@ function tpCountdownCells(prefix, target) {
   } else if (kind === "new-year") {
     target = new Date(y + 1, 0, 1);
     document.getElementById("du-date-label").textContent = "New Year's Day — " + tpFmtDate(target);
+  } else if (kind === "eid") {
+    // 1 Shawwal 1448 AH expected 9 Mar 2027 (Umm al-Qura calendar; may shift a day by moon sighting).
+    target = new Date(2027, 2, 9);
+    if (target < tpStartOfDay(now)) target = new Date(2028, 1, 27); // ~1 Shawwal 1449, tabular estimate
+    document.getElementById("du-date-label").textContent = "Expected Eid al-Fitr — " + tpFmtDate(target);
   } else if (kind === "ramadan") {
     // 1 Ramadan 1448 AH = 7 Feb 2027 (tabular calendar; may shift a day by moon sighting).
     target = new Date(2027, 1, 7);
@@ -166,5 +171,97 @@ function tpCountdownCells(prefix, target) {
     document.getElementById("dua-result").classList.add("show");
     if (timer) clearTimeout(timer);
     tpCountdownCells("dua", d);
+  });
+})();
+
+// ==== PURE: add/subtract days + age difference ====
+function tpAddDays(date, n) {
+  var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  d.setDate(d.getDate() + n);
+  return d;
+}
+/* Gap between two birth dates: who is older, by how much (y/m/d + total days). */
+function tpAgeDiff(a, b) {
+  var total = tpDaysBetween(a, b); // signed: b after a -> positive
+  if (total === 0) return { same: true, aOlder: false, ymd: { years: 0, months: 0, days: 0 }, totalDays: 0 };
+  var older = total > 0 ? a : b, younger = total > 0 ? b : a;
+  return { same: false, aOlder: total > 0, ymd: tpAgeYMD(older, younger), totalDays: Math.abs(total) };
+}
+
+// ==== DOM: Date calculator (add or subtract days) ====
+(function () {
+  var panel = document.getElementById("date-calc");
+  if (!panel) return;
+  var dir = 1;
+  panel.querySelectorAll("[data-dir]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-dir]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      dir = parseInt(b.getAttribute("data-dir"), 10);
+      run();
+    });
+  });
+  panel.querySelectorAll("[data-days]").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      panel.querySelectorAll("[data-days]").forEach(function (c) { c.classList.remove("on"); });
+      chip.classList.add("on");
+      document.getElementById("dc-days").value = chip.getAttribute("data-days");
+      run();
+    });
+  });
+  function isoToday() {
+    var n = new Date();
+    function p(x) { return (x < 10 ? "0" : "") + x; }
+    return n.getFullYear() + "-" + p(n.getMonth() + 1) + "-" + p(n.getDate());
+  }
+  var dateIn = document.getElementById("dc-date");
+  if (dateIn && !dateIn.value) dateIn.value = isoToday();
+  function run() {
+    tpHideError("dc-err");
+    var base = tpParseYMD(dateIn.value);
+    var n = parseInt(document.getElementById("dc-days").value, 10);
+    if (!base) { tpShowError("dc-err", "Please pick a starting date."); return; }
+    if (isNaN(n)) { tpShowError("dc-err", "Please type how many days to add or subtract."); return; }
+    var out = tpAddDays(base, dir * n);
+    document.getElementById("dc-out").textContent = tpFmtDate(out);
+    document.getElementById("dc-note").textContent = Math.abs(n) + " day" + (Math.abs(n) === 1 ? "" : "s") +
+      (dir > 0 ? " after " : " before ") + tpFmtDate(base) + " lands on " + tpFmtDate(out) + ".";
+    document.getElementById("dc-result").classList.add("show");
+  }
+  document.getElementById("dc-go").addEventListener("click", run);
+  ["dc-date", "dc-days"].forEach(function (id) {
+    document.getElementById(id).addEventListener("change", run);
+  });
+})();
+
+// ==== DOM: Age difference calculator ====
+(function () {
+  var panel = document.getElementById("age-diff");
+  if (!panel) return;
+  function run() {
+    tpHideError("ad-err");
+    var a = tpParseYMD(document.getElementById("ad-a").value);
+    var b = tpParseYMD(document.getElementById("ad-b").value);
+    if (!a || !b) { tpShowError("ad-err", "Please pick both birth dates."); return; }
+    var d = tpAgeDiff(a, b);
+    if (d.same) {
+      document.getElementById("ad-headline").textContent = "Born on the same day — no age gap at all.";
+    } else {
+      document.getElementById("ad-headline").textContent =
+        d.ymd.years + " years, " + d.ymd.months + " months, " + d.ymd.days + " days apart";
+    }
+    document.getElementById("ad-total").textContent = d.totalDays.toLocaleString() + " days";
+    document.getElementById("ad-born-a").textContent = tpFmtDate(a);
+    document.getElementById("ad-born-b").textContent = tpFmtDate(b);
+    document.getElementById("ad-older").textContent = d.same
+      ? "Same age, exactly."
+      : (d.aOlder ? "Person 1 is the older of the two." : "Person 2 is the older of the two.");
+    document.getElementById("ad-result").classList.add("show");
+  }
+  document.getElementById("ad-go").addEventListener("click", run);
+  ["ad-a", "ad-b"].forEach(function (id) {
+    document.getElementById(id).addEventListener("change", function () {
+      if (document.getElementById("ad-a").value && document.getElementById("ad-b").value) run();
+    });
   });
 })();

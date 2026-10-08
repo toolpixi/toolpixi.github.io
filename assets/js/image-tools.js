@@ -186,3 +186,110 @@ async function tpCompressToKB(img, targetBytes, onProgress) {
     }
   });
 })();
+
+// ==== PURE: image resizer maths ====
+/* Target dims for a resize. If lock, the missing side follows the aspect ratio;
+   a side of 0/null means "derive it". Both sides 0 -> original size. */
+function tpResizeDims(origW, origH, wantW, wantH, lock) {
+  wantW = wantW > 0 ? Math.round(wantW) : 0;
+  wantH = wantH > 0 ? Math.round(wantH) : 0;
+  if (!wantW && !wantH) return { w: origW, h: origH };
+  if (lock) {
+    if (wantW && !wantH) return { w: wantW, h: Math.max(1, Math.round(origH * wantW / origW)) };
+    if (wantH && !wantW) return { w: Math.max(1, Math.round(origW * wantH / origH)), h: wantH };
+    // Both given with lock on: fit inside the box, keep ratio.
+    var s = Math.min(wantW / origW, wantH / origH);
+    return { w: Math.max(1, Math.round(origW * s)), h: Math.max(1, Math.round(origH * s)) };
+  }
+  return { w: wantW || origW, h: wantH || origH };
+}
+function tpScaledDims(origW, origH, pct) {
+  var s = pct / 100;
+  return { w: Math.max(1, Math.round(origW * s)), h: Math.max(1, Math.round(origH * s)) };
+}
+
+// ==== DOM: Image Resizer (exact pixels or percentage) ====
+(function () {
+  var panel = document.getElementById("image-resizer");
+  if (!panel) return;
+  var file = null, loaded = null, outBlob = null, outName = "";
+  var wIn = document.getElementById("rs-w"), hIn = document.getElementById("rs-h"),
+      pctIn = document.getElementById("rs-pct"), lockIn = document.getElementById("rs-lock");
+
+  function syncFromW() {
+    if (!loaded || !lockIn.checked) return;
+    var w = parseFloat(wIn.value);
+    if (w > 0) hIn.value = Math.max(1, Math.round(loaded.img.naturalHeight * w / loaded.img.naturalWidth));
+  }
+  function syncFromH() {
+    if (!loaded || !lockIn.checked) return;
+    var h = parseFloat(hIn.value);
+    if (h > 0) wIn.value = Math.max(1, Math.round(loaded.img.naturalWidth * h / loaded.img.naturalHeight));
+  }
+  wIn.addEventListener("input", function () { pctIn.value = ""; syncFromW(); });
+  hIn.addEventListener("input", function () { pctIn.value = ""; syncFromH(); });
+  pctIn.addEventListener("input", function () {
+    if (!loaded) return;
+    var p = parseFloat(pctIn.value);
+    if (p > 0) {
+      var d = tpScaledDims(loaded.img.naturalWidth, loaded.img.naturalHeight, p);
+      wIn.value = d.w; hIn.value = d.h;
+    }
+  });
+
+  tpDropzone("rs-drop", "rs-file", {
+    accept: "image/*", multiple: false,
+    onFiles: function (files) {
+      tpHideError("rs-err");
+      file = files[0];
+      tpFileList("rs-list", [file]);
+      document.getElementById("rs-go").disabled = false;
+      tpLoadImageFromFile(file).then(function (r) {
+        if (loaded) URL.revokeObjectURL(loaded.url);
+        loaded = r;
+        document.getElementById("rs-orig").textContent =
+          "Original: " + r.img.naturalWidth + " × " + r.img.naturalHeight + " px · " + tpFormatBytes(file.size);
+        if (!wIn.value) { wIn.value = r.img.naturalWidth; hIn.value = r.img.naturalHeight; pctIn.value = 100; }
+      }).catch(function (err) { tpShowError("rs-err", err.message); });
+    }
+  });
+
+  document.getElementById("rs-go").addEventListener("click", async function () {
+    tpHideError("rs-err");
+    if (!file || !loaded) { tpShowError("rs-err", "Please choose an image first."); return; }
+    var btn = this; btn.disabled = true; btn.textContent = "Resizing…";
+    try {
+      var ow = loaded.img.naturalWidth, oh = loaded.img.naturalHeight;
+      var p = parseFloat(pctIn.value);
+      var dims = (p > 0 && !wIn.value && !hIn.value)
+        ? tpScaledDims(ow, oh, p)
+        : tpResizeDims(ow, oh, parseFloat(wIn.value) || 0, parseFloat(hIn.value) || 0, lockIn.checked);
+      var canvas = document.createElement("canvas");
+      canvas.width = dims.w; canvas.height = dims.h;
+      var ctx = canvas.getContext("2d");
+      var fmt = document.getElementById("rs-fmt").value;
+      var mime = fmt || (["image/jpeg", "image/png", "image/webp"].indexOf(file.type) >= 0 ? file.type : "image/png");
+      if (mime === "image/jpeg") { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, dims.w, dims.h); }
+      ctx.drawImage(loaded.img, 0, 0, dims.w, dims.h);
+      var ext = mime === "image/jpeg" ? "jpg" : mime === "image/webp" ? "webp" : "png";
+      var blob = await tpCanvasToBlob(canvas, mime, 0.92);
+      if (!blob) throw new Error("Resize failed for this image. Try a different photo.");
+      outBlob = blob;
+      outName = tpStripExt(file.name) + "-" + dims.w + "x" + dims.h + "." + ext;
+      var res = document.getElementById("rs-result");
+      res.classList.add("show");
+      document.getElementById("rs-new").textContent =
+        "New size: " + dims.w + " × " + dims.h + " px · " + tpFormatBytes(blob.size) + " (" + ext.toUpperCase() + ")";
+      var prev = document.getElementById("rs-preview");
+      prev.src = URL.createObjectURL(blob);
+    } catch (err) {
+      tpShowError("rs-err", err.message || "Something went wrong while resizing.");
+    } finally {
+      btn.disabled = false; btn.textContent = "Resize image";
+    }
+  });
+
+  document.getElementById("rs-download").addEventListener("click", function () {
+    if (outBlob) tpDownload(outBlob, outName);
+  });
+})();

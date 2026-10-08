@@ -123,3 +123,53 @@ async function tpRenderPageToJpeg(page, scale, quality) {
     }
   });
 })();
+
+// ==== DOM: PDF to PNG (transparent background preserved) ====
+async function tpRenderPageToPng(page, scale) {
+  var viewport = page.getViewport({ scale: scale });
+  var canvas = document.createElement("canvas");
+  canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
+  var ctx = canvas.getContext("2d");
+  // No white fill on purpose: PNG keeps a transparent background where the page has none.
+  await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+  return tpCanvasToBlob(canvas, "image/png");
+}
+(function () {
+  var panel = document.getElementById("pdf-to-png");
+  if (!panel) return;
+  tpSetupPdfJs(panel.getAttribute("data-worker"));
+  var file = null;
+  tpDropzone("pn-drop", "pn-file", {
+    accept: "application/pdf", multiple: false,
+    onFiles: function (f) {
+      tpHideError("pn-err"); file = f[0]; tpFileList("pn-list", [file]);
+      document.getElementById("pn-go").disabled = false;
+    }
+  });
+  document.getElementById("pn-go").addEventListener("click", async function () {
+    tpHideError("pn-err");
+    if (!tpPdfJsReady()) { tpShowError("pn-err", "The PDF engine could not be loaded. Check your connection and refresh."); return; }
+    var btn = this; btn.disabled = true; btn.textContent = "Converting…";
+    var bar = document.getElementById("pn-progress"); bar.style.display = "block"; bar.value = 0;
+    try {
+      var buf = await file.arrayBuffer();
+      var doc = await pdfjsLib.getDocument({ data: buf }).promise;
+      var scale = parseFloat(document.getElementById("pn-scale").value);
+      for (var p = 1; p <= doc.numPages; p++) {
+        var page = await doc.getPage(p);
+        var blob = await tpRenderPageToPng(page, scale);
+        if (blob) tpDownload(blob, tpStripExt(file.name) + "-page-" + p + ".png");
+        bar.value = Math.round((p / doc.numPages) * 100);
+        await new Promise(function (r) { setTimeout(r, 200); });
+      }
+      var res = document.getElementById("pn-result");
+      res.classList.add("show");
+      res.querySelector(".note").textContent = doc.numPages + " page image(s) downloaded as PNG. Your browser may ask permission for multiple downloads.";
+    } catch (e) {
+      tpShowError("pn-err", "This PDF could not be opened. It may be password-protected or damaged.");
+    } finally {
+      btn.disabled = false; btn.textContent = "Convert pages to PNG";
+      setTimeout(function () { bar.style.display = "none"; }, 600);
+    }
+  });
+})();

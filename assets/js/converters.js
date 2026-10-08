@@ -166,3 +166,85 @@ function tpBMICategory(bmi) {
     if (el) el.addEventListener("input", run);
   });
 })();
+
+// ==== PURE: discount + loan maths ====
+function tpDiscount(price, pctOff, taxPct) {
+  var off = price * pctOff / 100;
+  var after = price - off;
+  var tax = after * (taxPct || 0) / 100;
+  return { off: off, afterDiscount: after, tax: tax, final: after + tax, saved: off };
+}
+function tpLoan(principal, annualRatePct, years) {
+  var n = Math.round(years * 12);
+  var r = annualRatePct / 1200;
+  if (n <= 0 || principal <= 0) return { monthly: 0, totalPaid: 0, totalInterest: 0, payments: 0 };
+  var monthly = r === 0 ? principal / n : principal * r / (1 - Math.pow(1 + r, -n));
+  var total = monthly * n;
+  return { monthly: monthly, totalPaid: total, totalInterest: total - principal, payments: n };
+}
+function tpMoney(n) {
+  if (!isFinite(n)) return "—";
+  return tpFmtNum(Math.round(n * 100) / 100);
+}
+
+// ==== DOM: discount calculator ====
+(function () {
+  var panel = document.getElementById("discount-calc");
+  if (!panel) return;
+  function run() {
+    var price = parseFloat(document.getElementById("ds-price").value);
+    var off = parseFloat(document.getElementById("ds-off").value);
+    var tax = parseFloat(document.getElementById("ds-tax").value) || 0;
+    var res = document.getElementById("ds-result");
+    if (isNaN(price) || isNaN(off) || price < 0 || off < 0 || off > 100) {
+      document.getElementById("ds-final").textContent = "—";
+      res.classList.remove("show");
+      return;
+    }
+    var d = tpDiscount(price, off, tax);
+    document.getElementById("ds-orig").textContent = tpMoney(price);
+    document.getElementById("ds-offamt").textContent = "− " + tpMoney(d.off) + " (" + tpFmtNum(off) + "% off)";
+    document.getElementById("ds-after").textContent = tpMoney(d.afterDiscount);
+    document.getElementById("ds-taxamt").textContent = tax > 0 ? "+ " + tpMoney(d.tax) : "—";
+    document.getElementById("ds-final").textContent = tpMoney(d.final);
+    document.getElementById("ds-saved").textContent = "You save " + tpMoney(d.saved) + " before tax.";
+    res.classList.add("show");
+  }
+  ["ds-price", "ds-off", "ds-tax"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", run);
+  });
+  run();
+})();
+
+// ==== DOM: loan / EMI calculator ====
+(function () {
+  var panel = document.getElementById("loan-calc");
+  if (!panel) return;
+  function run() {
+    tpHideError("ln-err");
+    var amt = parseFloat(document.getElementById("ln-amount").value);
+    var rate = parseFloat(document.getElementById("ln-rate").value);
+    var years = parseFloat(document.getElementById("ln-years").value);
+    if (isNaN(amt) || isNaN(rate) || isNaN(years) || amt <= 0 || rate < 0 || years <= 0) {
+      tpShowError("ln-err", "Enter the amount, the yearly interest rate and the loan length in years.");
+      document.getElementById("ln-result").classList.remove("show");
+      return;
+    }
+    var L = tpLoan(amt, rate, years);
+    document.getElementById("ln-monthly").textContent = tpMoney(L.monthly);
+    document.getElementById("ln-interest").textContent = tpMoney(L.totalInterest);
+    document.getElementById("ln-total").textContent = tpMoney(L.totalPaid);
+    document.getElementById("ln-count").textContent = L.payments + " monthly payments";
+    document.getElementById("ln-result").classList.add("show");
+  }
+  document.getElementById("ln-go").addEventListener("click", run);
+  ["ln-amount", "ln-rate", "ln-years"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", function () {
+      // Live-update only once every field has a value, so a half-typed
+      // form never flashes the error message.
+      var ids = ["ln-amount", "ln-rate", "ln-years"];
+      var allFilled = ids.every(function (i) { return document.getElementById(i).value !== ""; });
+      if (allFilled) run();
+    });
+  });
+})();
