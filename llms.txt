@@ -1,0 +1,74 @@
+# ToolPixi
+
+> ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run entirely in your browser. Your files never leave your device.
+
+ToolPixi at https://toolpixi.github.io/ offers 40 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+
+## Key pages
+
+- [ToolPixi homepage](https://toolpixi.github.io/): Free online tools that run in your browser — compress, convert, and calculate in seconds.
+- [About ToolPixi](https://toolpixi.github.io/about/): What ToolPixi is, why browser-based matters for privacy, and how the tools work.
+- [Privacy Policy](https://toolpixi.github.io/privacy/): Files are never uploaded; no accounts; no tracking cookies from ToolPixi.
+- [Contact](https://toolpixi.github.io/contact/): Suggest a tool, report a problem, or ask a question.
+- [Sitemap](https://toolpixi.github.io/sitemap.xml): Complete list of tool pages.
+
+## Categories
+
+- Image Tools: 10 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- PDF Tools: 7 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
+- Date & Time Tools: 11 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 6 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Converters & Calculators: 6 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+
+## All tools
+
+- [Image Compressor to KB](https://toolpixi.github.io/image-compressor/): Shrink a photo to exactly 50KB, 100KB, 200KB or any size you type.
+- [PNG to JPG](https://toolpixi.github.io/png-to-jpg/): Convert PNG images to JPG — smaller files that upload anywhere.
+- [JPG to PNG](https://toolpixi.github.io/jpg-to-png/): Convert JPG photos to PNG with full quality.
+- [WebP to JPG](https://toolpixi.github.io/webp-to-jpg/): Turn WebP images into JPG files every app can open.
+- [WebP to PNG](https://toolpixi.github.io/webp-to-png/): Convert WebP to PNG without losing transparency.
+- [JPG to WebP](https://toolpixi.github.io/jpg-to-webp/): Make web-ready WebP images from JPG photos.
+- [HEIC to JPG](https://toolpixi.github.io/heic-to-jpg/): Convert iPhone HEIC photos to JPG on any device.
+- [JPG to PDF](https://toolpixi.github.io/jpg-to-pdf/): Turn one or many photos into a single PDF document.
+- [Merge PDF](https://toolpixi.github.io/merge-pdf/): Combine several PDFs into one file, in your order.
+- [Split PDF](https://toolpixi.github.io/split-pdf/): Pull out page ranges or save every page as its own PDF.
+- [PDF to JPG](https://toolpixi.github.io/pdf-to-jpg/): Convert each PDF page into a crisp JPG image.
+- [Compress PDF](https://toolpixi.github.io/compress-pdf/): Shrink a PDF toward 200KB or 100KB for upload forms.
+- [Age Calculator](https://toolpixi.github.io/age-calculator/): Your exact age in years, months and days from your date of birth.
+- [Age on a Specific Date](https://toolpixi.github.io/age-on-date/): How old were you — or will you be — on any chosen date?
+- [Days Between Dates](https://toolpixi.github.io/days-between-dates/): Count the days between two dates, with weeks and months too.
+- [Days Until Christmas](https://toolpixi.github.io/days-until-christmas/): A live countdown to Christmas Day.
+- [Days Until New Year](https://toolpixi.github.io/days-until-new-year/): Count down to January 1st, live to the second.
+- [Days Until Ramadan](https://toolpixi.github.io/days-until-ramadan/): When does Ramadan start? Live countdown with the expected date.
+- [Days Until Any Date](https://toolpixi.github.io/days-until/): Build a countdown to your birthday, exam, trip or deadline.
+- [Online Timer & Stopwatch](https://toolpixi.github.io/timer/): Countdown timer with alarm, presets and a lap stopwatch.
+- [Word Counter](https://toolpixi.github.io/word-counter/): Words, characters, sentences and reading time as you type.
+- [QR Code Generator](https://toolpixi.github.io/qr-code-generator/): Make a QR code for any link or text and download the PNG.
+- [YouTube Thumbnail Downloader](https://toolpixi.github.io/youtube-thumbnail-downloader/): Grab any video's thumbnail in HD, straight from its link.
+- [Random Number Generator](https://toolpixi.github.io/random-number-generator/): Pick random numbers in any range — unique and sorted if you like.
+- [Unit Converter](https://toolpixi.github.io/unit-converter/): cm to inches, kg to lbs, °C to °F, km to miles and more.
+- [BMI Calculator](https://toolpixi.github.io/bmi-calculator/): Body mass index from your height and weight, metric or imperial.
+- [Percentage Calculator](https://toolpixi.github.io/percentage-calculator/): Percent of a number, percent change and more.
+- [Tip Calculator](https://toolpixi.github.io/tip-calculator/): Work out the tip and split the bill fairly in seconds.
+- [PNG to WebP](https://toolpixi.github.io/png-to-webp/): Convert PNG images to WebP — smaller files for websites.
+- [HEIC to PNG](https://toolpixi.github.io/heic-to-png/): Convert iPhone HEIC photos to PNG, keeping every pixel.
+- [Image Resizer](https://toolpixi.github.io/image-resizer/): Resize an image to exact pixels or a percentage — for uploads, social posts and print.
+- [PDF to PNG](https://toolpixi.github.io/pdf-to-png/): Convert each PDF page into a PNG image with a transparent background.
+- [Rotate PDF](https://toolpixi.github.io/rotate-pdf/): Turn scanned pages upright — rotate a whole PDF 90°, 180° or 270°.
+- [Days Until Eid al-Fitr](https://toolpixi.github.io/days-until-eid/): A live countdown to Eid al-Fitr, expected 9 March 2027.
+- [Date Calculator](https://toolpixi.github.io/date-calculator/): Add or subtract days from any date — what is 90 days from today?
+- [Age Difference Calculator](https://toolpixi.github.io/age-difference-calculator/): The exact age gap between two people, in years, months and days.
+- [Case Converter](https://toolpixi.github.io/case-converter/): UPPERCASE, lowercase, Title Case, Sentence case and more — one tap.
+- [Password Generator](https://toolpixi.github.io/password-generator/): Strong random passwords made on your device — never sent anywhere.
+- [Discount Calculator](https://toolpixi.github.io/discount-calculator/): Sale price after % off, what you save, and the total with tax.
+- [Loan Calculator](https://toolpixi.github.io/loan-calculator/): Monthly payment (EMI), total interest and total cost of a loan.
+
+## Privacy promise
+
+Every tool processes files locally in your web browser using open-source libraries (pdf-lib, PDF.js, heic2any). Files and typed data are never transmitted to or stored on a server. Close the tab and nothing remains.
+
+## Optional
+
+- [Image Compressor to KB](https://toolpixi.github.io/image-compressor/): Shrink a photo to exactly 50KB, 100KB, 200KB or any size you type.
+- [HEIC to JPG](https://toolpixi.github.io/heic-to-jpg/): Convert iPhone HEIC photos to JPG on any device.
+- [Age Calculator](https://toolpixi.github.io/age-calculator/): Exact age in years, months and days from your date of birth.
