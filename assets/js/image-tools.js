@@ -293,3 +293,113 @@ function tpScaledDims(origW, origH, pct) {
     if (outBlob) tpDownload(outBlob, outName);
   });
 })();
+
+/* ToolPixi — SVG to PNG (vector -> flat raster, canvas, local-only) */
+// ==== PURE ====
+function tpSvgIntrinsicSize(svgText) {
+  var doc;
+  try { doc = new DOMParser().parseFromString(svgText, "image/svg+xml"); }
+  catch (e) { return null; }
+  var svg = doc && doc.querySelector("svg");
+  if (!svg) return null;
+  function num(v) { var n = parseFloat(v); return isFinite(n) && n > 0 ? n : 0; }
+  var w = num(svg.getAttribute("width")), h = num(svg.getAttribute("height"));
+  if (w && h) return { w: w, h: h };
+  var vb = (svg.getAttribute("viewBox") || "").trim().split(/[\s,]+/).map(parseFloat);
+  if (vb.length === 4 && vb[2] > 0 && vb[3] > 0) return { w: vb[2], h: vb[3] };
+  return null;
+}
+function tpSvgWithSize(svgText, w, h) {
+  var doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
+  var svg = doc && doc.querySelector("svg");
+  if (!svg) return null;
+  svg.setAttribute("width", w);
+  svg.setAttribute("height", h);
+  return new XMLSerializer().serializeToString(doc);
+}
+
+// ==== DOM ====
+(function () {
+  var panel = document.getElementById("svg-to-png");
+  if (!panel) return;
+  var file = null, svgText = null, intrinsic = null, outBlob = null, outName = "";
+  var wIn = document.getElementById("sv-w"), hIn = document.getElementById("sv-h");
+  tpDropzone("sv-drop", "sv-file", {
+    accept: ".svg,image/svg+xml",
+    onFiles: function (files) {
+      var f = files[0];
+      if (!f) return;
+      tpHideError("sv-err");
+      var rd = new FileReader();
+      rd.onload = function () {
+        svgText = String(rd.result);
+        intrinsic = tpSvgIntrinsicSize(svgText);
+        file = f;
+        tpFileList("sv-list", [f]);
+        document.getElementById("sv-note").textContent = intrinsic
+          ? "This SVG is " + intrinsic.w + " × " + intrinsic.h + " units. Change the pixel size below if you want a bigger or smaller PNG."
+          : "This SVG has no size information, so we will render it at the size you type below.";
+        if (intrinsic && !wIn.value) { wIn.value = Math.round(intrinsic.w); hIn.value = Math.round(intrinsic.h); }
+        document.getElementById("sv-go").disabled = false;
+      };
+      rd.onerror = function () { tpShowError("sv-err", "Could not read that file. Please try a different SVG."); };
+      rd.readAsText(f);
+    }
+  });
+  document.getElementById("sv-go").addEventListener("click", function () {
+    tpHideError("sv-err");
+    if (!file || !svgText) { tpShowError("sv-err", "Please choose an SVG file first."); return; }
+    var w = parseInt(wIn.value, 10), h = parseInt(hIn.value, 10);
+    if (!w || !h || w < 1 || h < 1 || w > 8000 || h > 8000) {
+      tpShowError("sv-err", "Type a width and height in pixels (1–8000 each)."); return;
+    }
+    var btn = this; btn.disabled = true; btn.textContent = "Rendering…";
+    try {
+      var sized = tpSvgWithSize(svgText, w, h);
+      if (!sized) throw new Error("That file does not look like a valid SVG.");
+      var blob = new Blob([sized], { type: "image/svg+xml;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var canvas = document.createElement("canvas");
+          canvas.width = w; canvas.height = h;
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          URL.revokeObjectURL(url);
+          if (canvas.toBlob) {
+            canvas.toBlob(function (b) {
+              btn.disabled = false; btn.textContent = "Convert to PNG";
+              if (!b) { tpShowError("sv-err", "Rendering failed for this SVG. Try a different file."); return; }
+              outBlob = b;
+              outName = tpStripExt(file.name) + "-" + w + "x" + h + ".png";
+              document.getElementById("sv-result").classList.add("show");
+              document.getElementById("sv-new").textContent =
+                "PNG ready: " + w + " × " + h + " px · " + tpFormatBytes(b.size);
+              var prev = document.getElementById("sv-preview");
+              prev.src = URL.createObjectURL(b);
+            }, "image/png");
+          } else {
+            btn.disabled = false; btn.textContent = "Convert to PNG";
+            tpShowError("sv-err", "This browser cannot export PNG images. Try a modern browser.");
+          }
+        } catch (err) {
+          btn.disabled = false; btn.textContent = "Convert to PNG";
+          tpShowError("sv-err", err.message || "Something went wrong while rendering.");
+        }
+      };
+      img.onerror = function () {
+        URL.revokeObjectURL(url);
+        btn.disabled = false; btn.textContent = "Convert to PNG";
+        tpShowError("sv-err", "The SVG could not be drawn — it may use features this browser cannot render (or reference external files).");
+      };
+      img.src = url;
+    } catch (err) {
+      btn.disabled = false; btn.textContent = "Convert to PNG";
+      tpShowError("sv-err", err.message || "Something went wrong while rendering.");
+    }
+  });
+  document.getElementById("sv-download").addEventListener("click", function () {
+    if (outBlob) tpDownload(outBlob, outName);
+  });
+})();

@@ -197,3 +197,183 @@ function tpPasswordStrength(pw) {
   });
   run();
 })();
+
+/* ToolPixi — text diff checker + JSON formatter */
+// ==== PURE ====
+function tpEsc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+/* LCS-based line diff -> [{type:'same'|'del'|'add', text}]. */
+function tpDiffLines(aLines, bLines) {
+  var a = aLines, b = bLines, n = a.length, m = b.length;
+  var cap = 600; // keep the DP table bounded on phones
+  if (n > cap || m > cap) return null;
+  var dp = [];
+  for (var i = 0; i <= n; i++) { dp.push(new Array(m + 1).fill(0)); }
+  for (i = n - 1; i >= 0; i--)
+    for (var j = m - 1; j >= 0; j--)
+      dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  var out = []; i = 0; j = 0;
+  while (i < n && j < m) {
+    if (a[i] === b[j]) { out.push({ type: "same", text: a[i] }); i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) { out.push({ type: "del", text: a[i] }); i++; }
+    else { out.push({ type: "add", text: b[j] }); j++; }
+  }
+  while (i < n) { out.push({ type: "del", text: a[i] }); i++; }
+  while (j < m) { out.push({ type: "add", text: b[j] }); j++; }
+  return out;
+}
+/* Word-level diff between one removed and one added line (returns escaped HTML). */
+function tpDiffWords(a, b) {
+  var ta = a.match(/\S+|\s+/g) || [], tb = b.match(/\S+|\s+/g) || [];
+  var n = ta.length, m = tb.length;
+  if (n * m > 40000) { // too big for word-level: plain lines
+    return { del: tpEsc(a), add: tpEsc(b) };
+  }
+  var dp = [];
+  for (var i = 0; i <= n; i++) { dp.push(new Array(m + 1).fill(0)); }
+  for (i = n - 1; i >= 0; i--)
+    for (var j = m - 1; j >= 0; j--)
+      dp[i][j] = ta[i] === tb[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  var hd = "", ha = ""; i = 0; j = 0;
+  while (i < n && j < m) {
+    if (ta[i] === tb[j]) { hd += tpEsc(ta[i]); ha += tpEsc(tb[j]); i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) { hd += '<span class="wdel">' + tpEsc(ta[i]) + "</span>"; i++; }
+    else { ha += '<span class="wadd">' + tpEsc(tb[j]) + "</span>"; j++; }
+  }
+  while (i < n) { hd += '<span class="wdel">' + tpEsc(ta[i]) + "</span>"; i++; }
+  while (j < m) { ha += '<span class="wadd">' + tpEsc(tb[j]) + "</span>"; j++; }
+  return { del: hd, add: ha };
+}
+function tpJsonPosFromMsg(msg) {
+  var m = /at position (\d+)/.exec(msg);
+  if (m) return parseInt(m[1], 10);
+  m = /at line (\d+) column (\d+)/.exec(msg);
+  if (m) return { line: +m[1], col: +m[2] };
+  return null;
+}
+/* Last-resort: V8's echo-style errors ("Unexpected token '}', "..." is not valid
+   JSON") carry no position. Take the reported token and find its last occurrence
+   in the (echoed) source — the parser chokes on the token closest to the end.
+   Marked approximate; close enough to point the user at the problem. */
+function tpJsonApproxPos(err, text) {
+  var m = /Unexpected token '((?:[^'\\]|\\.)*)'/.exec(err.message);
+  if (!m || !m[1]) return -1;
+  var tok = m[1], src = text;
+  var em = /,\s*"((?:[^"\\]|\\.)*)" is not valid JSON/.exec(err.message);
+  if (em) { try { src = JSON.parse('"' + em[1] + '"'); } catch (e2) { /* keep text */ } }
+  return src.lastIndexOf(tok);
+}
+function tpJsonErrorPos(err, text) {
+  var p = tpJsonPosFromMsg(err.message);
+  var idx = (p && typeof p === "number") ? p : -1;
+  var approx = false;
+  if (idx < 0 && !(p && p.line)) { idx = tpJsonApproxPos(err, text); approx = idx >= 0; }
+  if (idx < 0) {
+    if (p && p.line) return { line: p.line, col: p.col, idx: -1, approx: false };
+    return { line: -1, col: -1, idx: -1, approx: false };
+  }
+  var line = 1, col = idx + 1;
+  for (var i = 0; i < idx && i < text.length; i++) if (text[i] === "\n") { line++; col = idx - i; }
+  return { line: line, col: col, idx: idx, approx: approx };
+}
+
+// ==== DOM: text diff checker ====
+(function () {
+  var panel = document.getElementById("text-diff");
+  if (!panel) return;
+  function run() {
+    tpHideError("td-err");
+    var a = document.getElementById("td-a").value;
+    var b = document.getElementById("td-b").value;
+    var out = document.getElementById("td-out");
+    if (!a && !b) { out.innerHTML = '<p class="note">Paste the two texts you want to compare, then press Compare.</p>'; return; }
+    var diff = tpDiffLines(a.split("\n"), b.split("\n"));
+    if (!diff) { tpShowError("td-err", "The texts are too long to compare on this device — try shorter texts."); return; }
+    var html = "", dels = 0, adds = 0;
+    for (var k = 0; k < diff.length; k++) {
+      var row = diff[k];
+      if (row.type === "same") {
+        html += '<div class="dl-line dl-same"><span class="dl-g"> </span><span>' + tpEsc(row.text || " ") + "</span></div>";
+      } else if (row.type === "del") {
+        // If a changed pair follows, show word-level highlighting.
+        var words = null;
+        if (k + 1 < diff.length && diff[k + 1].type === "add") {
+          words = tpDiffWords(row.text, diff[k + 1].text); k++;
+        }
+        html += '<div class="dl-line dl-del"><span class="dl-g">−</span><span>' + (words ? words.del : tpEsc(row.text || " ")) + "</span></div>";
+        html += '<div class="dl-line dl-add"><span class="dl-g">+</span><span>' + (words ? words.add : tpEsc(diff[k].text || " ")) + "</span></div>";
+        dels++; adds++;
+      }
+    }
+    document.getElementById("td-meta").textContent =
+      dels === 0 && adds === 0 ? "The two texts are identical." :
+      dels + " changed line" + (dels === 1 ? "" : "s") + " shown.";
+    out.innerHTML = html;
+  }
+  document.getElementById("td-go").addEventListener("click", run);
+  document.getElementById("td-clear").addEventListener("click", function () {
+    document.getElementById("td-a").value = ""; document.getElementById("td-b").value = "";
+    document.getElementById("td-out").innerHTML = "";
+    document.getElementById("td-meta").textContent = "";
+    tpHideError("td-err");
+  });
+})();
+
+// ==== DOM: JSON formatter ====
+(function () {
+  var panel = document.getElementById("json-formatter");
+  if (!panel) return;
+  var out = document.getElementById("jf-out");
+  function showError(err, text) {
+    tpHideError("jf-err");
+    var pos = tpJsonErrorPos(err, text);
+    var where = pos.line > 0 ? " — " + (pos.approx ? "near " : "") + "line " + pos.line + ", column " + pos.col : "";
+    tpShowError("jf-err", "Invalid JSON" + where + ": " + err.message.replace(/\s+at (position|line).*/, ""));
+    if (pos.idx >= 0) {
+      var start = Math.max(0, pos.idx - 30), end = Math.min(text.length, pos.idx + 30);
+      var snippet = text.slice(start, pos.idx) + "▶" + text.slice(pos.idx, end);
+      out.textContent = "…" + snippet + "…";
+      out.classList.add("show");
+    }
+  }
+  function parse() {
+    var text = document.getElementById("jf-in").value;
+    if (!text.trim()) { tpShowError("jf-err", "Paste some JSON first."); return null; }
+    try { return JSON.parse(text); }
+    catch (err) { showError(err, text); return undefined; }
+  }
+  document.getElementById("jf-validate").addEventListener("click", function () {
+    tpHideError("jf-err");
+    var v = parse();
+    if (v === undefined) return;
+    out.textContent = "Valid JSON — parsed successfully.";
+    out.classList.add("show");
+  });
+  document.getElementById("jf-pretty").addEventListener("click", function () {
+    var v = parse();
+    if (v === undefined) return;
+    tpHideError("jf-err");
+    out.textContent = JSON.stringify(v, null, 2);
+    out.classList.add("show");
+  });
+  document.getElementById("jf-minify").addEventListener("click", function () {
+    var v = parse();
+    if (v === undefined) return;
+    tpHideError("jf-err");
+    out.textContent = JSON.stringify(v);
+    out.classList.add("show");
+  });
+  document.getElementById("jf-sample").addEventListener("click", function () {
+    document.getElementById("jf-in").value = '{\n  "name": "ToolPixi",\n  "free": true,\n  "tools": ["word counter", "age calculator"],\n  "owner": { "role": "founder" }\n}';
+    tpHideError("jf-err");
+  });
+  document.getElementById("jf-clear").addEventListener("click", function () {
+    document.getElementById("jf-in").value = ""; out.textContent = ""; out.classList.remove("show");
+    tpHideError("jf-err");
+  });
+  document.getElementById("jf-copy").addEventListener("click", function () {
+    if (!out.textContent) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(out.textContent);
+    var btn = this; btn.textContent = "Copied!";
+    setTimeout(function () { btn.textContent = "Copy result"; }, 1500);
+  });
+})();

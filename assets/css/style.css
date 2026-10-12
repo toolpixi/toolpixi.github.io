@@ -226,3 +226,28 @@ progress::-moz-progress-bar{background:var(--primary);border-radius:99px}
 @media (max-width:639px){
   .tool-panel .btn:not(.small){width:100%}
 }
+
+/* Growth batch 2026-10-12: world clock, diff, json, hex colour, svg */
+.wc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:14px 0}
+.wc-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+.wc-city{font-weight:800;font-size:14px}
+.wc-time{font-size:21px;font-weight:800;color:var(--primary-dark);margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.wc-date{font-size:12px;color:var(--muted)}
+.wc-off{font-size:12px;font-weight:700;color:#0e7490;margin-top:2px}
+.dl-line{display:flex;gap:8px;padding:4px 8px;border-radius:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.45;word-break:break-word;margin:2px 0}
+.dl-g{flex:0 0 14px;font-weight:800;text-align:center}
+.dl-same{color:var(--muted)}
+.dl-del{background:#fdecec}
+.dl-del .dl-g{color:#b91c1c}
+.dl-add{background:#e6f7ee}
+.dl-add .dl-g{color:#047857}
+.wdel{background:#f6b8b8;border-radius:4px;padding:0 2px}
+.wadd{background:#a9e8c4;border-radius:4px;padding:0 2px}
+pre.out{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:420px;overflow:auto;margin-top:10px;display:none}
+pre.out.show{display:block}
+.rgb-sw{display:inline-block;width:44px;height:44px;border-radius:10px;border:1px solid var(--line);vertical-align:middle;margin-right:10px}
+.gr-row .field{margin-bottom:0}
+@media (max-width:639px){
+  .wc-grid{grid-template-columns:repeat(auto-fill,minmax(128px,1fr))}
+  .gr-row{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}
+}

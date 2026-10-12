@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run entirely in your browser. Your files never leave your device.
 
-ToolPixi at https://toolpixi.com/ offers 40 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 50 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,11 +14,11 @@ ToolPixi at https://toolpixi.com/ offers 40 free browser-based tools across 5 ca
 
 ## Categories
 
-- Image Tools: 10 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- Image Tools: 11 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 7 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 11 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 6 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 6 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Date & Time Tools: 14 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 8 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Converters & Calculators: 10 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -62,6 +62,16 @@ ToolPixi at https://toolpixi.com/ offers 40 free browser-based tools across 5 ca
 - [Password Generator](https://toolpixi.com/password-generator/): Strong random passwords made on your device — never sent anywhere.
 - [Discount Calculator](https://toolpixi.com/discount-calculator/): Sale price after % off, what you save, and the total with tax.
 - [Loan Calculator](https://toolpixi.com/loan-calculator/): Monthly payment (EMI), total interest and total cost of a loan.
+- [World Clock](https://toolpixi.com/world-clock/): The current time in New York, London, Dubai, Tokyo and more — live.
+- [Calorie Calculator](https://toolpixi.com/calorie-calculator/): Daily calorie needs (BMR & TDEE) from age, sex, height, weight and activity.
+- [Grade Calculator](https://toolpixi.com/grade-calculator/): Weighted grades, and what you need on the final to hit your target.
+- [Binary Converter](https://toolpixi.com/binary-converter/): Binary, decimal and hex — with the step-by-step working shown.
+- [Hex Converter](https://toolpixi.com/hex-converter/): Hex to decimal and binary, plus hex colours to RGB.
+- [SVG to PNG](https://toolpixi.com/svg-to-png/): Upload an SVG, choose the pixel size, download a crisp PNG.
+- [Days Until Halloween](https://toolpixi.com/days-until-halloween/): A live countdown to Halloween — October 31.
+- [Days Until Thanksgiving](https://toolpixi.com/days-until-thanksgiving/): Live countdown to US Thanksgiving — the fourth Thursday of November.
+- [Text Diff Checker](https://toolpixi.com/text-diff-checker/): Paste two texts and see every addition and removal highlighted.
+- [JSON Formatter](https://toolpixi.com/json-formatter/): Validate, pretty-print and minify JSON — errors shown with line and column.
 
 ## Privacy promise
 

@@ -1,7 +1,7 @@
 # Directory Submission Kit — ToolPixi
 
 Prepared: 2026-10-07  
-Product: ToolPixi — https://toolpixi.github.io/  
+Product: ToolPixi — https://toolpixi.com/  
 Purpose: free directory listings for referral discovery and legitimate backlinks. This kit follows the same discipline as Grab AI Tool: free tier first, no payment, no site badge/backlink requirement, no invented details, and a dated status log.
 
 ## Execution status for this research pass
@@ -18,7 +18,7 @@ Purpose: free directory listings for referral discovery and legitimate backlinks
 2. Never add a directory badge, reciprocal link or verification snippet to ToolPixi. If a free tier depends on one, skip it.
 3. Do not create an account or password without the user's own approved account flow. If the browser is not already signed in and the site demands a new password, stop and log it as blocked.
 4. Use only facts visible on ToolPixi's live pages or in this kit. Do not call ToolPixi AI-powered, open source, offline-capable, or a full replacement for a larger PDF suite.
-5. Use the canonical root URL with no tracking parameters unless a directory's own form explicitly requires a different format: `https://toolpixi.github.io/`
+5. Use the canonical root URL with no tracking parameters unless a directory's own form explicitly requires a different format: `https://toolpixi.com/`
 6. Decline optional newsletter, marketing, review-solicitation and upsell choices. Stop before any checkout.
 7. After an actual browser attempt, record the directory, date, tier, exact confirmation text, listing URL if supplied, and the precise blocker if stopped.
 
@@ -37,7 +37,7 @@ Checked against the live ToolPixi homepage and privacy page on 2026-10-07:
 
 **Name:** ToolPixi
 
-**URL:** https://toolpixi.github.io/
+**URL:** https://toolpixi.com/
 
 **Canonical one-liner (166 characters):**  
 Free online tools that run in your browser — compress images to exact KB, convert and merge PDFs, calculate ages and dates. No sign-up; files never leave your device.
@@ -110,7 +110,7 @@ Do not select AI categories. ToolPixi is a conventional browser utility suite, n
 - **Source-checked terms and fields:** The official form says submitting is free, submissions are reviewed every day, and publication triggers an email. It offers a $99 one-business-day upgrade on the next page; do not buy it. Visible fields are startup name, startup URL, a 5–8-word headline, full description up to 2500 characters, 5–10 comma-separated tags, submission type, planned marketing spend for the next 90 days, submitter name/email and a simple maths check.
 - **Exact packet:**
   - Startup name: `ToolPixi`
-  - Startup URL: `https://toolpixi.github.io/`
+  - Startup URL: `https://toolpixi.com/`
   - Headline: `Free browser tools for everyday tasks`
   - Description: use the three-sentence short description above.
   - Tags: `Online Tools, Productivity, PDF Tools, Image Tools, Calculators, File Conversion, Web Apps, Privacy`
@@ -137,7 +137,7 @@ Do not select AI categories. ToolPixi is a conventional browser utility suite, n
 - **Exact official fields found:** product/startup name; website URL; email address; one-line headline up to 80 characters; long description; country; required 256×256 thumbnail no larger than 200 KB; optional gallery images at 1024×768, up to three files and 400 KB each; agreement to terms/privacy.
 - **Exact packet:**
   - Name: `ToolPixi`
-  - Website: use `https://toolpixi.github.io/`; the form asks for only the main domain/subdomain without parameters, so remove UTM/query data. If it rejects the trailing slash, use `https://toolpixi.github.io` as the same root address.
+  - Website: use `https://toolpixi.com/`; the form asks for only the main domain/subdomain without parameters, so remove UTM/query data. If it rejects the trailing slash, use `https://toolpixi.com` as the same root address.
   - Headline: use the 76-character short tagline.
   - Long description: use the three-sentence short description.
   - Email/country: **not established in this kit.** Use only details the user/parent has approved for ToolPixi. Do not infer a business country from the user's current personal location.
@@ -160,7 +160,7 @@ Do not select AI categories. ToolPixi is a conventional browser utility suite, n
 - **Entry:** Start from AlternativeTo's official FAQ at https://alternativeTo.net/faq/ and follow its “Suggest new application” flow; the previously used direct route is https://alternativeto.net/add-software/ .
 - **Why it fits:** AlternativeTo accepts web applications and is valuable when a product is honestly positioned against comparable tools. Comparable live listings classify products by cost/license and platform, including Online.
 - **Source-checked terms:** AlternativeTo's FAQ says: “You can add it yourself… Just sign up for an account.” After registration, the user icon exposes “Suggest new application”; a product can also be suggested as an alternative from another app's page. The FAQ separately discusses optional paid priority review. Never buy priority review; payment does not change rank or likes according to the FAQ.
-- **Packet:** Name `ToolPixi`; URL `https://toolpixi.github.io/`; platform Online/Web; pricing Free; short description above. If asked for comparable/alternative targets, use only partial-overlap services such as iLovePDF, Smallpdf and TinyPNG, and make clear in any long field that ToolPixi covers a focused subset of jobs rather than claiming a complete feature-for-feature replacement. Do not label ToolPixi open source unless a licence is verified; stop if the form forces an unsupported licence claim.
+- **Packet:** Name `ToolPixi`; URL `https://toolpixi.com/`; platform Online/Web; pricing Free; short description above. If asked for comparable/alternative targets, use only partial-overlap services such as iLovePDF, Smallpdf and TinyPNG, and make clear in any long field that ToolPixi covers a focused subset of jobs rather than claiming a complete feature-for-feature replacement. Do not label ToolPixi open source unless a licence is verified; stop if the form forces an unsupported licence claim.
 - **Stop conditions:** new account/password creation without the user's approved account flow, paid priority as the only route, badge requirement, or unsupported feature/licence claims.
 - **2026-10-07 log:** **BLOCKED — account required.** Official FAQ explicitly requires sign-up before suggesting an application. Not submitted in this pass; the parent browser may continue only if already signed in or the user approves the account step.
 
@@ -169,7 +169,7 @@ Do not select AI categories. ToolPixi is a conventional browser utility suite, n
 - **Entry:** https://www.saashub.com/services/submit
 - **Why it fits:** SaaSHub is a software alternatives directory and already lists free online tools, PDF utilities and converter suites. Its own comparison material describes SaaSHub submission as free and distinguishes the optional $99/month Featured Product Listing; do not buy featured placement.
 - **Account/verification evidence:** A public implementation log for the current flow says the first URL step leads to product details, but the details page redirects unauthenticated users to login. SaaSHub's vendor guidance also warns that categories/competitors matter and that ownership verification may use a company-domain email, an HTML snippet, or a current support path. None of those verification methods is authorized by this kit alone.
-- **Packet:** Name `ToolPixi`; URL `https://toolpixi.github.io/`; short description above; pricing Free. Choose only actual categories close to Utilities, Online Tools, Productivity, File Conversion, PDF Tools or Calculators. For competitors, use iLovePDF, Smallpdf and TinyPNG only as comparable online tool services with partial overlap.
+- **Packet:** Name `ToolPixi`; URL `https://toolpixi.com/`; short description above; pricing Free. Choose only actual categories close to Utilities, Online Tools, Productivity, File Conversion, PDF Tools or Calculators. For competitors, use iLovePDF, Smallpdf and TinyPNG only as comparable online tool services with partial overlap.
 - **Stop conditions:** account/password creation without approved user flow, paid priority/featured checkout, ownership HTML snippet, non-approved domain email, badge/backlink, or review solicitation.
 - **2026-10-07 log:** **BLOCKED — account/authentication required before product details.** Free listing route identified, but not submitted in this pass.
 
@@ -178,7 +178,7 @@ Do not select AI categories. ToolPixi is a conventional browser utility suite, n
 - **Entry:** https://alternative.me/how-to/submit-software/
 - **Why it fits:** It is an AlternativeTo-style software directory and can list an online tool against comparable services.
 - **Source-checked terms:** The official how-to says submission is generally open to everyone, but a user account is required. Step 1 is to register with an email; Step 2 is to submit software from the account dashboard. The how-to did not itself establish a current free price, so the live browser must stop if a paid tier is required.
-- **Packet:** Name `ToolPixi`; URL `https://toolpixi.github.io/`; short description; platform Online/Web; pricing Free only if the form offers it truthfully. Comparable services: iLovePDF, Smallpdf and TinyPNG, framed as partial overlap.
+- **Packet:** Name `ToolPixi`; URL `https://toolpixi.com/`; short description; platform Online/Web; pricing Free only if the form offers it truthfully. Comparable services: iLovePDF, Smallpdf and TinyPNG, framed as partial overlap.
 - **Stop conditions:** new email/password account without approved user flow, payment, badge/backlink, or unsupported open-source/feature claims.
 - **2026-10-07 log:** **BLOCKED — official instructions require an email-registered account.** Not submitted in this pass.
 
@@ -271,7 +271,7 @@ For every attempt, update this file immediately with one of:
 
 ## Sources checked on 2026-10-07
 
-- ToolPixi live homepage and privacy page: https://toolpixi.github.io/ and https://toolpixi.github.io/privacy/
+- ToolPixi live homepage and privacy page: https://toolpixi.com/ and https://toolpixi.com/privacy/
 - NoUploadTools official submit and contributing materials: https://nouploadtools.com/submit and its public contributing guide.
 - ToolVerified live homepage/submission policy statements: https://www.toolverified.com/
 - Launching Next official form: https://www.launchingnext.com/submit/

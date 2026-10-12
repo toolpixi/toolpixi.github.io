@@ -248,3 +248,259 @@ function tpMoney(n) {
     });
   });
 })();
+
+// ==== PURE: calorie + grade + number-base maths ====
+// Mifflin-St Jeor — the most validated BMR formula. Returns kcal/day.
+function tpBMR(sex, weightKg, heightCm, ageYears) {
+  return 10 * weightKg + 6.25 * heightCm - 5 * ageYears + (sex === "m" ? 5 : -161);
+}
+var TP_ACTIVITY = [
+  ["Sedentary (little exercise)", 1.2],
+  ["Light (1–3 days/week)", 1.375],
+  ["Moderate (3–5 days/week)", 1.55],
+  ["Active (6–7 days/week)", 1.725],
+  ["Very active (hard exercise + physical job)", 1.9]
+];
+function tpLetterGrade(score) {
+  if (score >= 90) return "A";
+  if (score >= 80) return "B";
+  if (score >= 70) return "C";
+  if (score >= 60) return "D";
+  return "F";
+}
+/* Number bases: decimal <-> binary <-> hex. Decimal limited to safe integers. */
+function tpParseBase(str, base) {
+  var t = String(str || "").trim().toLowerCase().replace(/^0x/, "");
+  if (!t) return null;
+  var re = base === 2 ? /^[01]+$/ : base === 16 ? /^[0-9a-f]+$/ : /^-?\d+$/;
+  if (!re.test(t)) return null;
+  var n = base === 10 ? Number(t) : parseInt(t, base);
+  if (!isFinite(n) || Math.abs(n) > Number.MAX_SAFE_INTEGER) return null;
+  return n;
+}
+function tpDecimalSteps(n) {
+  // Repeated-division-by-2 steps for "how the conversion works".
+  var rows = [], v = Math.abs(n);
+  if (v === 0) return [["0 ÷ 2", "0", "0"]];
+  while (v > 0) { rows.push([v + " ÷ 2", String(Math.floor(v / 2)), String(v % 2)]); v = Math.floor(v / 2); }
+  return rows;
+}
+function tpBinaryPlaceValues(bin) {
+  // Each 1-bit with its place value, e.g. bit 3 -> 2^3 = 8.
+  var rows = [], len = bin.length;
+  for (var i = 0; i < len; i++) {
+    if (bin[len - 1 - i] === "1") rows.push(["Bit " + i, "2^" + i + " = " + Math.pow(2, i)]);
+  }
+  return rows.reverse();
+}
+function tpHexToRgb(hex) {
+  var t = String(hex || "").replace(/^#/, "").toLowerCase();
+  if (t.length === 3) t = t.split("").map(function (c) { return c + c; }).join("");
+  if (!/^[0-9a-f]{6}$/.test(t)) return null;
+  return { r: parseInt(t.slice(0, 2), 16), g: parseInt(t.slice(2, 4), 16), b: parseInt(t.slice(4, 6), 16) };
+}
+
+// ==== DOM: calorie calculator (BMR + TDEE) ====
+(function () {
+  var panel = document.getElementById("calorie-calc");
+  if (!panel) return;
+  var mode = "metric";
+  panel.querySelectorAll("[data-mode]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-mode]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on"); mode = b.getAttribute("data-mode");
+      document.getElementById("cal-metric").style.display = mode === "metric" ? "" : "none";
+      document.getElementById("cal-imperial").style.display = mode === "imperial" ? "" : "none";
+    });
+  });
+  var actSel = document.getElementById("cal-activity");
+  actSel.innerHTML = TP_ACTIVITY.map(function (a, i) {
+    return '<option value="' + i + '"' + (i === 2 ? " selected" : "") + ">" + a[0] + "</option>";
+  }).join("");
+  panel.querySelectorAll("[data-sex]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-sex]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+    });
+  });
+  function num(id) { return parseFloat(document.getElementById(id).value); }
+  function run() {
+    tpHideError("cal-err");
+    var sex = panel.querySelector('[data-sex].on').getAttribute("data-sex");
+    var age = num("cal-age"), kg, cm;
+    if (mode === "metric") { kg = num("cal-kg"); cm = num("cal-cm"); }
+    else {
+      var ft = num("cal-ft") || 0, inch = num("cal-in") || 0, lbs = num("cal-lbs");
+      cm = (ft * 12 + inch) * 2.54; kg = lbs * 0.45359237;
+    }
+    if (!kg || !cm || !age || kg <= 0 || cm <= 0 || age <= 0 || age > 120) {
+      tpShowError("cal-err", "Enter a valid age, weight and height.");
+      document.getElementById("cal-result").classList.remove("show");
+      return;
+    }
+    var bmr = tpBMR(sex, kg, cm, age);
+    var mult = TP_ACTIVITY[parseInt(actSel.value, 10)][1];
+    var tdee = bmr * mult;
+    document.getElementById("cal-bmr").textContent = Math.round(bmr).toLocaleString() + " kcal/day";
+    document.getElementById("cal-tdee").textContent =
+      Math.round(tdee * 0.9).toLocaleString() + "–" + Math.round(tdee * 1.1).toLocaleString() + " kcal/day";
+    document.getElementById("cal-lose").textContent = Math.round(tdee - 500).toLocaleString() + " kcal/day (steady ~0.5 kg/week loss)";
+    document.getElementById("cal-keep").textContent = Math.round(tdee).toLocaleString() + " kcal/day (stay about the same weight)";
+    document.getElementById("cal-gain").textContent = Math.round(tdee + 300).toLocaleString() + " kcal/day (slow, mostly-muscle gain)";
+    document.getElementById("cal-result").classList.add("show");
+  }
+  document.getElementById("cal-go").addEventListener("click", run);
+  actSel.addEventListener("change", function () {
+    if (document.getElementById("cal-age").value) run();
+  });
+})();
+
+// ==== DOM: grade calculator (weighted + "what do I need on the final?") ====
+(function () {
+  var panel = document.getElementById("grade-calc");
+  if (!panel) return;
+  var rowsEl = document.getElementById("gr-rows");
+  function addRow(name, grade, weight) {
+    var div = document.createElement("div");
+    div.className = "row gr-row";
+    div.innerHTML =
+      '<div class="field"><label>Item <span class="hint">(e.g. midterm)</span></label><input type="text" class="gr-name" placeholder="Homework, exam…"></div>' +
+      '<div class="field"><label>Grade (%)</label><input type="number" class="gr-grade" min="0" max="100" step="any" placeholder="85"></div>' +
+      '<div class="field"><label>Weight (%)</label><input type="number" class="gr-weight" min="0" step="any" placeholder="20"></div>' +
+      '<div class="field"><label>&nbsp;</label><button class="btn ghost small gr-del" type="button">Remove</button></div>';
+    if (name !== undefined) div.querySelector(".gr-name").value = name;
+    if (grade !== undefined) div.querySelector(".gr-grade").value = grade;
+    if (weight !== undefined) div.querySelector(".gr-weight").value = weight;
+    div.querySelector(".gr-del").addEventListener("click", function () { div.remove(); run(); });
+    rowsEl.appendChild(div);
+    div.querySelectorAll("input").forEach(function (i) { i.addEventListener("input", run); });
+  }
+  document.getElementById("gr-add").addEventListener("click", function () { addRow(); });
+  function run() {
+    tpHideError("gr-err");
+    var gs = rowsEl.querySelectorAll(".gr-grade"), ws = rowsEl.querySelectorAll(".gr-weight");
+    var sw = 0, swg = 0, n = 0;
+    for (var i = 0; i < gs.length; i++) {
+      var g = parseFloat(gs[i].value), w = parseFloat(ws[i].value);
+      if (isNaN(g) || isNaN(w)) continue;
+      n++; sw += w; swg += g * w;
+    }
+    if (n === 0 || sw <= 0) {
+      document.getElementById("gr-result").classList.remove("show");
+      return;
+    }
+    var avg = swg / sw;
+    document.getElementById("gr-avg").textContent = avg.toFixed(1) + "% — " + tpLetterGrade(avg);
+    document.getElementById("gr-note").textContent = "Weights total " + sw.toFixed(0) +
+      "% across " + n + " item" + (n === 1 ? "" : "s") + ".";
+    // "What do I need on the final?"
+    var cur = parseFloat(document.getElementById("gr-current").value);
+    var want = parseFloat(document.getElementById("gr-want").value);
+    var fw = parseFloat(document.getElementById("gr-fweight").value);
+    var fmsg = document.getElementById("gr-final-msg");
+    if (!isNaN(cur) && !isNaN(want) && !isNaN(fw) && fw > 0 && fw < 100) {
+      var need = (want - cur * (1 - fw / 100)) / (fw / 100);
+      if (need <= 0) fmsg.textContent = "You already have " + want + "% locked in — no final-exam score needed for it.";
+      else if (need > 100) fmsg.textContent = "You would need " + need.toFixed(1) +
+        "% on the final — above 100%, so that target is not reachable. Lower the target or raise earlier grades.";
+      else fmsg.textContent = "You need " + need.toFixed(1) + "% on the final exam to finish with " + want + "%.";
+    } else {
+      fmsg.textContent = "Fill in current grade, desired grade and the final's weight to see the score you need.";
+    }
+    document.getElementById("gr-result").classList.add("show");
+  }
+  document.getElementById("gr-go").addEventListener("click", run);
+  ["gr-current", "gr-want", "gr-fweight"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", run);
+  });
+  addRow("Homework", "", 20); addRow("Midterm", "", 30); addRow("Final exam", "", 50);
+  run();
+})();
+
+// ==== DOM: binary converter ====
+(function () {
+  var panel = document.getElementById("binary-converter");
+  if (!panel) return;
+  var baseSel = document.getElementById("bn-base");
+  function run() {
+    tpHideError("bn-err");
+    var base = parseInt(baseSel.value, 10);
+    var n = tpParseBase(document.getElementById("bn-in").value, base);
+    var res = document.getElementById("bn-result");
+    if (n === null) {
+      res.classList.remove("show");
+      if (document.getElementById("bn-in").value.trim())
+        tpShowError("bn-err", "That is not a valid " +
+          (base === 2 ? "binary (use only 0 and 1)" : base === 16 ? "hexadecimal (0–9 and A–F)" : "decimal") + " number.");
+      return;
+    }
+    var neg = n < 0, av = Math.abs(n);
+    var bin = av.toString(2), hex = av.toString(16).toUpperCase();
+    document.getElementById("bn-bin").textContent = (neg ? "-" : "") + bin;
+    document.getElementById("bn-dec").textContent = (neg ? "-" : "") + av.toLocaleString();
+    document.getElementById("bn-hex").textContent = (neg ? "-" : "") + hex;
+    // Step-by-step working
+    var stepsEl = document.getElementById("bn-steps");
+    var html = "";
+    if (base === 10) {
+      html = "<h3>How " + av + " becomes binary</h3><p class=\"note\">Divide by 2 again and again; the remainders, read bottom to top, are the binary digits.</p><table>" +
+        "<tr><th>Step</th><th>Quotient</th><th>Remainder</th></tr>" +
+        tpDecimalSteps(n).map(function (r) {
+          return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td><td><strong>" + r[2] + "</strong></td></tr>";
+        }).join("") + "</table><p class=\"note\">Read the remainders upwards: <strong>" + bin + "</strong></p>";
+    } else if (base === 2) {
+      html = "<h3>How binary becomes decimal</h3><p class=\"note\">Every 1-bit adds its place value (a power of 2).</p><table>" +
+        "<tr><th>1-bit position</th><th>Place value</th></tr>" +
+        (tpBinaryPlaceValues(bin).map(function (r) {
+          return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>";
+        }).join("") || "<tr><td colspan=\"2\">All bits are 0, so the value is 0.</td></tr>") +
+        "</table><p class=\"note\">Add them up: <strong>" + av.toLocaleString() + "</strong></p>";
+    } else {
+      html = "<h3>Why hex is a handy shortcut</h3><p class=\"note\">Hexadecimal is base 16 — each hex digit is exactly 4 binary bits. " +
+        "Convert hex → binary by expanding each digit, or hex → decimal by place values of 16. The boxes above show all three forms of your number.</p>";
+    }
+    stepsEl.innerHTML = html;
+    res.classList.add("show");
+  }
+  document.getElementById("bn-go").addEventListener("click", run);
+  baseSel.addEventListener("change", run);
+  document.getElementById("bn-in").addEventListener("input", run);
+  run();
+})();
+
+// ==== DOM: hex converter ====
+(function () {
+  var panel = document.getElementById("hex-converter");
+  if (!panel) return;
+  function run() {
+    tpHideError("hx-err");
+    var raw = document.getElementById("hx-in").value;
+    var res = document.getElementById("hx-result");
+    if (!raw.trim()) { res.classList.remove("show"); return; }
+    var n = tpParseBase(raw, 16);
+    if (n === null) {
+      res.classList.remove("show");
+      tpShowError("hx-err", "That is not a valid hexadecimal number (use 0–9 and A–F; you may include the 0x prefix).");
+      return;
+    }
+    var av = Math.abs(n);
+    document.getElementById("hx-hex").textContent = av.toString(16).toUpperCase();
+    document.getElementById("hx-dec").textContent = av.toLocaleString();
+    document.getElementById("hx-bin").textContent = av.toString(2);
+    // RGB colour card (only for 6-digit hex)
+    var t = raw.trim().replace(/^0x/i, "").replace(/^#/, "");
+    var rgb = tpHexToRgb(t);
+    var card = document.getElementById("hx-rgb-card");
+    if (rgb) {
+      card.style.display = "";
+      document.getElementById("hx-rgb-val").textContent = "rgb(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ")";
+      document.getElementById("hx-rgb-sw").style.background = "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
+    } else {
+      card.style.display = "none";
+    }
+    res.classList.add("show");
+  }
+  document.getElementById("hx-go").addEventListener("click", run);
+  document.getElementById("hx-in").addEventListener("input", run);
+  run();
+})();

@@ -151,6 +151,20 @@ function tpCountdownCells(prefix, target) {
     target = new Date(2027, 1, 7);
     if (target < tpStartOfDay(now)) target = new Date(2028, 0, 27); // ~1 Ramadan 1449, tabular estimate
     document.getElementById("du-date-label").textContent = "Expected start of Ramadan — " + tpFmtDate(target);
+  } else if (kind === "halloween") {
+    target = new Date(y, 9, 31);
+    if (target < tpStartOfDay(now)) target = new Date(y + 1, 9, 31);
+    document.getElementById("du-date-label").textContent = "Halloween — " + tpFmtDate(target);
+  } else if (kind === "thanksgiving") {
+    // US Thanksgiving = the fourth Thursday of November, computed per year.
+    function fourthThursday(yr) {
+      var nov1 = new Date(yr, 10, 1);
+      var firstThu = 1 + ((4 - nov1.getDay() + 7) % 7);
+      return new Date(yr, 10, firstThu + 21);
+    }
+    target = fourthThursday(y);
+    if (target < tpStartOfDay(now)) target = fourthThursday(y + 1);
+    document.getElementById("du-date-label").textContent = "US Thanksgiving — " + tpFmtDate(target);
   }
   tpCountdownCells("du", target);
 })();
@@ -264,4 +278,67 @@ function tpAgeDiff(a, b) {
       if (document.getElementById("ad-a").value && document.getElementById("ad-b").value) run();
     });
   });
+})();
+
+// ==== DOM: World clock (current time for major cities) ====
+(function () {
+  var panel = document.getElementById("world-clock");
+  if (!panel) return;
+  var CITIES = [
+    ["Los Angeles", "America/Los_Angeles"],
+    ["New York", "America/New_York"],
+    ["Chicago", "America/Chicago"],
+    ["Toronto", "America/Toronto"],
+    ["São Paulo", "America/Sao_Paulo"],
+    ["London", "Europe/London"],
+    ["Paris", "Europe/Paris"],
+    ["Dubai", "Asia/Dubai"],
+    ["Karachi", "Asia/Karachi"],
+    ["Mumbai", "Asia/Kolkata"],
+    ["Singapore", "Asia/Singapore"],
+    ["Hong Kong", "Asia/Hong_Kong"],
+    ["Tokyo", "Asia/Tokyo"],
+    ["Sydney", "Australia/Sydney"]
+  ];
+  var grid = document.getElementById("wc-grid");
+  if (!grid) return;
+  CITIES.forEach(function (c, i) {
+    var div = document.createElement("div");
+    div.className = "wc-card";
+    div.innerHTML = '<div class="wc-city">' + c[0] + '</div>' +
+      '<div class="wc-time" id="wct-' + i + '">–</div>' +
+      '<div class="wc-date" id="wcd-' + i + '">–</div>' +
+      '<div class="wc-off" id="wco-' + i + '">–</div>';
+    grid.appendChild(div);
+  });
+  function fmt(tz, opts) {
+    var o = { timeZone: tz };
+    for (var k in opts) o[k] = opts[k];
+    return new Intl.DateTimeFormat("en-US", o).format(new Date());
+  }
+  function offsetFor(tz) {
+    try {
+      var s = fmt(tz, { timeZoneName: "shortOffset" }); // "GMT-4"
+      var m = /(GMT[+-]\d{1,2}(?::\d{2})?)/.exec(s);
+      if (m) return m[1];
+    } catch (e) { /* fall through */ }
+    try { return fmt(tz, { timeZoneName: "short" }); } catch (e2) { /* ignore */ }
+    return "";
+  }
+  function tick() {
+    CITIES.forEach(function (c, i) {
+      var t = document.getElementById("wct-" + i);
+      if (!t) return;
+      t.textContent = fmt(c[1], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+      document.getElementById("wcd-" + i).textContent =
+        fmt(c[1], { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+      document.getElementById("wco-" + i).textContent = offsetFor(c[1]);
+    });
+    var mine = document.getElementById("wc-mine");
+    if (mine) {
+      mine.textContent = "All times above use your device's clock — which is also how this page knows your own time.";
+    }
+    setTimeout(tick, 1000);
+  }
+  tick();
 })();
