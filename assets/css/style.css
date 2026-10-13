@@ -251,3 +251,11 @@ pre.out.show{display:block}
   .wc-grid{grid-template-columns:repeat(auto-fill,minmax(128px,1fr))}
   .gr-row{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}
 }
+/* Founder block (About page) */
+.founder-block{display:flex;gap:18px;align-items:center;margin:4px 0 6px}
+.founder-photo{flex:0 0 auto;width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--line)}
+.founder-block p{margin:0}
+@media (max-width:639px){
+  .founder-block{gap:14px}
+  .founder-photo{width:96px;height:96px}
+}
