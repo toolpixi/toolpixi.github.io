@@ -18,7 +18,7 @@ a:hover{text-decoration:underline}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{
   outline:2.5px solid var(--primary-dark);outline-offset:2px;border-radius:6px}
 img{max-width:100%}
-.wrap{max-width:1320px;margin:0 auto;padding:0 16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
 
 /* Header */
 .site-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:60;
@@ -227,11 +227,13 @@ progress::-moz-progress-bar{background:var(--primary);border-radius:99px}
 .nav-plain:hover{background:var(--primary-soft);color:var(--primary-dark);text-decoration:none}
 .nav-caret{transition:transform .18s;flex:none}
 .nav-item:hover .nav-caret{transform:rotate(180deg)}
-.tp-dropdown{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(10px);min-width:400px;max-width:460px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px rgba(10,60,52,.18);padding:12px;opacity:0;visibility:hidden;transition:opacity .18s,transform .18s,visibility .18s;z-index:70}
+.tp-dropdown{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(10px);min-width:440px;max-width:480px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px rgba(10,60,52,.18);padding:12px;opacity:0;visibility:hidden;transition:opacity .18s,transform .18s,visibility .18s;z-index:70}
 .tp-dropdown::before{content:"";position:absolute;top:-14px;left:0;right:0;height:14px}
 .nav-item:hover .tp-dropdown,.nav-item:focus-within .tp-dropdown{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .dd-label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 12px 8px}
 .dd-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2px}
+.dd-grid>*{min-width:0}
+.mega-grid>*{min-width:0}
 /* ---------- All Tools mega menu ---------- */
 .main-nav{position:relative}
 .nav-mega-item{position:static}
@@ -247,7 +249,7 @@ progress::-moz-progress-bar{background:var(--primary);border-radius:99px}
 .dd-row:hover{background:var(--primary-soft);text-decoration:none}
 .dd-ic{width:36px;height:36px;min-width:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(10,60,52,.06)}
 .dd-ic svg{width:20px;height:20px;display:block}
-.dd-name{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dd-name{font-size:14.5px;font-weight:600;line-height:1.35;min-width:0;white-space:normal;overflow-wrap:break-word}
 
 /* ---------- homepage category pills ---------- */
 .cat-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:26px 0 6px}
