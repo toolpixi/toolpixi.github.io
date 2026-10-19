@@ -377,3 +377,258 @@ function tpJsonErrorPos(err, text) {
     setTimeout(function () { btn.textContent = "Copy result"; }, 1500);
   });
 })();
+
+function tpRollDie(sides) {
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+    var arr = new Uint32Array(1);
+    crypto.getRandomValues(arr);
+    return (arr[0] % sides) + 1;
+  }
+  return Math.floor(Math.random() * sides) + 1;
+}
+
+function tpRollDice(sides, count) {
+  var out = [];
+  for (var i = 0; i < count; i++) {
+    out.push(tpRollDie(sides));
+  }
+  return out;
+}
+
+(function () {
+  var panel = document.getElementById("dice-roller");
+  if (!panel) return;
+
+  var sides = 6;
+  var diceChips = document.getElementById("dr-dice");
+  var countInput = document.getElementById("dr-count");
+  var modInput = document.getElementById("dr-mod");
+  var rollBtn = document.getElementById("dr-roll");
+  var errBox = "dr-err";
+  var totalEl = document.getElementById("dr-total");
+  var labelEl = document.getElementById("dr-label");
+  var rollsEl = document.getElementById("dr-rolls");
+  var historyEl = document.getElementById("dr-history");
+  var clearBtn = document.getElementById("dr-clear");
+
+  function selectChip(btn) {
+    var chips = diceChips.getElementsByClassName("chip");
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].classList.remove("on");
+    }
+    btn.classList.add("on");
+    sides = parseInt(btn.getAttribute("data-die"), 10);
+  }
+
+  function fmtLabel(count, die, mod) {
+    var label = count + "d" + die;
+    if (mod > 0) label += "+" + mod;
+    if (mod < 0) label += mod;
+    return label;
+  }
+
+  function addHistory(text) {
+    var li = document.createElement("li");
+    li.textContent = text;
+    historyEl.insertBefore(li, historyEl.firstChild);
+    while (historyEl.children.length > 20) {
+      historyEl.removeChild(historyEl.lastChild);
+    }
+  }
+
+  diceChips.addEventListener("click", function (e) {
+    var btn = e.target;
+    if (btn && btn.classList && btn.classList.contains("chip")) {
+      selectChip(btn);
+    }
+  });
+
+  rollBtn.addEventListener("click", function () {
+    tpHideError(errBox);
+    var count = parseInt(countInput.value, 10);
+    var mod = parseInt(modInput.value, 10) || 0;
+    if (isNaN(count) || count < 1 || count > 20) {
+      tpShowError(errBox, "Please enter a number of dice between 1 and 20.");
+      return;
+    }
+    if (isNaN(mod) || mod < -99 || mod > 99) {
+      tpShowError(errBox, "Please enter a modifier between -99 and 99.");
+      return;
+    }
+
+    var rolls = tpRollDice(sides, count);
+    var sum = 0;
+    for (var i = 0; i < rolls.length; i++) {
+      sum += rolls[i];
+    }
+    var total = sum + mod;
+
+    rollsEl.innerHTML = "";
+    for (var j = 0; j < rolls.length; j++) {
+      var die = document.createElement("span");
+      die.className = "die";
+      die.textContent = rolls[j];
+      rollsEl.appendChild(die);
+    }
+
+    totalEl.textContent = tpFmtNum(total);
+    var label = fmtLabel(count, sides, mod);
+    labelEl.textContent = label;
+    addHistory(label + " → " + total + " (" + rolls.join(", ") + ")");
+  });
+
+  clearBtn.addEventListener("click", function () {
+    historyEl.innerHTML = "";
+    tpHideError(errBox);
+  });
+})();
+
+var tpLoremWords = [
+  "lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit",
+  "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore",
+  "magna", "aliqua", "enim", "ad", "minim", "veniam", "quis", "nostrud",
+  "exercitation", "ullamco", "laboris", "nisi", "aliquip", "ex", "ea", "commodo",
+  "consequat", "duis", "aute", "irure", "in", "reprehenderit", "voluptate",
+  "velit", "esse", "cillum", "fugiat", "nulla", "pariatur", "excepteur", "sint",
+  "occaecat", "cupidatat", "non", "proident", "sunt", "culpa", "qui", "officia",
+  "deserunt", "mollit", "anim", "id", "est", "laborum"
+];
+
+function tpLoremWord() {
+  var i = Math.floor(Math.random() * tpLoremWords.length);
+  return tpLoremWords[i];
+}
+
+function tpLoremSentence() {
+  var len = 8 + Math.floor(Math.random() * 8); // 8-15 words
+  var words = [];
+  for (var i = 0; i < len; i++) {
+    words.push(tpLoremWord());
+  }
+  var s = words.join(" ");
+  return s.charAt(0).toUpperCase() + s.slice(1) + ".";
+}
+
+function tpLoremParagraph() {
+  var len = 4 + Math.floor(Math.random() * 4); // 4-7 sentences
+  var sentences = [];
+  for (var i = 0; i < len; i++) {
+    sentences.push(tpLoremSentence());
+  }
+  return sentences.join(" ");
+}
+
+function tpLorem(n, type, classicStart) {
+  var parts = [];
+  if (type === "sentences") {
+    for (var i = 0; i < n; i++) {
+      parts.push(tpLoremSentence());
+    }
+  } else if (type === "words") {
+    var words = [];
+    for (var j = 0; j < n; j++) {
+      words.push(tpLoremWord());
+    }
+    return words.join(" ");
+  } else {
+    for (var k = 0; k < n; k++) {
+      parts.push(tpLoremParagraph());
+    }
+  }
+  var text = type === "paragraphs" ? parts.join("\n\n") : parts.join(" ");
+  if (classicStart && parts.length > 0) {
+    var classic = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+    if (type === "paragraphs") {
+      parts[0] = classic + " " + parts[0];
+      text = parts.join("\n\n");
+    } else {
+      text = classic + " " + text;
+    }
+  }
+  return text;
+}
+
+(function () {
+  var panel = document.getElementById("lorem-gen");
+  if (!panel) return;
+
+  var type = "paragraphs";
+  var typeChips = document.getElementById("li-type");
+  var countInput = document.getElementById("li-count");
+  var classicBox = document.getElementById("li-classic");
+  var genBtn = document.getElementById("li-generate");
+  var errBox = "li-err";
+  var resultEl = document.getElementById("li-result");
+  var outputEl = document.getElementById("li-output");
+  var noteEl = document.getElementById("li-count-note");
+  var copyBtn = document.getElementById("li-copy");
+  var downloadBtn = document.getElementById("li-download");
+  var currentText = "";
+
+  function selectChip(btn) {
+    var chips = typeChips.getElementsByClassName("chip");
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].classList.remove("on");
+    }
+    btn.classList.add("on");
+    type = btn.getAttribute("data-lt");
+  }
+
+  function typeWord(count, word) {
+    return count + " " + word + (count === 1 ? "" : "s");
+  }
+
+  function generate() {
+    tpHideError(errBox);
+    var count = parseInt(countInput.value, 10);
+    if (isNaN(count) || count < 1 || count > 50) {
+      tpShowError(errBox, "Please enter a number between 1 and 50.");
+      return;
+    }
+    var classic = classicBox.checked;
+    currentText = tpLorem(count, type, classic);
+    outputEl.value = currentText;
+    resultEl.classList.add("show");
+
+    var wordCount = currentText.split(/\s+/).filter(function (w) {
+      return w.length > 0;
+    }).length;
+    var unit = typeWord(count, type === "words" ? "word" : (type === "sentences" ? "sentence" : "paragraph"));
+    noteEl.textContent = unit + " · " + tpFmtNum(wordCount) + " words";
+  }
+
+  typeChips.addEventListener("click", function (e) {
+    var btn = e.target;
+    if (btn && btn.classList && btn.classList.contains("chip")) {
+      selectChip(btn);
+    }
+  });
+
+  genBtn.addEventListener("click", generate);
+
+  copyBtn.addEventListener("click", function () {
+    function done() {
+      copyBtn.textContent = "Copied!";
+      setTimeout(function () {
+        copyBtn.textContent = "Copy text";
+      }, 1500);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(currentText).then(done, function () {
+        outputEl.select();
+        document.execCommand("copy");
+        done();
+      });
+    } else {
+      outputEl.select();
+      document.execCommand("copy");
+      done();
+    }
+  });
+
+  downloadBtn.addEventListener("click", function () {
+    tpDownload(new Blob([currentText], { type: "text/plain" }), "lorem-ipsum.txt");
+  });
+
+  generate();
+})();

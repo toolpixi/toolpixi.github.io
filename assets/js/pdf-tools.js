@@ -248,3 +248,113 @@ function tpNextRotation(current, turn) {
     } finally { btn.disabled = false; btn.textContent = "Rotate & download PDF"; }
   });
 })();
+
+(function () {
+  var panel = document.getElementById("page-numbers");
+  if (!panel) return;
+
+  var file = null;
+  var resultBytes = null;
+  var goBtn = document.getElementById("pn-go");
+  var resultEl = document.getElementById("pn-result");
+  var doneNote = document.getElementById("pn-done-note");
+  var downloadBtn = document.getElementById("pn-download");
+  var MARGIN = 36;
+  var FONT_SIZE = 11;
+
+  tpDropzone("pn-drop", "pn-file", {
+    accept: "application/pdf",
+    multiple: false,
+    onFiles: function (files) {
+      file = files && files[0] ? files[0] : null;
+      resultBytes = null;
+      tpFileList("pn-list", file ? [file] : []);
+      tpHideError("pn-err");
+      resultEl.classList.remove("show");
+      if (goBtn) goBtn.disabled = !file;
+    }
+  });
+
+  function formatLabel(format, num, total) {
+    if (format === "page-n") return "Page " + num;
+    if (format === "n-of-total") return num + " of " + total;
+    if (format === "dash-n-dash") return "– " + num + " –";
+    return String(num);
+  }
+
+  if (goBtn) goBtn.addEventListener("click", function () {
+    if (!file) return;
+    if (!tpLibsReady()) {
+      tpNoLib("pn-err");
+      return;
+    }
+    tpHideError("pn-err");
+    resultEl.classList.remove("show");
+    goBtn.disabled = true;
+    goBtn.textContent = "Stamping…";
+
+    var position = document.getElementById("pn-position").value;
+    var format = document.getElementById("pn-format").value;
+    var start = parseInt(document.getElementById("pn-start").value, 10);
+    if (isNaN(start) || start < 1) start = 1;
+    var skipFirst = document.getElementById("pn-skip-first").checked;
+
+    file.arrayBuffer().then(function (buf) {
+      return PDFLib.PDFDocument.load(buf, { ignoreEncryption: false });
+    }).then(function (src) {
+      var pageCount = src.getPageCount();
+      var numbered = [];
+      for (var i = 0; i < pageCount; i++) {
+        if (skipFirst && i === 0) continue;
+        numbered.push(i);
+      }
+      return PDFLib.PDFDocument.create().then(function (out) {
+        return out.copyPages(src, src.getPageIndices()).then(function (copies) {
+          var font = null;
+          var x, y, label, textWidth;
+          var grey = PDFLib.rgb(0.35, 0.35, 0.35);
+          return out.embedFont(PDFLib.StandardFonts.Helvetica).then(function (f) {
+            font = f;
+            for (var k = 0; k < copies.length; k++) {
+              out.addPage(copies[k]);
+            }
+            var total = pageCount;
+            for (var j = 0; j < numbered.length; j++) {
+              var idx = numbered[j];
+              var page = out.getPage(idx);
+              var num = start + j;
+              label = formatLabel(format, num, total);
+              textWidth = font.widthOfTextAtSize(label, FONT_SIZE);
+              var w = page.getWidth();
+              var h = page.getHeight();
+              if (position === "bottom-center") { x = (w - textWidth) / 2; y = MARGIN; }
+              else if (position === "bottom-right") { x = w - MARGIN - textWidth; y = MARGIN; }
+              else if (position === "bottom-left") { x = MARGIN; y = MARGIN; }
+              else if (position === "top-center") { x = (w - textWidth) / 2; y = h - MARGIN - FONT_SIZE; }
+              else if (position === "top-right") { x = w - MARGIN - textWidth; y = h - MARGIN - FONT_SIZE; }
+              else { x = MARGIN; y = h - MARGIN - FONT_SIZE; }
+              page.drawText(label, { x: x, y: y, size: FONT_SIZE, font: font, color: grey });
+            }
+            return out.save().then(function (bytes) {
+              return { bytes: bytes, stamped: numbered.length };
+            });
+          });
+        });
+      });
+    }).then(function (res) {
+      resultBytes = res.bytes;
+      doneNote.textContent = "Done — page numbers stamped on " + res.stamped + " page" + (res.stamped === 1 ? "" : "s") + ".";
+      resultEl.classList.add("show");
+    }).catch(function (err) {
+      tpShowError("pn-err", "Could not process that PDF. It may be corrupted or password-protected.");
+    }).then(function () {
+      goBtn.disabled = false;
+      goBtn.textContent = "Add page numbers";
+    });
+  });
+
+  if (downloadBtn) downloadBtn.addEventListener("click", function () {
+    if (!resultBytes || !file) return;
+    tpDownload(new Blob([resultBytes], { type: "application/pdf" }), tpStripExt(file.name) + "-numbered.pdf");
+  });
+})();

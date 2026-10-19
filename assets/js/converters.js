@@ -184,7 +184,7 @@ function tpLoan(principal, annualRatePct, years) {
 }
 function tpMoney(n) {
   if (!isFinite(n)) return "—";
-  return tpFmtNum(Math.round(n * 100) / 100);
+  return "$" + tpFmtNum(Math.round(n * 100) / 100);
 }
 
 // ==== DOM: discount calculator ====
@@ -503,4 +503,120 @@ function tpHexToRgb(hex) {
   document.getElementById("hx-go").addEventListener("click", run);
   document.getElementById("hx-in").addEventListener("input", run);
   run();
+})();
+
+/* Compound interest projection.
+   Assumptions (stated honestly in the FAQ): the rate stays constant;
+   monthly contributions are added at the END of each compounding period,
+   so they earn interest starting the following period; results are nominal
+   (no tax, no inflation). Years capped at 100 to keep the table sane. */
+function tpCompound(principal, ratePct, years, freq, monthly) {
+  var r = Math.max(0, ratePct) / 100;
+  var n = Math.max(1, Math.min(100, Math.floor(years)));
+  var f = Math.max(1, freq);
+  var c = Math.max(0, monthly);
+  var per = r / f;                 /* rate applied per compounding period */
+  var addPer = c * 12 / f;         /* year's monthly contributions, spread per period */
+  var balance = principal;
+  var rows = [];
+  var i, y;
+  for (y = 1; y <= n; y++) {
+    var start = balance, contrib = 0, interest = 0;
+    var periods = Math.round(f);   /* periods per year */
+    for (i = 0; i < periods; i++) {
+      var earned = balance * per;
+      interest += earned;
+      balance += earned;
+      balance += addPer;           /* contributions at end of each period */
+      contrib += addPer;
+    }
+    rows.push({ year: y, start: start, contrib: contrib, interest: interest, end: balance });
+  }
+  var putIn = principal + c * 12 * n;
+  var totalInterest = balance - putIn;
+  return { final: balance, putIn: putIn, interest: totalInterest, rows: rows };
+}
+
+(function () {
+  var panel = document.getElementById("compound-calc");
+  if (!panel) return;
+  function render() {
+    var principal = parseFloat(document.getElementById("ci-principal").value);
+    var rate = parseFloat(document.getElementById("ci-rate").value);
+    var years = parseInt(document.getElementById("ci-years").value, 10);
+    var monthly = parseFloat(document.getElementById("ci-contrib").value);
+    var freq = parseInt(document.getElementById("ci-freq").value, 10);
+    if (isNaN(principal) || principal < 0 ||
+        isNaN(rate) || rate < 0 || rate > 100 ||
+        isNaN(years) || years < 1 || years > 100 ||
+        isNaN(monthly) || monthly < 0 ||
+        isNaN(freq) || freq < 1) {
+      tpShowError("ci-err", "Please check your inputs: amounts can't be negative, rate 0–100, years 1–100.");
+      return;
+    }
+    tpHideError("ci-err");
+    var out = tpCompound(principal, rate, years, freq, monthly);
+    document.getElementById("ci-final").textContent = tpMoney(out.final);
+    document.getElementById("ci-putin").textContent = tpMoney(out.putIn);
+    document.getElementById("ci-interest").textContent = tpMoney(out.interest);
+    var html = "", i, row;
+    for (i = 0; i < out.rows.length; i++) {
+      row = out.rows[i];
+      html += "<tr><td>" + row.year + "</td><td>" + tpMoney(row.start) + "</td><td>" +
+        tpMoney(row.contrib) + "</td><td>" + tpMoney(row.interest) + "</td><td>" +
+        tpMoney(row.end) + "</td></tr>";
+    }
+    document.getElementById("ci-tbody").innerHTML = html;
+    document.getElementById("ci-result").classList.add("show");
+  }
+  document.getElementById("ci-go").addEventListener("click", render);
+  render();
+})();
+
+/* Salary <-> hourly conversion. Annualizes first, then derives all formats.
+   Assumes 52 paid weeks per year, constant hours, no overtime, no tax. */
+function tpSalary(amount, from, hoursPerWeek, daysPerWeek) {
+  var a = Math.max(0, amount);
+  var h = hoursPerWeek > 0 ? hoursPerWeek : 40;
+  var d = daysPerWeek > 0 ? daysPerWeek : 5;
+  var annual;
+  if (from === "hourly") annual = a * h * 52;
+  else if (from === "daily") annual = a * d * 52;
+  else if (from === "weekly") annual = a * 52;
+  else if (from === "monthly") annual = a * 12;
+  else annual = a;
+  return {
+    hourly: annual / (h * 52),
+    daily: annual / (d * 52),
+    weekly: annual / 52,
+    monthly: annual / 12,
+    annual: annual
+  };
+}
+
+(function () {
+  var panel = document.getElementById("salary-conv");
+  if (!panel) return;
+  function render() {
+    var amount = parseFloat(document.getElementById("sc-amount").value);
+    var from = document.getElementById("sc-from").value;
+    var hours = parseFloat(document.getElementById("sc-hours").value);
+    var days = parseFloat(document.getElementById("sc-days").value);
+    if (isNaN(amount) || amount < 0 ||
+        isNaN(hours) || hours <= 0 || hours > 100 ||
+        isNaN(days) || days <= 0 || days > 7) {
+      tpShowError("sc-err", "Please check your inputs: amount can't be negative, hours 1–100 per week, days 1–7 per week.");
+      return;
+    }
+    tpHideError("sc-err");
+    var out = tpSalary(amount, from, hours, days);
+    document.getElementById("sc-hourly").textContent = "$" + tpFmtNum(Math.round(out.hourly * 100) / 100);
+    document.getElementById("sc-daily").textContent = "$" + tpFmtNum(Math.round(out.daily));
+    document.getElementById("sc-weekly").textContent = "$" + tpFmtNum(Math.round(out.weekly));
+    document.getElementById("sc-monthly").textContent = "$" + tpFmtNum(Math.round(out.monthly));
+    document.getElementById("sc-annual").textContent = "$" + tpFmtNum(Math.round(out.annual));
+    document.getElementById("sc-result").classList.add("show");
+  }
+  document.getElementById("sc-go").addEventListener("click", render);
+  render();
 })();

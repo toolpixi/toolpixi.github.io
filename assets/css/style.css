@@ -298,3 +298,10 @@ pre.out.show{display:block}
   .founder-block{gap:14px}
   .founder-photo{width:96px;height:96px}
 }
+/* Dice roller (growth batch 2026-10-19) */
+.dice-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;justify-content:center}
+.die{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 10px;border-radius:12px;background:#eef2ff;color:#4f46e5;font-weight:800;font-size:20px;border:1px solid #dfe3f5}
+#dice-roller .big-num{font-size:44px;text-align:center}
+#dice-roller .note{text-align:center}
+#dr-history{list-style:none;margin:10px 0 0;padding:0;max-height:220px;overflow:auto}
+#dr-history li{padding:7px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-size:14px;background:#fff}

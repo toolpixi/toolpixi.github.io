@@ -173,3 +173,115 @@ async function tpRenderPageToPng(page, scale) {
     }
   });
 })();
+
+(function () {
+  var panel = document.getElementById("pdf-to-text");
+  if (!panel) return;
+
+  var file = null;
+  var goBtn = document.getElementById("pt-go");
+  var errEl = document.getElementById("pt-err");
+  var resultEl = document.getElementById("pt-result");
+  var countEl = document.getElementById("pt-count");
+  var outputEl = document.getElementById("pt-output");
+  var copyBtn = document.getElementById("pt-copy");
+  var downloadBtn = document.getElementById("pt-download");
+  var MAX_PAGES = 200;
+
+  tpDropzone("pt-drop", "pt-file", {
+    accept: "application/pdf",
+    multiple: false,
+    onFiles: function (files) {
+      file = files && files[0] ? files[0] : null;
+      tpFileList("pt-list", file ? [file] : []);
+      tpHideError("pt-err");
+      resultEl.classList.remove("show");
+      if (goBtn) goBtn.disabled = !file;
+    }
+  });
+
+  if (goBtn) goBtn.addEventListener("click", function () {
+    if (!file) return;
+    tpHideError("pt-err");
+    resultEl.classList.remove("show");
+    goBtn.disabled = true;
+    goBtn.textContent = "Extracting…";
+
+    if (!tpPdfJsReady()) {
+      tpShowError("pt-err", "The PDF engine did not load. Check your connection and try again.");
+      goBtn.disabled = false;
+      goBtn.textContent = "Extract text";
+      return;
+    }
+
+    file.arrayBuffer().then(function (buf) {
+      tpSetupPdfJs(panel.getAttribute("data-worker"));
+      return pdfjsLib.getDocument({ data: buf }).promise;
+    }).then(function (pdf) {
+      var total = pdf.numPages;
+      var count = Math.min(total, MAX_PAGES);
+      var truncated = total > MAX_PAGES;
+      var pages = [];
+      var chain = Promise.resolve();
+      for (var n = 1; n <= count; n++) {
+        (function (pageNum) {
+          chain = chain.then(function () {
+            return pdf.getPage(pageNum).then(function (page) {
+              return page.getTextContent().then(function (content) {
+                var strs = [];
+                for (var i = 0; i < content.items.length; i++) {
+                  if (content.items[i].str) strs.push(content.items[i].str);
+                }
+                pages.push(strs.join(" "));
+              });
+            });
+          });
+        })(n);
+      }
+      return chain.then(function () {
+        return { pages: pages, total: total, truncated: truncated };
+      });
+    }).then(function (res) {
+      var text = res.pages.join("\n\n");
+      if (!text.replace(/\s/g, "")) {
+        tpShowError("pt-err", "No extractable text found — this looks like a scanned-image PDF, which needs OCR (not offered here).");
+      } else {
+        var words = text.replace(/\s+/g, " ").replace(/^\s|\s$/g, "").split(" ").length;
+        countEl.textContent = res.pages.length + " pages · " + words + " words · " + text.length + " characters" +
+          (res.truncated ? " · truncated at 200 pages of " + res.total : "");
+        outputEl.value = text;
+        resultEl.classList.add("show");
+      }
+    }).catch(function (err) {
+      tpShowError("pt-err", "Could not read that PDF. It may be corrupted or password-protected.");
+    }).then(function () {
+      goBtn.disabled = false;
+      goBtn.textContent = "Extract text";
+    });
+  });
+
+  if (copyBtn) copyBtn.addEventListener("click", function () {
+    var text = outputEl.value;
+    var done = function () {
+      copyBtn.textContent = "Copied!";
+      setTimeout(function () { copyBtn.textContent = "Copy text"; }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {
+        outputEl.select();
+        document.execCommand("copy");
+        done();
+      });
+    } else {
+      outputEl.select();
+      document.execCommand("copy");
+      done();
+    }
+  });
+
+  if (downloadBtn) downloadBtn.addEventListener("click", function () {
+    if (!file) return;
+    var blob = new Blob([outputEl.value], { type: "text/plain" });
+    tpDownload(blob, tpStripExt(file.name) + ".txt");
+  });
+})();

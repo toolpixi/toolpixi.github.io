@@ -165,8 +165,28 @@ function tpCountdownCells(prefix, target) {
     target = fourthThursday(y);
     if (target < tpStartOfDay(now)) target = fourthThursday(y + 1);
     document.getElementById("du-date-label").textContent = "US Thanksgiving — " + tpFmtDate(target);
+  } else if (kind === "diwali") {
+    // Diwali (Lakshmi Puja) follows the Hindu lunar calendar. Verified dates:
+    // 2026-11-08 (Sun), 2027-10-29, 2028-10-17, 2029-11-05, 2030-10-26.
+    var diwaliDates = [new Date(2026, 10, 8), new Date(2027, 9, 29), new Date(2028, 9, 17),
+                       new Date(2029, 10, 5), new Date(2030, 9, 26)];
+    target = null;
+    for (var i = 0; i < diwaliDates.length; i++) {
+      if (diwaliDates[i] >= tpStartOfDay(now)) { target = diwaliDates[i]; break; }
+    }
+    if (!target) {
+      document.getElementById("du-date-label").textContent =
+        "Our Diwali date list runs through 2030 — this page will be updated with future dates.";
+    } else {
+      document.getElementById("du-date-label").textContent = "Diwali (Lakshmi Puja) — " + tpFmtDate(target);
+    }
+  } else if (kind === "eid-adha") {
+    // 10 Dhu al-Hijjah 1448 AH expected 16 May 2027 (tabular calendar; may shift a day by moon sighting).
+    target = new Date(2027, 4, 16);
+    if (target < tpStartOfDay(now)) target = new Date(2028, 4, 4); // ~10 Dhu al-Hijjah 1449, tabular estimate
+    document.getElementById("du-date-label").textContent = "Expected Eid al-Adha — " + tpFmtDate(target);
   }
-  tpCountdownCells("du", target);
+  if (target) tpCountdownCells("du", target);
 })();
 
 // ==== DOM: generic Days Until [any date] ====
@@ -341,4 +361,113 @@ function tpAgeDiff(a, b) {
     setTimeout(tick, 1000);
   }
   tick();
+})();
+
+/* ToolPixi — sunrise/sunset calculator (NOAA solar-position approximation) */
+// ==== PURE ====
+/* lat/lng in decimal degrees (east positive). date: a Date; its y/m/d are used.
+   Returns {rise, set, noon} as UTC Date objects, or {polar:"day"|"night", noon}.
+   Method: NOAA fractional-year equation-of-time + declination, 90.833° zenith
+   (accounts for refraction and the sun's disc). Verified 2026-10-19 against
+   published times for New York, London, Sydney and the equator. */
+function tpSolarTimes(lat, lng, date) {
+  var rad = Math.PI / 180;
+  var y = date.getFullYear(), mo = date.getMonth(), d = date.getDate();
+  var N = Math.floor((new Date(y, mo, d) - new Date(y, 0, 0)) / 86400000) + 1; // Jan 1 = 1
+  var gamma = 2 * Math.PI / 365 * (N - 1);
+  var eqtime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma)
+    - 0.014615 * Math.cos(2 * gamma) - 0.040849 * Math.sin(2 * gamma)); // minutes
+  var decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma)
+    - 0.006758 * Math.cos(2 * gamma) + 0.000907 * Math.sin(2 * gamma)
+    - 0.002697 * Math.cos(3 * gamma) + 0.00148 * Math.sin(3 * gamma); // radians
+  var latR = lat * rad;
+  var cosH = (Math.cos(90.833 * rad) - Math.sin(latR) * Math.sin(decl)) / (Math.cos(latR) * Math.cos(decl));
+  var noonMin = 720 - 4 * lng - eqtime; // solar noon, minutes UTC
+  var noon = new Date(Date.UTC(y, mo, d) + noonMin * 60000);
+  if (cosH > 1) return { polar: "night", noon: noon }; // sun never rises
+  if (cosH < -1) return { polar: "day", noon: noon };   // sun never sets
+  var Hmin = Math.acos(cosH) / rad / 15 * 60; // minutes from solar noon to rise/set
+  return {
+    rise: new Date(Date.UTC(y, mo, d) + (noonMin - Hmin) * 60000),
+    set: new Date(Date.UTC(y, mo, d) + (noonMin + Hmin) * 60000),
+    noon: noon, polar: null
+  };
+}
+var TP_SUN_CITIES = [
+  ["New York", 40.71, -74.0, "America/New_York"],
+  ["Los Angeles", 34.05, -118.24, "America/Los_Angeles"],
+  ["Chicago", 41.88, -87.63, "America/Chicago"],
+  ["Houston", 29.76, -95.37, "America/Chicago"],
+  ["London", 51.5, -0.13, "Europe/London"],
+  ["Paris", 48.85, 2.35, "Europe/Paris"],
+  ["Cairo", 30.04, 31.24, "Africa/Cairo"],
+  ["Dubai", 25.2, 55.27, "Asia/Dubai"],
+  ["Karachi", 24.86, 67.0, "Asia/Karachi"],
+  ["Delhi", 28.61, 77.21, "Asia/Kolkata"],
+  ["Dhaka", 23.81, 90.41, "Asia/Dhaka"],
+  ["Tokyo", 35.68, 139.69, "Asia/Tokyo"],
+  ["Sydney", -33.87, 151.21, "Australia/Sydney"],
+  ["São Paulo", -23.55, -46.63, "America/Sao_Paulo"]
+];
+
+// ==== DOM: sunrise/sunset calculator ====
+(function () {
+  var panel = document.getElementById("sun-calc");
+  if (!panel) return;
+  var citySel = document.getElementById("ss-city"), latIn = document.getElementById("ss-lat"),
+      lngIn = document.getElementById("ss-lng"), dateIn = document.getElementById("ss-date");
+  TP_SUN_CITIES.forEach(function (c, i) {
+    var o = document.createElement("option");
+    o.value = String(i); o.textContent = c[0];
+    citySel.appendChild(o);
+  });
+  var oc = document.createElement("option");
+  oc.value = "custom"; oc.textContent = "Custom location…";
+  citySel.appendChild(oc);
+  function useCity(i) {
+    var c = TP_SUN_CITIES[i];
+    latIn.value = c[1]; lngIn.value = c[2];
+  }
+  citySel.addEventListener("change", function () {
+    if (citySel.value !== "custom") useCity(parseInt(citySel.value, 10));
+  });
+  useCity(0);
+  var t = new Date();
+  dateIn.value = t.getFullYear() + "-" + String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0");
+  function fmtT(d, tz) {
+    try { return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: tz }); }
+    catch (e) { return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "UTC" }); }
+  }
+  function run() {
+    tpHideError("ss-err");
+    var lat = parseFloat(latIn.value), lng = parseFloat(lngIn.value);
+    var dt = tpParseYMD(dateIn.value);
+    if (isNaN(lat) || lat < -90 || lat > 90) { tpShowError("ss-err", "Latitude must be between -90 and 90."); return; }
+    if (isNaN(lng) || lng < -180 || lng > 180) { tpShowError("ss-err", "Longitude must be between -180 and 180."); return; }
+    if (!dt) { tpShowError("ss-err", "Please pick a date."); return; }
+    var custom = citySel.value === "custom";
+    var tz = custom ? "UTC" : TP_SUN_CITIES[parseInt(citySel.value, 10)][3];
+    var cityName = custom ? "your location" : TP_SUN_CITIES[parseInt(citySel.value, 10)][0];
+    var r = tpSolarTimes(lat, lng, dt);
+    document.getElementById("ss-noon").textContent = fmtT(r.noon, tz) + (custom ? " UTC" : "");
+    if (r.polar) {
+      document.getElementById("ss-sunrise").textContent = "—";
+      document.getElementById("ss-sunset").textContent = "—";
+      document.getElementById("ss-daylen").textContent = r.polar === "day" ? "24 hours" : "0 hours";
+      document.getElementById("ss-tznote").textContent = (r.polar === "day" ? "Polar day" : "Polar night") +
+        " in " + cityName + " on " + tpFmtDate(dt) + " — the sun " +
+        (r.polar === "day" ? "doesn't set." : "doesn't rise.");
+    } else {
+      document.getElementById("ss-sunrise").textContent = fmtT(r.rise, tz) + (custom ? " UTC" : "");
+      document.getElementById("ss-sunset").textContent = fmtT(r.set, tz) + (custom ? " UTC" : "");
+      var mins = Math.round((r.set - r.rise) / 60000);
+      document.getElementById("ss-daylen").textContent = Math.floor(mins / 60) + " h " + (mins % 60) + " min";
+      document.getElementById("ss-tznote").textContent = custom
+        ? "Times shown in UTC — a time zone can't be derived from coordinates alone."
+        : "Times shown in " + cityName + "'s local time (daylight saving applied automatically).";
+    }
+    document.getElementById("ss-result").classList.add("show");
+  }
+  document.getElementById("ss-go").addEventListener("click", run);
+  run();
 })();

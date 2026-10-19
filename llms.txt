@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run entirely in your browser. Your files never leave your device.
 
-ToolPixi at https://toolpixi.com/ offers 50 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 60 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,11 +14,11 @@ ToolPixi at https://toolpixi.com/ offers 50 free browser-based tools across 5 ca
 
 ## Categories
 
-- Image Tools: 11 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
-- PDF Tools: 7 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 14 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 8 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 10 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Image Tools: 12 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- PDF Tools: 9 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
+- Date & Time Tools: 17 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 10 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Converters & Calculators: 12 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -72,6 +72,16 @@ ToolPixi at https://toolpixi.com/ offers 50 free browser-based tools across 5 ca
 - [Days Until Thanksgiving](https://toolpixi.com/days-until-thanksgiving/): Live countdown to US Thanksgiving — the fourth Thursday of November.
 - [Text Diff Checker](https://toolpixi.com/text-diff-checker/): Paste two texts and see every addition and removal highlighted.
 - [JSON Formatter](https://toolpixi.com/json-formatter/): Validate, pretty-print and minify JSON — errors shown with line and column.
+- [Favicon Generator](https://toolpixi.com/favicon-generator/): Turn any PNG or JPG into a multi-size favicon.ico for your website.
+- [PDF to Text](https://toolpixi.com/pdf-to-text/): Extract the text from a PDF into a copyable plain-text file.
+- [Add Page Numbers to PDF](https://toolpixi.com/add-page-numbers-to-pdf/): Stamp page numbers on every page of a PDF — position and style are yours.
+- [Sunrise & Sunset Times](https://toolpixi.com/sunrise-sunset-calculator/): Sunrise, sunset and day length for any place and date.
+- [Days Until Diwali](https://toolpixi.com/days-until-diwali/): A live countdown to Diwali, the festival of lights.
+- [Days Until Eid al-Adha](https://toolpixi.com/days-until-eid-al-adha/): Live countdown to Eid al-Adha, the Festival of Sacrifice.
+- [Dice Roller](https://toolpixi.com/dice-roller/): Roll virtual dice — d4 to d100, any count, with modifiers and history.
+- [Lorem Ipsum Generator](https://toolpixi.com/lorem-ipsum-generator/): Generate placeholder text — paragraphs, sentences or words.
+- [Compound Interest Calculator](https://toolpixi.com/compound-interest-calculator/): See how savings grow when interest earns interest, year by year.
+- [Salary Converter](https://toolpixi.com/salary-converter/): Hourly to salary and back — annual, monthly, weekly, daily.
 
 ## Privacy promise
 

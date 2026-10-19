@@ -403,3 +403,143 @@ function tpSvgWithSize(svgText, w, h) {
     if (outBlob) tpDownload(outBlob, outName);
   });
 })();
+
+// ==== PURE: build a real multi-size .ico from ImageData frames ====
+// frames: [{ size: <int>, data: <ImageData RGBA> }]
+// Writes ICONDIR + ICONDIRENTRY table + per-image BMP-style data
+// (BITMAPINFOHEADER + bottom-up BGRA XOR mask + zeroed AND mask).
+// Returns Blob with type "image/x-icon".
+function tpBuildIco(frames) {
+  var n = frames.length, i, j;
+  // Bytes for each image: 40-byte header + XOR mask + AND mask (rows padded to 4 bytes).
+  var sizes = [], imgSize, total = 6 + 16 * n; // header + directory
+  for (i = 0; i < n; i++) {
+    var s = frames[i].size;
+    var andRow = Math.ceil(s / 32) * 4;         // AND-mask row bytes, 32-bit aligned
+    imgSize = 40 + 4 * s * s + andRow * s;
+    sizes.push(imgSize);
+    total += imgSize;
+  }
+  var buf = new ArrayBuffer(total);
+  var dv = new DataView(buf);
+  // --- ICONDIR (6 bytes) ---
+  dv.setUint16(0, 0, true);   // reserved
+  dv.setUint16(2, 1, true);   // type: icon
+  dv.setUint16(4, n, true);   // count
+  // --- ICONDIRENTRY table (16 bytes each) ---
+  var imgOffset = 6 + 16 * n;
+  for (i = 0; i < n; i++) {
+    var e = 6 + 16 * i, w = frames[i].size;
+    dv.setUint8(e + 0, w);        // width
+    dv.setUint8(e + 1, w);        // height
+    dv.setUint8(e + 2, 0);        // color count
+    dv.setUint8(e + 3, 0);        // reserved
+    dv.setUint16(e + 4, 1, true); // planes
+    dv.setUint16(e + 6, 32, true);// bit count
+    dv.setUint32(e + 8, sizes[i], true);   // bytes in resource
+    dv.setUint32(e + 12, imgOffset, true); // image offset
+    imgOffset += sizes[i];
+  }
+  // --- Image data ---
+  var off = 6 + 16 * n;
+  for (i = 0; i < n; i++) {
+    var size = frames[i].size, px = frames[i].data.data; // RGBA, top-down
+    // BITMAPINFOHEADER (40 bytes)
+    dv.setUint32(off + 0, 40, true);        // biSize
+    dv.setInt32(off + 4, size, true);       // biWidth
+    dv.setInt32(off + 8, size * 2, true);   // biHeight (XOR + AND)
+    dv.setUint16(off + 12, 1, true);        // biPlanes
+    dv.setUint16(off + 14, 32, true);       // biBitCount
+    dv.setUint32(off + 16, 0, true);        // biCompression = BI_RGB
+    dv.setUint32(off + 20, 0, true);        // biSizeImage (0 OK for BI_RGB)
+    dv.setUint32(off + 24, 0, true);        // biXPelsPerMeter
+    dv.setUint32(off + 28, 0, true);        // biYPelsPerMeter
+    dv.setUint32(off + 32, 0, true);        // biClrUsed
+    dv.setUint32(off + 36, 0, true);        // biClrImportant
+    off += 40;
+    // XOR mask: BGRA pixels, rows bottom-up.
+    for (var row = 0; row < size; row++) {
+      var srcRow = (size - 1 - row) * size * 4; // image data is top-down
+      for (var col = 0; col < size; col++) {
+        var si = srcRow + col * 4;
+        dv.setUint8(off++, px[si + 2]); // B
+        dv.setUint8(off++, px[si + 1]); // G
+        dv.setUint8(off++, px[si]);     // R
+        dv.setUint8(off++, px[si + 3]); // A
+      }
+    }
+    // AND mask: all zeros (opaque), rows padded to a 4-byte boundary.
+    var andRowBytes = Math.ceil(size / 32) * 4;
+    for (j = 0; j < andRowBytes * size; j++) dv.setUint8(off++, 0);
+  }
+  return new Blob([buf], { type: "image/x-icon" });
+}
+
+// ==== DOM: Favicon Generator ====
+(function () {
+  var panel = document.getElementById("favicon-gen");
+  if (!panel) return;
+  var file = null, loaded = null, icoBlob = null;
+  var FV_SIZES = [16, 32, 48];
+  var preview = document.getElementById("fv-preview");
+  var info = document.getElementById("fv-info");
+  var goBtn = document.getElementById("fv-go");
+
+  function resetResult() {
+    icoBlob = null;
+    document.getElementById("fv-result").classList.remove("show");
+  }
+
+  tpDropzone("fv-drop", "fv-file", {
+    accept: "image/png,image/jpeg,image/webp", multiple: false,
+    onFiles: function (files) {
+      tpHideError("fv-err");
+      resetResult();
+      file = files[0];
+      tpFileList("fv-list", [file]);
+      tpLoadImageFromFile(file).then(function (r) {
+        if (loaded) URL.revokeObjectURL(loaded.url);
+        loaded = r;
+        if (preview.src && preview.src.indexOf("blob:") === 0) URL.revokeObjectURL(preview.src);
+        preview.src = URL.createObjectURL(file);
+        info.textContent = "Original: " + file.name + " — " +
+          r.img.naturalWidth + "×" + r.img.naturalHeight + ", " + tpFormatBytes(file.size);
+        goBtn.disabled = false;
+      }).catch(function (err) {
+        goBtn.disabled = true;
+        tpShowError("fv-err", err.message || "That file could not be read as an image.");
+      });
+    }
+  });
+
+  goBtn.addEventListener("click", function () {
+    tpHideError("fv-err");
+    resetResult();
+    if (!file || !loaded) { tpShowError("fv-err", "Please choose an image first."); return; }
+    var btn = this; btn.disabled = true; btn.textContent = "Generating…";
+    try {
+      // Center-crop the source to a square, then scale it down per size.
+      var img = loaded.img;
+      var side = Math.min(img.naturalWidth, img.naturalHeight);
+      var sx = Math.round((img.naturalWidth - side) / 2);
+      var sy = Math.round((img.naturalHeight - side) / 2);
+      var frames = FV_SIZES.map(function (size) {
+        var c = document.createElement("canvas");
+        c.width = size; c.height = size;
+        var ctx = c.getContext("2d");
+        ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+        return { size: size, data: ctx.getImageData(0, 0, size, size) };
+      });
+      icoBlob = tpBuildIco(frames);
+      document.getElementById("fv-result").classList.add("show");
+    } catch (err) {
+      tpShowError("fv-err", err.message || "Something went wrong while building the .ico file.");
+    } finally {
+      btn.disabled = false; btn.textContent = "Generate favicon.ico";
+    }
+  });
+
+  document.getElementById("fv-download").addEventListener("click", function () {
+    if (icoBlob) tpDownload(icoBlob, "favicon.ico");
+  });
+})();
