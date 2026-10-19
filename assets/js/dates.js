@@ -185,6 +185,26 @@ function tpCountdownCells(prefix, target) {
     target = new Date(2027, 4, 16);
     if (target < tpStartOfDay(now)) target = new Date(2028, 4, 4); // ~10 Dhu al-Hijjah 1449, tabular estimate
     document.getElementById("du-date-label").textContent = "Expected Eid al-Adha — " + tpFmtDate(target);
+  } else if (kind === "easter") {
+    // Western Easter Sunday, computed with the Anonymous Gregorian algorithm.
+    // Verified: 2026-04-05, 2027-03-28, 2028-04-16, 2029-04-01, 2030-04-21.
+    function easterSunday(yr) {
+      var a = yr % 19, b = Math.floor(yr / 100), c = yr % 100,
+          d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
+          g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30,
+          i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7,
+          m = Math.floor((a + 11 * h + 22 * l) / 451);
+      var month = Math.floor((h + l - 7 * m + 114) / 31);
+      var day = ((h + l - 7 * m + 114) % 31) + 1;
+      return new Date(yr, month - 1, day);
+    }
+    target = easterSunday(y);
+    if (target < tpStartOfDay(now)) target = easterSunday(y + 1);
+    document.getElementById("du-date-label").textContent = "Easter Sunday — " + tpFmtDate(target);
+  } else if (kind === "valentine") {
+    target = new Date(y, 1, 14);
+    if (target < tpStartOfDay(now)) target = new Date(y + 1, 1, 14);
+    document.getElementById("du-date-label").textContent = "Valentine's Day — " + tpFmtDate(target);
   }
   if (target) tpCountdownCells("du", target);
 })();
@@ -470,4 +490,152 @@ var TP_SUN_CITIES = [
   }
   document.getElementById("ss-go").addEventListener("click", run);
   run();
+})();
+
+// ==== DOM: Weekday Calculator ====
+(function () {
+  var panel = document.getElementById("weekday-calc");
+  if (!panel) return;
+  var NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  function run(silent) {
+    tpHideError("wd-err");
+    var v = document.getElementById("wd-date").value;
+    if (!v) { if (!silent) tpShowError("wd-err", "Please pick a date."); return; }
+    var d = tpParseYMD(v);
+    if (!d) { if (!silent) tpShowError("wd-err", "Please pick a valid date."); return; }
+    document.getElementById("wd-day").textContent = NAMES[d.getDay()];
+    document.getElementById("wd-full").textContent = tpFmtDate(d);
+    var diff = tpDaysBetween(new Date(), d);
+    document.getElementById("wd-note").textContent = diff === 0
+      ? "That's today."
+      : diff > 0
+        ? diff + (diff === 1 ? " day" : " days") + " from now."
+        : (-diff) + ((-diff) === 1 ? " day" : " days") + " ago.";
+    document.getElementById("wd-result").classList.add("show");
+  }
+  document.getElementById("wd-go").addEventListener("click", function () { run(false); });
+  document.getElementById("wd-date").addEventListener("change", function () { run(true); });
+})();
+
+// ==== DOM: Business Days Calculator ====
+(function () {
+  var panel = document.getElementById("biz-days");
+  if (!panel) return;
+  function run(silent) {
+    tpHideError("bz-err");
+    var a = tpParseYMD(document.getElementById("bz-from").value);
+    var b = tpParseYMD(document.getElementById("bz-to").value);
+    if (!a || !b) { if (!silent) tpShowError("bz-err", "Please pick both dates."); return; }
+    var inclusive = document.getElementById("bz-inclusive").checked;
+    var sA = tpStartOfDay(a), sB = tpStartOfDay(b);
+    var start = sA <= sB ? sA : sB, end = sA <= sB ? sB : sA;
+    var cal = 0, biz = 0, d = new Date(start.getTime());
+    while (d.getTime() < end.getTime()) {
+      cal++;
+      var wd = d.getDay();
+      if (wd !== 0 && wd !== 6) biz++;
+      d.setDate(d.getDate() + 1);
+    }
+    if (inclusive) {
+      cal++;
+      var wd2 = end.getDay();
+      if (wd2 !== 0 && wd2 !== 6) biz++;
+    }
+    document.getElementById("bz-biz").textContent = biz + (biz === 1 ? " business day" : " business days");
+    document.getElementById("bz-cal").textContent = cal + " calendar " + (cal === 1 ? "day" : "days");
+    document.getElementById("bz-note").textContent =
+      "Counts Monday–Friday only. Public holidays are not excluded — they differ by country and employer, so add those yourself.";
+    document.getElementById("bz-result").classList.add("show");
+  }
+  ["bz-from", "bz-to", "bz-inclusive"].forEach(function (id) {
+    document.getElementById(id).addEventListener("change", function () { run(true); });
+  });
+  document.getElementById("bz-go").addEventListener("click", function () { run(false); });
+})();
+
+// ==== DOM: Pregnancy Due Date Calculator (Naegele's rule) ====
+(function () {
+  var panel = document.getElementById("preg-due");
+  if (!panel) return;
+  function run(silent) {
+    tpHideError("pd-err");
+    var v = document.getElementById("pd-lmp").value;
+    if (!v) { if (!silent) tpShowError("pd-err", "Please pick the first day of your last period."); return; }
+    var lmp = tpParseYMD(v);
+    if (!lmp) { if (!silent) tpShowError("pd-err", "Please pick a valid date."); return; }
+    var due = tpAddDays(lmp, 280);
+    document.getElementById("pd-due").textContent = tpFmtDate(due);
+    var today = tpStartOfDay(new Date());
+    if (tpStartOfDay(lmp).getTime() <= today.getTime()) {
+      var days = tpDaysBetween(lmp, today);
+      var weeks = Math.floor(days / 7), rem = days % 7;
+      document.getElementById("pd-progress").textContent =
+        "About " + weeks + " weeks" + (rem ? ", " + rem + " day" + (rem > 1 ? "s" : "") : "") + " along.";
+      document.getElementById("pd-tri").textContent =
+        weeks < 14 ? "First trimester (weeks 1–13)." :
+        weeks < 28 ? "Second trimester (weeks 14–27)." : "Third trimester (weeks 28–40).";
+    } else {
+      document.getElementById("pd-progress").textContent =
+        "That date is in the future — the estimate below treats it as the first day of the last period.";
+      document.getElementById("pd-tri").textContent = "—";
+    }
+    document.getElementById("pd-conc").textContent =
+      "Estimated conception: " + tpFmtDate(tpAddDays(lmp, 14)) +
+      " (ovulation timing is an estimate — only an ultrasound dates a pregnancy precisely).";
+    document.getElementById("pd-result").classList.add("show");
+  }
+  document.getElementById("pd-go").addEventListener("click", function () { run(false); });
+  document.getElementById("pd-lmp").addEventListener("change", function () { run(true); });
+})();
+
+// ==== DOM: Zodiac Sign Calculator ====
+(function () {
+  var panel = document.getElementById("zodiac-calc");
+  if (!panel) return;
+  // start month, start day, name, element, one-line trait
+  var SIGNS = [
+    [1, 20, "Aquarius", "Air", "Independent, curious and a little rebellious."],
+    [2, 19, "Pisces", "Water", "Dreamy, kind and deeply imaginative."],
+    [3, 21, "Aries", "Fire", "Bold, energetic and first through the door."],
+    [4, 20, "Taurus", "Earth", "Steady, loyal and fond of the good things."],
+    [5, 21, "Gemini", "Air", "Quick, talkative and full of ideas."],
+    [6, 21, "Cancer", "Water", "Warm, protective and home-loving."],
+    [7, 23, "Leo", "Fire", "Confident, generous and born to shine."],
+    [8, 23, "Virgo", "Earth", "Precise, thoughtful and quietly helpful."],
+    [9, 23, "Libra", "Air", "Fair-minded, charming and a natural peace-keeper."],
+    [10, 23, "Scorpio", "Water", "Intense, loyal and hard to read."],
+    [11, 22, "Sagittarius", "Fire", "Adventurous, honest and freedom-loving."],
+    [12, 22, "Capricorn", "Earth", "Patient, practical and quietly ambitious."]
+  ];
+  var RANGES = {
+    "Aquarius": "20 January – 18 February", "Pisces": "19 February – 20 March",
+    "Aries": "21 March – 19 April", "Taurus": "20 April – 20 May",
+    "Gemini": "21 May – 20 June", "Cancer": "21 June – 22 July",
+    "Leo": "23 July – 22 August", "Virgo": "23 August – 22 September",
+    "Libra": "23 September – 22 October", "Scorpio": "23 October – 21 November",
+    "Sagittarius": "22 November – 21 December", "Capricorn": "22 December – 19 January"
+  };
+  function signFor(m, day) {
+    var cur = SIGNS[11]; // Capricorn covers 1–19 January
+    for (var i = 0; i < SIGNS.length; i++) {
+      var s = SIGNS[i];
+      if (s[0] < m || (s[0] === m && day >= s[1])) cur = s;
+    }
+    return cur;
+  }
+  function run(silent) {
+    tpHideError("zx-err");
+    var v = document.getElementById("zx-dob").value;
+    if (!v) { if (!silent) tpShowError("zx-err", "Please pick your date of birth."); return; }
+    var d = tpParseYMD(v);
+    if (!d) { if (!silent) tpShowError("zx-err", "Please pick a valid date."); return; }
+    var s = signFor(d.getMonth() + 1, d.getDate());
+    document.getElementById("zx-sign").textContent = s[2];
+    document.getElementById("zx-range").textContent = RANGES[s[2]];
+    document.getElementById("zx-element").textContent = "Element: " + s[3];
+    document.getElementById("zx-trait").textContent = s[4];
+    document.getElementById("zx-result").classList.add("show");
+  }
+  document.getElementById("zx-go").addEventListener("click", function () { run(false); });
+  document.getElementById("zx-dob").addEventListener("change", function () { run(true); });
 })();

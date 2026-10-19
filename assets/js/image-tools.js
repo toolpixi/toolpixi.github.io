@@ -543,3 +543,156 @@ function tpBuildIco(frames) {
     if (icoBlob) tpDownload(icoBlob, "favicon.ico");
   });
 })();
+
+// ==== DOM: SVG to JPG (flat raster with a white background) ====
+(function () {
+  var panel = document.getElementById("svg-to-jpg");
+  if (!panel) return;
+  var file = null, svgText = null, outBlob = null, outName = "";
+  var wIn = document.getElementById("sj-w"), hIn = document.getElementById("sj-h");
+  tpDropzone("sj-drop", "sj-file", {
+    accept: ".svg,image/svg+xml",
+    onFiles: function (files) {
+      var f = files[0];
+      if (!f) return;
+      tpHideError("sj-err");
+      document.getElementById("sj-result").classList.remove("show");
+      var rd = new FileReader();
+      rd.onload = function () {
+        svgText = String(rd.result);
+        var intrinsic = tpSvgIntrinsicSize(svgText);
+        file = f;
+        tpFileList("sj-list", [f]);
+        document.getElementById("sj-note").textContent = intrinsic
+          ? "This SVG is " + intrinsic.w + " × " + intrinsic.h + " units. Change the pixel size below if you want a bigger or smaller JPG."
+          : "This SVG has no size information, so we will render it at the size you type below.";
+        if (intrinsic && !wIn.value) { wIn.value = Math.round(intrinsic.w); hIn.value = Math.round(intrinsic.h); }
+        document.getElementById("sj-go").disabled = false;
+      };
+      rd.onerror = function () { tpShowError("sj-err", "Could not read that file. Please try a different SVG."); };
+      rd.readAsText(f);
+    }
+  });
+  document.getElementById("sj-go").addEventListener("click", function () {
+    tpHideError("sj-err");
+    if (!file || !svgText) { tpShowError("sj-err", "Please choose an SVG file first."); return; }
+    var w = parseInt(wIn.value, 10), h = parseInt(hIn.value, 10);
+    if (!w || !h || w < 1 || h < 1 || w > 8000 || h > 8000) {
+      tpShowError("sj-err", "Type a width and height in pixels (1–8000 each)."); return;
+    }
+    var btn = this; btn.disabled = true; btn.textContent = "Rendering…";
+    try {
+      var sized = tpSvgWithSize(svgText, w, h);
+      if (!sized) throw new Error("That file does not look like a valid SVG.");
+      var blob = new Blob([sized], { type: "image/svg+xml;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var canvas = document.createElement("canvas");
+          canvas.width = w; canvas.height = h;
+          var ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); // JPG has no transparency
+          ctx.drawImage(img, 0, 0, w, h);
+          URL.revokeObjectURL(url);
+          if (canvas.toBlob) {
+            canvas.toBlob(function (b) {
+              btn.disabled = false; btn.textContent = "Convert to JPG";
+              if (!b) { tpShowError("sj-err", "Rendering failed for this SVG. Try a different file."); return; }
+              outBlob = b;
+              outName = tpStripExt(file.name) + "-" + w + "x" + h + ".jpg";
+              document.getElementById("sj-new").textContent =
+                "JPG ready: " + w + " × " + h + " px · " + tpFormatBytes(b.size);
+              document.getElementById("sj-preview").src = URL.createObjectURL(b);
+              document.getElementById("sj-result").classList.add("show");
+            }, "image/jpeg", 0.92);
+          } else {
+            btn.disabled = false; btn.textContent = "Convert to JPG";
+            tpShowError("sj-err", "This browser cannot export JPG images. Try a modern browser.");
+          }
+        } catch (err) {
+          btn.disabled = false; btn.textContent = "Convert to JPG";
+          tpShowError("sj-err", err.message || "Something went wrong while rendering.");
+        }
+      };
+      img.onerror = function () {
+        URL.revokeObjectURL(url);
+        btn.disabled = false; btn.textContent = "Convert to JPG";
+        tpShowError("sj-err", "The SVG could not be drawn — it may use features this browser cannot render (or reference external files).");
+      };
+      img.src = url;
+    } catch (err) {
+      btn.disabled = false; btn.textContent = "Convert to JPG";
+      tpShowError("sj-err", err.message || "Something went wrong while rendering.");
+    }
+  });
+  document.getElementById("sj-download").addEventListener("click", function () {
+    if (outBlob) tpDownload(outBlob, outName);
+  });
+})();
+
+// ==== DOM: PNG to ICO (multi-size Windows icon built locally) ====
+(function () {
+  var panel = document.getElementById("png-to-ico");
+  if (!panel) return;
+  var file = null, loaded = null, icoBlob = null;
+  var sizes = [16, 32, 48];
+  function currentSizes() { return sizes.slice(); }
+  panel.querySelectorAll("[data-sizes]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-sizes]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      var v = b.getAttribute("data-sizes");
+      sizes = v === "all" ? [16, 32, 48] : [parseInt(v, 10)];
+    });
+  });
+  tpDropzone("pi-drop", "pi-file", {
+    accept: "image/png", multiple: false,
+    onFiles: function (files) {
+      tpHideError("pi-err");
+      document.getElementById("pi-result").classList.remove("show");
+      file = files[0];
+      tpFileList("pi-list", [file]);
+      tpLoadImageFromFile(file).then(function (r) {
+        if (loaded) URL.revokeObjectURL(loaded.url);
+        loaded = r;
+        document.getElementById("pi-info").textContent = "Original: " + file.name + " — " +
+          r.img.naturalWidth + "×" + r.img.naturalHeight + ", " + tpFormatBytes(file.size);
+        document.getElementById("pi-go").disabled = false;
+      }).catch(function (err) {
+        document.getElementById("pi-go").disabled = true;
+        tpShowError("pi-err", err.message || "That file could not be read as an image.");
+      });
+    }
+  });
+  document.getElementById("pi-go").addEventListener("click", function () {
+    tpHideError("pi-err");
+    if (!file || !loaded) { tpShowError("pi-err", "Please choose a PNG image first."); return; }
+    var btn = this; btn.disabled = true; btn.textContent = "Building…";
+    try {
+      var img = loaded.img;
+      var side = Math.min(img.naturalWidth, img.naturalHeight);
+      var sx = Math.round((img.naturalWidth - side) / 2);
+      var sy = Math.round((img.naturalHeight - side) / 2);
+      var frames = currentSizes().map(function (size) {
+        var c = document.createElement("canvas");
+        c.width = size; c.height = size;
+        var ctx = c.getContext("2d");
+        ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+        return { size: size, data: ctx.getImageData(0, 0, size, size) };
+      });
+      icoBlob = tpBuildIco(frames);
+      var lbl = currentSizes().map(function (s) { return s + "×" + s; }).join(", ");
+      document.getElementById("pi-new").textContent =
+        "ICO ready: " + lbl + " px · " + tpFormatBytes(icoBlob.size);
+      document.getElementById("pi-result").classList.add("show");
+    } catch (err) {
+      tpShowError("pi-err", err.message || "Something went wrong while building the .ico file.");
+    } finally {
+      btn.disabled = false; btn.textContent = "Convert to ICO";
+    }
+  });
+  document.getElementById("pi-download").addEventListener("click", function () {
+    if (icoBlob) tpDownload(icoBlob, tpStripExt(file.name) + ".ico");
+  });
+})();
