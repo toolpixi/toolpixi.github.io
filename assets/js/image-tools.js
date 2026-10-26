@@ -631,6 +631,93 @@ function tpBuildIco(frames) {
   });
 })();
 
+// ==== DOM: SVG to WebP (flat raster, transparency kept — WebP has alpha) ====
+(function () {
+  var panel = document.getElementById("svg-to-webp");
+  if (!panel) return;
+  var file = null, svgText = null, outBlob = null, outName = "";
+  var wIn = document.getElementById("sw-w"), hIn = document.getElementById("sw-h");
+  tpDropzone("sw-drop", "sw-file", {
+    accept: ".svg,image/svg+xml",
+    onFiles: function (files) {
+      var f = files[0];
+      if (!f) return;
+      tpHideError("sw-err");
+      document.getElementById("sw-result").classList.remove("show");
+      var rd = new FileReader();
+      rd.onload = function () {
+        svgText = String(rd.result);
+        var intrinsic = tpSvgIntrinsicSize(svgText);
+        file = f;
+        tpFileList("sw-list", [f]);
+        document.getElementById("sw-note").textContent = intrinsic
+          ? "This SVG is " + intrinsic.w + " × " + intrinsic.h + " units. Change the pixel size below if you want a bigger or smaller WebP."
+          : "This SVG has no size information, so we will render it at the size you type below.";
+        if (intrinsic && !wIn.value) { wIn.value = Math.round(intrinsic.w); hIn.value = Math.round(intrinsic.h); }
+        document.getElementById("sw-go").disabled = false;
+      };
+      rd.onerror = function () { tpShowError("sw-err", "Could not read that file. Please try a different SVG."); };
+      rd.readAsText(f);
+    }
+  });
+  document.getElementById("sw-go").addEventListener("click", function () {
+    tpHideError("sw-err");
+    if (!file || !svgText) { tpShowError("sw-err", "Please choose an SVG file first."); return; }
+    var w = parseInt(wIn.value, 10), h = parseInt(hIn.value, 10);
+    if (!w || !h || w < 1 || h < 1 || w > 8000 || h > 8000) {
+      tpShowError("sw-err", "Type a width and height in pixels (1–8000 each)."); return;
+    }
+    var btn = this; btn.disabled = true; btn.textContent = "Rendering…";
+    try {
+      var sized = tpSvgWithSize(svgText, w, h);
+      if (!sized) throw new Error("That file does not look like a valid SVG.");
+      var blob = new Blob([sized], { type: "image/svg+xml;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var canvas = document.createElement("canvas");
+          canvas.width = w; canvas.height = h;
+          var ctx = canvas.getContext("2d");
+          // No white fill on purpose: WebP keeps transparency, unlike JPG.
+          ctx.drawImage(img, 0, 0, w, h);
+          URL.revokeObjectURL(url);
+          if (canvas.toBlob) {
+            canvas.toBlob(function (b) {
+              btn.disabled = false; btn.textContent = "Convert to WebP";
+              if (!b) { tpShowError("sw-err", "Rendering failed for this SVG. Try a different file."); return; }
+              outBlob = b;
+              outName = tpStripExt(file.name) + "-" + w + "x" + h + ".webp";
+              document.getElementById("sw-new").textContent =
+                "WebP ready: " + w + " × " + h + " px · " + tpFormatBytes(b.size);
+              document.getElementById("sw-preview").src = URL.createObjectURL(b);
+              document.getElementById("sw-result").classList.add("show");
+            }, "image/webp", 0.92);
+          } else {
+            btn.disabled = false; btn.textContent = "Convert to WebP";
+            tpShowError("sw-err", "This browser cannot export WebP images. Try a modern browser.");
+          }
+        } catch (err) {
+          btn.disabled = false; btn.textContent = "Convert to WebP";
+          tpShowError("sw-err", err.message || "Something went wrong while rendering.");
+        }
+      };
+      img.onerror = function () {
+        URL.revokeObjectURL(url);
+        btn.disabled = false; btn.textContent = "Convert to WebP";
+        tpShowError("sw-err", "The SVG could not be drawn — it may use features this browser cannot render (or reference external files).");
+      };
+      img.src = url;
+    } catch (err) {
+      btn.disabled = false; btn.textContent = "Convert to WebP";
+      tpShowError("sw-err", err.message || "Something went wrong while rendering.");
+    }
+  });
+  document.getElementById("sw-download").addEventListener("click", function () {
+    if (outBlob) tpDownload(outBlob, outName);
+  });
+})();
+
 // ==== DOM: PNG to ICO (multi-size Windows icon built locally) ====
 (function () {
   var panel = document.getElementById("png-to-ico");

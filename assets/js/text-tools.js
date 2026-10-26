@@ -632,3 +632,136 @@ function tpLorem(n, type, classicStart) {
 
   generate();
 })();
+
+/* ToolPixi — Base64 encoder & decoder (UTF-8 safe) */
+// ==== PURE ====
+function tpB64EncodeText(text, urlSafe) {
+  var bytes = new TextEncoder().encode(String(text || ""));
+  var bin = "";
+  var CHUNK = 0x8000;
+  for (var i = 0; i < bytes.length; i += CHUNK) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+  }
+  var out = btoa(bin);
+  if (urlSafe) out = out.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return out;
+}
+function tpB64DecodeText(str, urlSafe) {
+  var s = String(str || "").replace(/\s/g, "");
+  if (!s) return "";
+  if (urlSafe) s = s.replace(/-/g, "+").replace(/_/g, "/");
+  if (!/^[A-Za-z0-9+/=]+$/.test(s)) throw new Error("invalid-chars");
+  s = s.replace(/=+$/, "");
+  if (s.length % 4 === 1) throw new Error("invalid-length");
+  s += "=".repeat((4 - (s.length % 4)) % 4);
+  var bin = atob(s);
+  var bytes = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+}
+
+// ==== DOM: Base64 tool ====
+(function () {
+  var panel = document.getElementById("base64-tool");
+  if (!panel) return;
+  var mode = "encode";
+  function run() {
+    tpHideError("b64-err");
+    var src = document.getElementById("b64-text").value;
+    var outEl = document.getElementById("b64-out");
+    if (!src) { outEl.value = ""; document.getElementById("b64-count").textContent = "0 characters"; return; }
+    try {
+      var out = mode === "encode"
+        ? tpB64EncodeText(src, document.getElementById("b64-urlsafe").checked)
+        : tpB64DecodeText(src, document.getElementById("b64-urlsafe").checked);
+      outEl.value = out;
+      document.getElementById("b64-count").textContent = out.length.toLocaleString() + " characters";
+    } catch (e) {
+      outEl.value = "";
+      document.getElementById("b64-count").textContent = "0 characters";
+      tpShowError("b64-err", mode === "decode"
+        ? "That does not look like valid Base64 — check for a missing or extra character, or characters outside the Base64 alphabet."
+        : "That text could not be encoded. Please try again.");
+    }
+  }
+  document.getElementById("b64-encode").addEventListener("click", function () { mode = "encode"; run(); });
+  document.getElementById("b64-decode").addEventListener("click", function () { mode = "decode"; run(); });
+  document.getElementById("b64-text").addEventListener("input", run);
+  document.getElementById("b64-urlsafe").addEventListener("change", run);
+  document.getElementById("b64-copy").addEventListener("click", function () {
+    var out = document.getElementById("b64-out");
+    out.select();
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(out.value);
+    else document.execCommand("copy");
+    this.textContent = "Copied!";
+    var btn = this;
+    setTimeout(function () { btn.textContent = "Copy result"; }, 1500);
+  });
+  document.getElementById("b64-download").addEventListener("click", function () {
+    tpDownload(new Blob([document.getElementById("b64-out").value], { type: "text/plain" }), "base64-output.txt");
+  });
+  document.getElementById("b64-clear").addEventListener("click", function () {
+    document.getElementById("b64-text").value = ""; run();
+    document.getElementById("b64-text").focus();
+  });
+  run();
+})();
+
+/* ToolPixi — URL encoder & decoder */
+// ==== PURE ====
+function tpUrlEncodeText(text, mode) {
+  return mode === "full" ? encodeURI(String(text || "")) : encodeURIComponent(String(text || ""));
+}
+function tpUrlDecodeText(text, mode) {
+  return mode === "full" ? decodeURI(String(text || "")) : decodeURIComponent(String(text || ""));
+}
+
+// ==== DOM: URL tool ====
+(function () {
+  var panel = document.getElementById("url-tool");
+  if (!panel) return;
+  var action = "encode", urlMode = "component";
+  panel.querySelectorAll("[data-urlmode]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-urlmode]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      urlMode = b.getAttribute("data-urlmode");
+      run();
+    });
+  });
+  function run() {
+    tpHideError("url-err");
+    var src = document.getElementById("url-text").value;
+    var outEl = document.getElementById("url-out");
+    if (!src) { outEl.value = ""; document.getElementById("url-count").textContent = "0 characters"; return; }
+    try {
+      var out = action === "encode" ? tpUrlEncodeText(src, urlMode) : tpUrlDecodeText(src, urlMode);
+      outEl.value = out;
+      document.getElementById("url-count").textContent = out.length.toLocaleString() + " characters";
+    } catch (e) {
+      outEl.value = "";
+      document.getElementById("url-count").textContent = "0 characters";
+      tpShowError("url-err", "That text contains a broken % sequence — a % must be followed by exactly two hex digits (like %20 for a space). Fix the sequence and try again.");
+    }
+  }
+  document.getElementById("url-encode").addEventListener("click", function () { action = "encode"; run(); });
+  document.getElementById("url-decode").addEventListener("click", function () { action = "decode"; run(); });
+  document.getElementById("url-text").addEventListener("input", run);
+  document.getElementById("url-copy").addEventListener("click", function () {
+    var out = document.getElementById("url-out");
+    out.select();
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(out.value);
+    else document.execCommand("copy");
+    this.textContent = "Copied!";
+    var btn = this;
+    setTimeout(function () { btn.textContent = "Copy result"; }, 1500);
+  });
+  document.getElementById("url-download").addEventListener("click", function () {
+    tpDownload(new Blob([document.getElementById("url-out").value], { type: "text/plain" }), "url-output.txt");
+  });
+  document.getElementById("url-clear").addEventListener("click", function () {
+    document.getElementById("url-text").value = ""; run();
+    document.getElementById("url-text").focus();
+  });
+  run();
+})();

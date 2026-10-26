@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run entirely in your browser. Your files never leave your device.
 
-ToolPixi at https://toolpixi.com/ offers 70 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 80 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,10 +14,10 @@ ToolPixi at https://toolpixi.com/ offers 70 free browser-based tools across 5 ca
 
 ## Categories
 
-- Image Tools: 16 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
-- PDF Tools: 9 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 23 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 10 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Image Tools: 22 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- PDF Tools: 10 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
+- Date & Time Tools: 24 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 12 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
 - Converters & Calculators: 12 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
@@ -92,6 +92,16 @@ ToolPixi at https://toolpixi.com/ offers 70 free browser-based tools across 5 ca
 - [Business Days Calculator](https://toolpixi.com/business-days-calculator/): Working days between two dates, weekends excluded.
 - [Pregnancy Due Date](https://toolpixi.com/pregnancy-due-date-calculator/): Due date, weeks along and trimester from your last period.
 - [Zodiac Sign](https://toolpixi.com/zodiac-sign-calculator/): Your star sign, element and date range from your birthday.
+- [GIF to PNG](https://toolpixi.com/gif-to-png/): Convert GIF images to PNG — the first frame becomes a still PNG with transparency kept.
+- [GIF to WebP](https://toolpixi.com/gif-to-webp/): Convert GIF images to WebP — the first frame becomes a small, sharp WebP still.
+- [AVIF to PNG](https://toolpixi.com/avif-to-png/): Convert AVIF images to PNG without losing transparency.
+- [AVIF to WebP](https://toolpixi.com/avif-to-webp/): Convert AVIF images to WebP — small files for websites.
+- [SVG to WebP](https://toolpixi.com/svg-to-webp/): Upload an SVG, choose the pixel size, download a crisp WebP with transparency kept.
+- [PDF to WebP](https://toolpixi.com/pdf-to-webp/): Convert each PDF page into a WebP image.
+- [HEIC to WebP](https://toolpixi.com/heic-to-webp/): Convert iPhone HEIC photos to WebP — small files for websites.
+- [Base64 Encoder & Decoder](https://toolpixi.com/base64-encoder-decoder/): Encode text to Base64 or decode it back — Unicode-safe, with a URL-safe option.
+- [URL Encoder & Decoder](https://toolpixi.com/url-encoder-decoder/): Encode or decode URLs and URL parts — component mode or full-URL mode.
+- [Time Zone Converter](https://toolpixi.com/time-zone-converter/): Convert a time between time zones — daylight saving handled automatically.
 
 ## Privacy promise
 

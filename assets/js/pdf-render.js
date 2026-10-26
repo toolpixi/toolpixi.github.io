@@ -174,6 +174,57 @@ async function tpRenderPageToPng(page, scale) {
   });
 })();
 
+// ==== DOM: PDF to WebP (transparent background preserved, lossy quality setting) ====
+async function tpRenderPageToWebp(page, scale, quality) {
+  var viewport = page.getViewport({ scale: scale });
+  var canvas = document.createElement("canvas");
+  canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
+  var ctx = canvas.getContext("2d");
+  // No white fill on purpose: WebP keeps a transparent background where the page has none.
+  await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+  return tpCanvasToBlob(canvas, "image/webp", quality);
+}
+(function () {
+  var panel = document.getElementById("pdf-to-webp");
+  if (!panel) return;
+  tpSetupPdfJs(panel.getAttribute("data-worker"));
+  var file = null;
+  tpDropzone("pw-drop", "pw-file", {
+    accept: "application/pdf", multiple: false,
+    onFiles: function (f) {
+      tpHideError("pw-err"); file = f[0]; tpFileList("pw-list", [file]);
+      document.getElementById("pw-go").disabled = false;
+    }
+  });
+  document.getElementById("pw-go").addEventListener("click", async function () {
+    tpHideError("pw-err");
+    if (!tpPdfJsReady()) { tpShowError("pw-err", "The PDF engine could not be loaded. Check your connection and refresh."); return; }
+    var btn = this; btn.disabled = true; btn.textContent = "Converting…";
+    var bar = document.getElementById("pw-progress"); bar.style.display = "block"; bar.value = 0;
+    try {
+      var buf = await file.arrayBuffer();
+      var doc = await pdfjsLib.getDocument({ data: buf }).promise;
+      var scale = parseFloat(document.getElementById("pw-scale").value);
+      var quality = parseFloat(document.getElementById("pw-quality").value);
+      for (var p = 1; p <= doc.numPages; p++) {
+        var page = await doc.getPage(p);
+        var blob = await tpRenderPageToWebp(page, scale, quality);
+        if (blob) tpDownload(blob, tpStripExt(file.name) + "-page-" + p + ".webp");
+        bar.value = Math.round((p / doc.numPages) * 100);
+        await new Promise(function (r) { setTimeout(r, 200); });
+      }
+      var res = document.getElementById("pw-result");
+      res.classList.add("show");
+      res.querySelector(".note").textContent = doc.numPages + " page image(s) downloaded as WebP. Your browser may ask permission for multiple downloads.";
+    } catch (e) {
+      tpShowError("pw-err", "This PDF could not be opened. It may be password-protected or damaged.");
+    } finally {
+      btn.disabled = false; btn.textContent = "Convert pages to WebP";
+      setTimeout(function () { bar.style.display = "none"; }, 600);
+    }
+  });
+})();
+
 (function () {
   var panel = document.getElementById("pdf-to-text");
   if (!panel) return;
