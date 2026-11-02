@@ -783,3 +783,78 @@ function tpBuildIco(frames) {
     if (icoBlob) tpDownload(icoBlob, tpStripExt(file.name) + ".ico");
   });
 })();
+
+// ==== DOM: Image Cropper ====
+(function () {
+  var panel = document.getElementById("img-cropper");
+  if (!panel) return;
+  var loaded = null, outBlob = null, outExt = "png";
+  function setBox(x, y, w, h) {
+    document.getElementById("cr-x").value = x;
+    document.getElementById("cr-y").value = y;
+    document.getElementById("cr-w").value = w;
+    document.getElementById("cr-h").value = h;
+  }
+  function applyPreset(kind) {
+    if (!loaded) return;
+    var W = loaded.img.naturalWidth, H = loaded.img.naturalHeight, w, h;
+    if (kind === "full") { setBox(0, 0, W, H); return; }
+    var parts = kind.split(":"), ratio = parseFloat(parts[0]) / parseFloat(parts[1]);
+    if (W / H > ratio) { h = H; w = Math.round(H * ratio); }
+    else { w = W; h = Math.round(W / ratio); }
+    setBox(Math.round((W - w) / 2), Math.round((H - h) / 2), w, h);
+  }
+  panel.querySelectorAll("[data-crop]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-crop]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on"); applyPreset(b.getAttribute("data-crop"));
+    });
+  });
+  tpDropzone("cr-drop", "cr-file", {
+    accept: "image/*", multiple: false,
+    onFiles: function (files) {
+      tpHideError("cr-err");
+      tpFileList("cr-list", files);
+      document.getElementById("cr-go").disabled = false;
+      tpLoadImageFromFile(files[0]).then(function (r) {
+        if (loaded) URL.revokeObjectURL(loaded.url);
+        loaded = r;
+        document.getElementById("cr-size").textContent =
+          "Original size: " + r.img.naturalWidth + " × " + r.img.naturalHeight + " px";
+        applyPreset("full");
+      }).catch(function (err) { tpShowError("cr-err", err.message); });
+    }
+  });
+  document.getElementById("cr-fmt").addEventListener("change", function (e) {
+    outExt = e.target.value === "image/jpeg" ? "jpg" : e.target.value === "image/webp" ? "webp" : "png";
+  });
+  document.getElementById("cr-go").addEventListener("click", async function () {
+    tpHideError("cr-err");
+    if (!loaded) { tpShowError("cr-err", "Please choose a photo first."); return; }
+    var W = loaded.img.naturalWidth, H = loaded.img.naturalHeight;
+    var x = Math.max(0, parseInt(document.getElementById("cr-x").value, 10) || 0);
+    var y = Math.max(0, parseInt(document.getElementById("cr-y").value, 10) || 0);
+    var w = parseInt(document.getElementById("cr-w").value, 10);
+    var h = parseInt(document.getElementById("cr-h").value, 10);
+    if (!w || !h || w < 1 || h < 1 || x >= W || y >= H) {
+      tpShowError("cr-err", "Enter a crop box inside the photo (width and height at least 1 px).");
+      return;
+    }
+    w = Math.min(w, W - x); h = Math.min(h, H - y);
+    setBox(x, y, w, h);
+    var canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h;
+    var ctx = canvas.getContext("2d");
+    var mime = document.getElementById("cr-fmt").value;
+    if (mime === "image/jpeg") { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); }
+    ctx.drawImage(loaded.img, x, y, w, h, 0, 0, w, h);
+    var blob = await tpCanvasToBlob(canvas, mime, 0.92);
+    if (!blob) { tpShowError("cr-err", "This browser cannot encode that format. Try PNG."); return; }
+    outBlob = blob;
+    document.getElementById("cr-new").textContent = "Cropped to " + w + " × " + h + " px.";
+    document.getElementById("cr-preview").src = URL.createObjectURL(blob);
+    document.getElementById("cr-result").classList.add("show");
+  });
+  document.getElementById("cr-download").addEventListener("click", function () {
+    if (outBlob) tpDownload(outBlob, "cropped." + outExt);
+  });
+})();

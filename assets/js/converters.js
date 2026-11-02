@@ -620,3 +620,50 @@ function tpSalary(amount, from, hoursPerWeek, daysPerWeek) {
   document.getElementById("sc-go").addEventListener("click", render);
   render();
 })();
+
+// ==== DOM: VAT calculator ====
+(function () {
+  var panel = document.getElementById("vat-calc");
+  if (!panel) return;
+  var mode = "add", rate = 20;
+  function fmt(n) { return tpFmtNum(Math.round(n * 100) / 100); }
+  function run() {
+    tpHideError("vat-err");
+    var amt = parseFloat(document.getElementById("vat-amount").value);
+    if (isNaN(amt) || amt < 0) {
+      document.getElementById("vat-excl").textContent = "—";
+      document.getElementById("vat-tax").textContent = "—";
+      document.getElementById("vat-total").textContent = "—";
+      return;
+    }
+    var r = rate / 100, excl, tax, total;
+    if (mode === "add") { excl = amt; tax = amt * r; total = amt + tax; }
+    else { total = amt; excl = amt / (1 + r); tax = amt - excl; }
+    document.getElementById("vat-excl").textContent = fmt(excl);
+    document.getElementById("vat-tax").textContent = fmt(tax);
+    document.getElementById("vat-total").textContent = fmt(total);
+    document.getElementById("vat-result").classList.add("show");
+  }
+  panel.querySelectorAll("[data-vatmode]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-vatmode]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on"); mode = b.getAttribute("data-vatmode"); run();
+    });
+  });
+  panel.querySelectorAll("[data-vat]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-vat]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      var v = b.getAttribute("data-vat");
+      var custom = document.getElementById("vat-custom");
+      if (v === "-1") { custom.style.display = "block"; custom.focus(); }
+      else { custom.style.display = "none"; rate = parseFloat(v); run(); }
+    });
+  });
+  document.getElementById("vat-custom").addEventListener("input", function (e) {
+    var v = parseFloat(e.target.value);
+    if (!isNaN(v) && v >= 0) { rate = v; run(); }
+  });
+  document.getElementById("vat-amount").addEventListener("input", run);
+  run();
+})();

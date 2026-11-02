@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run entirely in your browser. Your files never leave your device.
 
-ToolPixi at https://toolpixi.com/ offers 80 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 90 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,11 +14,11 @@ ToolPixi at https://toolpixi.com/ offers 80 free browser-based tools across 5 ca
 
 ## Categories
 
-- Image Tools: 22 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- Image Tools: 26 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 10 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 24 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Date & Time Tools: 29 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
 - Text & Generator Tools: 12 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 12 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Converters & Calculators: 13 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -102,6 +102,16 @@ ToolPixi at https://toolpixi.com/ offers 80 free browser-based tools across 5 ca
 - [Base64 Encoder & Decoder](https://toolpixi.com/base64-encoder-decoder/): Encode text to Base64 or decode it back — Unicode-safe, with a URL-safe option.
 - [URL Encoder & Decoder](https://toolpixi.com/url-encoder-decoder/): Encode or decode URLs and URL parts — component mode or full-URL mode.
 - [Time Zone Converter](https://toolpixi.com/time-zone-converter/): Convert a time between time zones — daylight saving handled automatically.
+- [BMP to JPG](https://toolpixi.com/bmp-to-jpg/): Convert BMP images to JPG — smaller files that upload anywhere.
+- [BMP to PNG](https://toolpixi.com/bmp-to-png/): Convert BMP images to PNG with full quality and transparency kept.
+- [BMP to WebP](https://toolpixi.com/bmp-to-webp/): Convert BMP images to WebP — small, web-ready files.
+- [Days Until Mother's Day](https://toolpixi.com/days-until-mothers-day/): A live countdown to Mother's Day — the second Sunday of May.
+- [Days Until Father's Day](https://toolpixi.com/days-until-fathers-day/): A live countdown to Father's Day — the third Sunday of June.
+- [Days Until Independence Day](https://toolpixi.com/days-until-independence-day/): A live countdown to July 4 — US Independence Day.
+- [Days Until Black Friday](https://toolpixi.com/days-until-black-friday/): A live countdown to Black Friday — the day after US Thanksgiving.
+- [VAT Calculator](https://toolpixi.com/vat-calculator/): Add or remove VAT from a price — with common rates and a custom rate.
+- [Image Cropper](https://toolpixi.com/image-cropper/): Crop a photo to any size or aspect ratio — square, 16:9, 4:3 or custom.
+- [Time Duration Calculator](https://toolpixi.com/time-duration-calculator/): Hours and minutes between two times, or add time to a clock time.
 
 ## Privacy promise
 

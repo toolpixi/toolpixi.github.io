@@ -205,6 +205,35 @@ function tpCountdownCells(prefix, target) {
     target = new Date(y, 1, 14);
     if (target < tpStartOfDay(now)) target = new Date(y + 1, 1, 14);
     document.getElementById("du-date-label").textContent = "Valentine's Day — " + tpFmtDate(target);
+  } else if (kind === "mothers-day" || kind === "fathers-day" || kind === "black-friday") {
+    // Nth weekday of a month: mothers = 2nd Sunday of May, fathers = 3rd Sunday of June,
+    // black-friday = day after the 4th Thursday of November.
+    function nthWeekday(yr, month, weekday, n) {
+      var first = new Date(yr, month, 1);
+      var day = 1 + ((weekday - first.getDay() + 7) % 7) + (n - 1) * 7;
+      return new Date(yr, month, day);
+    }
+    if (kind === "mothers-day") {
+      target = nthWeekday(y, 4, 0, 2);
+      if (target < tpStartOfDay(now)) target = nthWeekday(y + 1, 4, 0, 2);
+      document.getElementById("du-date-label").textContent = "Mother's Day — " + tpFmtDate(target);
+    } else if (kind === "fathers-day") {
+      target = nthWeekday(y, 5, 0, 3);
+      if (target < tpStartOfDay(now)) target = nthWeekday(y + 1, 5, 0, 3);
+      document.getElementById("du-date-label").textContent = "Father's Day — " + tpFmtDate(target);
+    } else {
+      target = nthWeekday(y, 10, 4, 4);
+      target.setDate(target.getDate() + 1); // day after Thanksgiving
+      if (target < tpStartOfDay(now)) {
+        target = nthWeekday(y + 1, 10, 4, 4);
+        target.setDate(target.getDate() + 1);
+      }
+      document.getElementById("du-date-label").textContent = "Black Friday — " + tpFmtDate(target);
+    }
+  } else if (kind === "independence-day") {
+    target = new Date(y, 6, 4);
+    if (target < tpStartOfDay(now)) target = new Date(y + 1, 6, 4);
+    document.getElementById("du-date-label").textContent = "Independence Day — " + tpFmtDate(target);
   }
   if (target) tpCountdownCells("du", target);
 })();
@@ -779,4 +808,82 @@ function tpFmtGap(min) {
     document.getElementById(id).addEventListener("change", function () { run(true); });
   });
   run(true);
+})();
+
+// ==== DOM: Time Duration Calculator ====
+(function () {
+  var panel = document.getElementById("time-duration");
+  if (!panel) return;
+  function parseHM(str) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec(str || "");
+    if (!m) return null;
+    var h = parseInt(m[1], 10), mi = parseInt(m[2], 10);
+    if (h > 23 || mi > 59) return null;
+    return h * 60 + mi;
+  }
+  function fmtDur(totalMin) {
+    var h = Math.floor(totalMin / 60), m = totalMin % 60;
+    return h + " hour" + (h === 1 ? "" : "s") + " " + m + " minute" + (m === 1 ? "" : "s");
+  }
+  function fmtClock(totalMin) {
+    var t = ((totalMin % 1440) + 1440) % 1440;
+    var h = Math.floor(t / 60), m = t % 60;
+    var ap = h >= 12 ? "PM" : "AM", h12 = h % 12 === 0 ? 12 : h % 12;
+    return h12 + ":" + (m < 10 ? "0" : "") + m + " " + ap;
+  }
+  function runDur() {
+    tpHideError("td-err");
+    var s = parseHM(document.getElementById("td-start").value);
+    var e = parseHM(document.getElementById("td-end").value);
+    if (s === null || e === null) { tpShowError("td-err", "Enter both times."); return; }
+    var nextDay = document.getElementById("td-nextday").checked;
+    var diff = e - s;
+    var overnight = nextDay || diff < 0;
+    if (nextDay) diff = e - s + 1440;
+    else if (diff < 0) diff += 1440;
+    if (diff === 0 && !nextDay) {
+      document.getElementById("td-dur").textContent = "0 hours 0 minutes";
+      document.getElementById("td-mins").textContent = "0 minutes";
+      document.getElementById("td-note").textContent = "Start and end are the same time.";
+    } else {
+      document.getElementById("td-dur").textContent = fmtDur(diff);
+      document.getElementById("td-mins").textContent = diff + " minutes";
+      document.getElementById("td-note").textContent = overnight
+        ? "This span crosses midnight (end time is the next day)."
+        : "Both times are on the same day.";
+    }
+    document.getElementById("td-result").classList.add("show");
+  }
+  var dir = 1;
+  function runAdd() {
+    tpHideError("ta-err");
+    var s = parseHM(document.getElementById("ta-start").value);
+    var h = parseFloat(document.getElementById("ta-hours").value);
+    var m = parseFloat(document.getElementById("ta-mins").value);
+    if (s === null || isNaN(h) || isNaN(m) || h < 0 || m < 0 || m > 59) {
+      tpShowError("ta-err", "Enter a start time, hours (0 or more) and minutes (0–59).");
+      return;
+    }
+    var total = s + dir * (Math.round(h * 60) + Math.round(m));
+    var dayShift = Math.floor(total / 1440);
+    document.getElementById("ta-out").textContent = fmtClock(total);
+    document.getElementById("ta-note").textContent = dayShift === 0 ? "Same day."
+      : dayShift > 0 ? dayShift + " day" + (dayShift === 1 ? "" : "s") + " later."
+      : Math.abs(dayShift) + " day" + (dayShift === -1 ? "" : "s") + " earlier.";
+    document.getElementById("ta-result").classList.add("show");
+  }
+  panel.querySelectorAll("[data-tadir]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      panel.querySelectorAll("[data-tadir]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on"); dir = parseInt(b.getAttribute("data-tadir"), 10); runAdd();
+    });
+  });
+  ["td-start", "td-end"].forEach(function (id) {
+    document.getElementById(id).addEventListener("change", runDur);
+  });
+  document.getElementById("td-nextday").addEventListener("change", runDur);
+  ["ta-start", "ta-hours", "ta-mins"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", runAdd);
+  });
+  runDur(); runAdd();
 })();
