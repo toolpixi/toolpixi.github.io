@@ -87,7 +87,7 @@ a.menu-cat:hover{color:var(--primary);text-decoration:none}
 .cat.popular h2::before{content:"★";color:var(--accent);margin-right:7px}
 .cat .cat-sub{color:var(--muted);font-size:14.5px;margin:0 0 14px}
 .grid{display:grid;grid-template-columns:1fr;gap:12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;
+.card{content-visibility:auto;contain-intrinsic-size:auto 120px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;
   display:flex;gap:13px;align-items:flex-start;box-shadow:var(--shadow);transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease}
 .card:hover{transform:translateY(-2px);border-color:#93cdbd;box-shadow:0 2px 4px rgba(10,60,52,.06),0 14px 30px -14px rgba(13,115,119,.35);text-decoration:none}
 .card .ic{width:52px;height:52px;border-radius:15px;flex:none;display:flex;align-items:center;justify-content:center;
