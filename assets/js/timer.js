@@ -159,3 +159,69 @@ function tpRandomInts(min, max, count, unique) {
   document.getElementById("rng-go").addEventListener("click", run);
   run();
 })();
+
+/* ---- Stopwatch ---- */
+(function () {
+  var panel = document.getElementById("stopwatch");
+  if (!panel) return;
+  var face = document.getElementById("sw-face"), toggle = document.getElementById("sw-toggle"),
+      lapBtn = document.getElementById("sw-lap"), resetBtn = document.getElementById("sw-reset"),
+      lapsEl = document.getElementById("sw-laps");
+  var running = false, startAt = 0, elapsedBefore = 0, raf = 0, lapCount = 0, lastLapTotal = 0;
+  function pad(v, n) { return ("000" + v).slice(-n); }
+  function fmt(ms) {
+    return pad(Math.floor(ms / 60000), 2) + ":" + pad(Math.floor(ms / 1000) % 60, 2) + "." + pad(Math.floor(ms % 1000), 3);
+  }
+  function now() { return elapsedBefore + (running ? performance.now() - startAt : 0); }
+  function tick() {
+    face.textContent = fmt(now());
+    if (running) raf = requestAnimationFrame(tick);
+  }
+  toggle.addEventListener("click", function () {
+    if (running) {
+      elapsedBefore = now();
+      running = false;
+      cancelAnimationFrame(raf);
+      face.textContent = fmt(elapsedBefore);
+      toggle.textContent = "Resume";
+      lapBtn.disabled = true;
+    } else {
+      startAt = performance.now();
+      running = true;
+      tick();
+      toggle.textContent = "Pause";
+      lapBtn.disabled = false;
+      resetBtn.disabled = false;
+    }
+  });
+  lapBtn.addEventListener("click", function () {
+    if (!running) return;
+    var total = now();
+    lapCount++;
+    var li = document.createElement("li");
+    var n = document.createElement("span");
+    n.className = "lap-n";
+    n.textContent = "Lap " + lapCount;
+    var mid = document.createElement("span");
+    mid.textContent = "+" + fmt(total - lastLapTotal);
+    var tot = document.createElement("span");
+    tot.textContent = fmt(total);
+    li.appendChild(n);
+    li.appendChild(mid);
+    li.appendChild(tot);
+    lapsEl.insertBefore(li, lapsEl.firstChild);
+    lastLapTotal = total;
+  });
+  resetBtn.addEventListener("click", function () {
+    running = false;
+    cancelAnimationFrame(raf);
+    elapsedBefore = 0;
+    lapCount = 0;
+    lastLapTotal = 0;
+    face.textContent = "00:00.000";
+    lapsEl.innerHTML = "";
+    toggle.textContent = "Start";
+    lapBtn.disabled = true;
+    resetBtn.disabled = true;
+  });
+})();

@@ -305,3 +305,34 @@ pre.out.show{display:block}
 #dice-roller .note{text-align:center}
 #dr-history{list-style:none;margin:10px 0 0;padding:0;max-height:220px;overflow:auto}
 #dr-history li{padding:7px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-size:14px;background:#fff}
+
+/* Favourites + Recently Used (localStorage) */
+.card{position:relative;padding-right:46px}
+.fav-star{position:absolute;top:8px;right:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  font-size:21px;line-height:1;color:#b9cdc4;border-radius:50%;cursor:pointer;z-index:2}
+.fav-star:hover,.fav-star:focus-visible{background:#eef7f2;color:var(--primary);outline:none}
+.fav-star.on{color:#f5a623}
+.fav-row{display:flex;justify-content:flex-end;margin:18px 0 -4px}
+.fav-toggle{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:999px;
+  padding:9px 18px;font-weight:700;font-size:14.5px;cursor:pointer;color:var(--muted);font-family:inherit}
+.fav-toggle:hover{border-color:var(--primary);color:var(--primary-dark)}
+.fav-toggle.on{color:#9a6d0d;border-color:#f0c96a;background:#fffaf0}
+.fav-toggle .fs-glyph{font-size:18px;line-height:1}
+.personal-sec{margin:30px 0 0}
+.personal-sec h2{font-size:20px;margin:0 0 2px;letter-spacing:-.01em}
+/* New-tools components */
+.hash-row{display:flex;gap:8px;align-items:stretch}
+.hash-row input{flex:1;min-width:0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px}
+.swatch{height:96px;border-radius:14px;border:1px solid var(--line);margin-bottom:6px;background:#0d7377}
+.md-preview{border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;background:#fff;overflow:auto}
+.md-preview table{border-collapse:collapse;margin:10px 0}
+.md-preview th,.md-preview td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+.md-preview code{background:#f2f5f3;border-radius:6px;padding:1px 5px;font-size:.92em}
+.md-preview pre{background:#0f2422;color:#e6f2ee;border-radius:10px;padding:12px;overflow:auto}
+.md-preview pre code{background:transparent;color:inherit;padding:0}
+.md-preview blockquote{border-left:3px solid var(--primary);margin:10px 0;padding:2px 12px;color:var(--muted)}
+.md-preview img{max-width:100%}
+.lap-list{margin:16px 0 0;padding:0;list-style:none}
+.lap-list li{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;background:#f2f9f5;
+  border:1px solid var(--line);border-radius:10px;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.lap-list .lap-n{font-weight:700;color:var(--muted)}

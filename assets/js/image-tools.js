@@ -858,3 +858,168 @@ function tpBuildIco(frames) {
     if (outBlob) tpDownload(outBlob, "cropped." + outExt);
   });
 })();
+
+/* ---- Image → Base64 ---- */
+(function () {
+  var panel = document.getElementById("img-b64");
+  if (!panel) return;
+  tpDropzone("b64-drop", "b64-file", {
+    accept: "image/*", multiple: false,
+    onFiles: function (files) {
+    tpHideError("b64-err");
+    var f = files && files[0];
+    if (!f) return;
+    if (!/^image\//.test(f.type) && !/\.svg$/i.test(f.name)) {
+      tpShowError("b64-err", "That file is not an image — pick a PNG, JPG, WebP, GIF or SVG.");
+      return;
+    }
+    tpFileList("b64-list", [f]);
+    var reader = new FileReader();
+    reader.onload = function () {
+      var uri = String(reader.result || "");
+      var comma = uri.indexOf(",");
+      document.getElementById("b64-datauri").value = uri;
+      document.getElementById("b64-raw").value = comma >= 0 ? uri.slice(comma + 1) : uri;
+      document.getElementById("b64-meta").textContent =
+        tpFormatBytes(f.size) + " image → " + tpFormatBytes(uri.length) + " of text";
+      document.getElementById("b64-result").hidden = false;
+    };
+    reader.onerror = function () { tpShowError("b64-err", "That image could not be read."); };
+    reader.readAsDataURL(f);
+    }
+  });
+  document.getElementById("b64-copy-uri").addEventListener("click", function () {
+    var v = document.getElementById("b64-datauri").value;
+    if (v) tpCopyWithFeedback(this, v);
+  });
+  document.getElementById("b64-copy-raw").addEventListener("click", function () {
+    var v = document.getElementById("b64-raw").value;
+    if (v) tpCopyWithFeedback(this, v);
+  });
+})();
+
+/* ---- Base64 → Image ---- */
+(function () {
+  var panel = document.getElementById("b64-img");
+  if (!panel) return;
+  var inp = document.getElementById("b64i-text"),
+      result = document.getElementById("b64i-result"),
+      img = document.getElementById("b64i-preview"),
+      meta = document.getElementById("b64i-meta");
+  var currentSrc = "";
+  document.getElementById("b64i-go").addEventListener("click", function () {
+    tpHideError("b64i-err");
+    result.classList.remove("show");
+    var raw = inp.value.replace(/\s+/g, "");
+    if (!raw) { tpShowError("b64i-err", "Paste a Base64 string or data URI first."); return; }
+    var src;
+    if (/^data:/i.test(raw)) {
+      src = raw;
+    } else {
+      if (!/^[A-Za-z0-9+/=]+$/.test(raw)) {
+        tpShowError("b64i-err", "That does not look like Base64 — it contains characters outside the Base64 alphabet.");
+        return;
+      }
+      try { atob(raw); }
+      catch (e) {
+        tpShowError("b64i-err", "That string could not be decoded — a character may be missing. Copy the complete string and try again.");
+        return;
+      }
+      src = "data:image/png;base64," + raw;
+    }
+    var probe = new Image();
+    probe.onload = function () {
+      currentSrc = src;
+      img.src = src;
+      meta.textContent = probe.naturalWidth + " × " + probe.naturalHeight + " pixels · decoded entirely on your device";
+      result.classList.add("show");
+    };
+    probe.onerror = function () {
+      tpShowError("b64i-err", "Those bytes decoded, but they are not a picture this browser can display — the string may not be an image, or its type prefix may be wrong.");
+    };
+    probe.src = src;
+  });
+  document.getElementById("b64i-download").addEventListener("click", function () {
+    if (!currentSrc) return;
+    var im = new Image();
+    im.onload = function () {
+      var c = document.createElement("canvas");
+      c.width = im.naturalWidth;
+      c.height = im.naturalHeight;
+      c.getContext("2d").drawImage(im, 0, 0);
+      if (c.toBlob) c.toBlob(function (b) { if (b) tpDownload(b, "decoded-image.png"); }, "image/png");
+      else tpDownload(c.toDataURL("image/png"), "decoded-image.png");
+    };
+    im.src = currentSrc;
+  });
+})();
+
+/* ---- Image Watermark ---- */
+(function () {
+  var panel = document.getElementById("img-watermark");
+  if (!panel) return;
+  var canvas = document.getElementById("wm-canvas"), ctx = canvas.getContext("2d"),
+      editor = document.getElementById("wm-editor");
+  var srcImg = null, srcName = "image";
+  function draw() {
+    if (!srcImg) return;
+    canvas.width = srcImg.naturalWidth;
+    canvas.height = srcImg.naturalHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(srcImg, 0, 0);
+    var text = document.getElementById("wm-text").value;
+    if (!text) return;
+    var sizePct = parseFloat(document.getElementById("wm-size").value) || 4;
+    var fontPx = Math.max(10, Math.round(canvas.width * sizePct / 100));
+    var opacity = (parseFloat(document.getElementById("wm-opacity").value) || 55) / 100;
+    var pos = document.getElementById("wm-pos").value;
+    ctx.font = "700 " + fontPx + "px system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+    ctx.globalAlpha = opacity;
+    var pad = Math.round(fontPx * 0.8), tw = ctx.measureText(text).width, x, y;
+    if (pos === "br") { x = canvas.width - tw - pad; y = canvas.height - pad; }
+    else if (pos === "bl") { x = pad; y = canvas.height - pad; }
+    else if (pos === "tr") { x = canvas.width - tw - pad; y = pad + fontPx; }
+    else if (pos === "tl") { x = pad; y = pad + fontPx; }
+    else { x = (canvas.width - tw) / 2; y = canvas.height / 2; }
+    ctx.lineWidth = Math.max(2, fontPx / 12);
+    ctx.strokeStyle = "rgba(0,0,0,0.55)";
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(text, x, y);
+    ctx.globalAlpha = 1;
+  }
+  function labels() {
+    document.getElementById("wm-opacity-val").textContent = document.getElementById("wm-opacity").value + "%";
+    document.getElementById("wm-size-val").textContent = document.getElementById("wm-size").value + "%";
+  }
+  tpDropzone("wm-drop", "wm-file", {
+    accept: "image/*", multiple: false,
+    onFiles: function (files) {
+    tpHideError("wm-err");
+    var f = files && files[0];
+    if (!f) return;
+    if (!/^image\//.test(f.type)) {
+      tpShowError("wm-err", "That file is not an image — pick a photo to watermark.");
+      return;
+    }
+    srcName = f.name.replace(/\.[^.]+$/, "") || "image";
+    var im = new Image();
+    im.onload = function () {
+      srcImg = im;
+      editor.hidden = false;
+      labels();
+      draw();
+    };
+    im.onerror = function () { tpShowError("wm-err", "That image could not be opened."); };
+    im.src = URL.createObjectURL(f);
+    }
+  });
+  ["wm-text", "wm-pos", "wm-opacity", "wm-size"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", function () { labels(); draw(); });
+  });
+  document.getElementById("wm-download").addEventListener("click", function () {
+    if (!srcImg) return;
+    if (canvas.toBlob) canvas.toBlob(function (b) { if (b) tpDownload(b, srcName + "-watermarked.png"); }, "image/png");
+    else tpDownload(canvas.toDataURL("image/png"), srcName + "-watermarked.png");
+  });
+})();

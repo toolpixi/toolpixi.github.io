@@ -1,8 +1,8 @@
 # ToolPixi
 
-> ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run entirely in your browser. Your files never leave your device.
+> ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 90 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 106 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,11 +14,11 @@ ToolPixi at https://toolpixi.com/ offers 90 free browser-based tools across 5 ca
 
 ## Categories
 
-- Image Tools: 26 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- Image Tools: 29 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 10 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 29 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 12 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 13 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Date & Time Tools: 30 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 23 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Converters & Calculators: 14 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -112,6 +112,22 @@ ToolPixi at https://toolpixi.com/ offers 90 free browser-based tools across 5 ca
 - [VAT Calculator](https://toolpixi.com/vat-calculator/): Add or remove VAT from a price — with common rates and a custom rate.
 - [Image Cropper](https://toolpixi.com/image-cropper/): Crop a photo to any size or aspect ratio — square, 16:9, 4:3 or custom.
 - [Time Duration Calculator](https://toolpixi.com/time-duration-calculator/): Hours and minutes between two times, or add time to a clock time.
+- [UUID Generator](https://toolpixi.com/uuid-generator/): Generate random UUIDs (v4) — one at a time or 100 in a bulk list.
+- [Hash Generator](https://toolpixi.com/hash-generator/): MD5, SHA-1, SHA-256 and SHA-512 hashes of any text, as you type.
+- [Color Converter](https://toolpixi.com/color-converter/): HEX, RGB and HSL colour values converted live, with a preview swatch.
+- [Slug Generator](https://toolpixi.com/slug-generator/): Turn a title or headline into a clean URL slug in one tap.
+- [Image to Base64](https://toolpixi.com/image-to-base64/): Convert a PNG, JPG or other image into a Base64 string or data URI.
+- [Base64 to Image](https://toolpixi.com/base64-to-image/): Paste a Base64 string or data URI and get the picture back as a PNG.
+- [Remove Duplicate Lines](https://toolpixi.com/remove-duplicate-lines/): Paste a list and strip out repeated lines — first occurrence kept, order preserved.
+- [Sort Lines](https://toolpixi.com/sort-lines/): Alphabetize lines A–Z or Z–A, sort by length, or shuffle them.
+- [Reverse Text](https://toolpixi.com/reverse-text/): Flip text backwards — by characters, by words or by lines.
+- [Online Stopwatch](https://toolpixi.com/stopwatch/): A precise stopwatch with laps and millisecond timing.
+- [JSON Minifier](https://toolpixi.com/json-minifier/): Minify JSON to a single compact line — validated as it compresses.
+- [CSV to JSON](https://toolpixi.com/csv-to-json/): Turn CSV rows into a JSON array — headers become keys.
+- [JSON to CSV](https://toolpixi.com/json-to-csv/): Convert a JSON array of objects into a CSV file you can open in Excel.
+- [Markdown to HTML](https://toolpixi.com/markdown-to-html/): Write Markdown and see clean HTML — live preview plus the raw code.
+- [Image Watermark](https://toolpixi.com/image-watermark/): Add a text watermark to a photo — position, opacity and size are yours.
+- [Text to Speech](https://toolpixi.com/text-to-speech/): Listen to any text read aloud — pick a voice, set the speed and pitch.
 
 ## Privacy promise
 

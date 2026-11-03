@@ -667,3 +667,85 @@ function tpSalary(amount, from, hoursPerWeek, daysPerWeek) {
   document.getElementById("vat-amount").addEventListener("input", run);
   run();
 })();
+
+/* ---- Color Converter (HEX <-> RGB <-> HSL) ---- */
+(function () {
+  var panel = document.getElementById("color-converter");
+  if (!panel) return;
+  function el(id) { return document.getElementById(id); }
+  var hexEl = el("col-hex"), rEl = el("col-r"), gEl = el("col-g"), bEl = el("col-b"),
+      hEl = el("col-h"), sEl = el("col-s"), lEl = el("col-l"), sw = el("col-swatch");
+  function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+  function toHex(r, g, b) {
+    return "#" + [r, g, b].map(function (v) {
+      return ("0" + clamp(Math.round(v), 0, 255).toString(16)).slice(-2);
+    }).join("");
+  }
+  function rgbToHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b), h = 0, s = 0, l = (max + min) / 2;
+    if (max !== min) {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+    }
+    return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
+  }
+  function hslToRgb(h, s, l) {
+    h = (((h % 360) + 360) % 360) / 360;
+    s = clamp(s, 0, 100) / 100;
+    l = clamp(l, 0, 100) / 100;
+    if (s === 0) { var v = Math.round(l * 255); return [v, v, v]; }
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+    function hue(t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    }
+    return [Math.round(hue(h + 1 / 3) * 255), Math.round(hue(h) * 255), Math.round(hue(h - 1 / 3) * 255)];
+  }
+  function render(r, g, b, fromHex) {
+    var hsl = rgbToHsl(r, g, b);
+    if (!fromHex) hexEl.value = toHex(r, g, b);
+    rEl.value = r; gEl.value = g; bEl.value = b;
+    hEl.value = hsl[0]; sEl.value = hsl[1]; lEl.value = hsl[2];
+    sw.style.background = toHex(r, g, b);
+    el("col-css-rgb").value = "rgb(" + r + ", " + g + ", " + b + ")";
+    el("col-css-hsl").value = "hsl(" + hsl[0] + ", " + hsl[1] + "%, " + hsl[2] + "%)";
+    tpHideError("col-err");
+  }
+  function fromHexInput() {
+    var v = hexEl.value.replace(/^\s+|\s+$/g, "").replace(/^#/, "");
+    if (/^[0-9a-fA-F]{3}$/.test(v)) v = v.split("").map(function (c) { return c + c; }).join("");
+    if (!/^[0-9a-fA-F]{6}$/.test(v)) {
+      tpShowError("col-err", "Enter a HEX colour like #0d7377 (3 or 6 hex digits).");
+      return;
+    }
+    render(parseInt(v.slice(0, 2), 16), parseInt(v.slice(2, 4), 16), parseInt(v.slice(4, 6), 16), true);
+  }
+  function fromRgb() {
+    render(clamp(parseInt(rEl.value, 10) || 0, 0, 255),
+           clamp(parseInt(gEl.value, 10) || 0, 0, 255),
+           clamp(parseInt(bEl.value, 10) || 0, 0, 255), false);
+  }
+  function fromHsl() {
+    var rgb = hslToRgb(parseFloat(hEl.value) || 0, parseFloat(sEl.value) || 0, parseFloat(lEl.value) || 0);
+    render(rgb[0], rgb[1], rgb[2], false);
+  }
+  hexEl.addEventListener("input", fromHexInput);
+  [rEl, gEl, bEl].forEach(function (e) { e.addEventListener("input", fromRgb); });
+  [hEl, sEl, lEl].forEach(function (e) { e.addEventListener("input", fromHsl); });
+  panel.querySelectorAll("[data-col-copy]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var f = el(btn.getAttribute("data-col-copy"));
+      if (f && f.value) tpCopyWithFeedback(btn, f.value);
+    });
+  });
+  fromHexInput();
+})();

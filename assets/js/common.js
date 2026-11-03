@@ -59,3 +59,37 @@ function tpFileList(elId, files, extra) {
       '</span><span class="sz">' + right + "</span></div>";
   }).join("");
 }
+
+/* Copy text to the clipboard with "Copied!" button feedback (newer tools). */
+function tpCopyWithFeedback(btn, text) {
+  function done() {
+    if (!btn) return;
+    var orig = btn.getAttribute("data-orig") || btn.textContent;
+    btn.setAttribute("data-orig", orig);
+    btn.textContent = "Copied!";
+    setTimeout(function () { btn.textContent = orig; }, 1500);
+  }
+  function fallback() {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { if (document.execCommand("copy")) done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, fallback);
+  } else fallback();
+}
+
+/* Allow only web-safe link targets: http(s), mailto, tel, and relative/anchor
+   URLs pass through; any other scheme (javascript:, data:, ...) becomes "#". */
+function tpSanitizeHref(u) {
+  u = String(u === null || u === undefined ? "" : u).replace(/^\s+|\s+$/g, "");
+  if (/^(https?:|mailto:|tel:)/i.test(u)) return u;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(u)) return "#";
+  return u;
+}
