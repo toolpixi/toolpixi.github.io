@@ -1373,3 +1373,72 @@ function tpMarkdownToHtml(src) {
     pauseBtn.textContent = "Pause";
   });
 })();
+
+// ==== PURE: morse code ====
+var TP_MORSE = { A: ".-", B: "-...", C: "-.-.", D: "-..", E: ".", F: "..-.", G: "--.", H: "....", I: "..", J: ".---", K: "-.-", L: ".-..", M: "--", N: "-.", O: "---", P: ".--.", Q: "--.-", R: ".-.", S: "...", T: "-", U: "..-", V: "...-", W: ".--", X: "-..-", Y: "-.--", Z: "--..", "1": ".----", "2": "..---", "3": "...--", "4": "....-", "5": ".....", "6": "-....", "7": "--...", "8": "---..", "9": "----.", "0": "-----", ".": ".-.-.-", ",": "--..--", "?": "..--..", "'": ".----.", "!": "-.-.--", "/": "-..-.", "(": "-.--.", ")": "-.--.-", "&": ".-...", ":": "---...", ";": "-.-.-.", "=": "-...-", "+": ".-.-.", "-": "-....-", "_": "..--.-", "$": "...-..-", "@": ".--.-." };
+var TP_MORSE_REV = {};
+for (var mk in TP_MORSE) { TP_MORSE_REV[TP_MORSE[mk]] = mk; }
+function tpTextToMorse(text) {
+  var words = (text || "").toUpperCase().split(/\s+/).filter(Boolean);
+  return words.map(function (w) {
+    return w.split("").map(function (ch) { return TP_MORSE[ch] || ""; }).filter(Boolean).join(" ");
+  }).filter(Boolean).join(" / ");
+}
+function tpMorseToText(code) {
+  var words = (code || "").replace(/\|/g, "/").split("/").map(function (s) { return s.trim(); }).filter(Boolean);
+  return words.map(function (w) {
+    return w.split(/\s+/).map(function (tok) { return TP_MORSE_REV[tok] || ""; }).join("");
+  }).join(" ");
+}
+
+// ==== DOM: morse code translator ====
+(function () {
+  var panel = document.getElementById("morse-code");
+  if (!panel) return;
+  var textEl = document.getElementById("mc-text"), morseEl = document.getElementById("mc-morse"), busy = false;
+  function fromText() { if (busy) return; busy = true; morseEl.value = tpTextToMorse(textEl.value); busy = false; }
+  function fromMorse() { if (busy) return; busy = true; textEl.value = tpMorseToText(morseEl.value); busy = false; }
+  textEl.addEventListener("input", fromText);
+  morseEl.addEventListener("input", fromMorse);
+  document.getElementById("mc-copy").addEventListener("click", function () {
+    if (morseEl.value) tpCopyWithFeedback(this, morseEl.value);
+  });
+  var ctx = null, playing = false;
+  document.getElementById("mc-play").addEventListener("click", function () {
+    var code = morseEl.value.trim();
+    if (!code || playing) return;
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === "suspended") ctx.resume();
+    } catch (e) {
+      tpShowError("mc-err", "This browser could not start audio playback — the translation above still works.");
+      return;
+    }
+    tpHideError("mc-err");
+    playing = true;
+    var btn = this; btn.textContent = "Playing…";
+    var unit = 0.09, t = ctx.currentTime + 0.06;
+    function beep(dur) {
+      var osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.frequency.value = 620;
+      osc.connect(gain); gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.22, t + 0.012);
+      gain.gain.setValueAtTime(0.22, t + Math.max(0.012, dur - 0.012));
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      osc.start(t); osc.stop(t + dur);
+      t += dur;
+    }
+    code.replace(/\//g, " / ").split(/\s+/).filter(Boolean).forEach(function (tok) {
+      if (tok === "/") { t += unit * 7; return; }
+      for (var i = 0; i < tok.length; i++) {
+        if (tok[i] === ".") beep(unit);
+        else if (tok[i] === "-") beep(unit * 3);
+        if (i < tok.length - 1) t += unit;
+      }
+      t += unit * 3;
+    });
+    setTimeout(function () { playing = false; btn.textContent = "▶ Play the Morse"; }, (t - ctx.currentTime) * 1000 + 60);
+  });
+  fromText();
+})();

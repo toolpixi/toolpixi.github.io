@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 106 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 110 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -16,9 +16,9 @@ ToolPixi at https://toolpixi.com/ offers 106 free browser-based tools across 5 c
 
 - Image Tools: 29 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 10 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 30 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 23 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 14 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Date & Time Tools: 31 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 24 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Converters & Calculators: 16 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -128,6 +128,10 @@ ToolPixi at https://toolpixi.com/ offers 106 free browser-based tools across 5 c
 - [Markdown to HTML](https://toolpixi.com/markdown-to-html/): Write Markdown and see clean HTML — live preview plus the raw code.
 - [Image Watermark](https://toolpixi.com/image-watermark/): Add a text watermark to a photo — position, opacity and size are yours.
 - [Text to Speech](https://toolpixi.com/text-to-speech/): Listen to any text read aloud — pick a voice, set the speed and pitch.
+- [Roman Numeral Converter](https://toolpixi.com/roman-numeral-converter/): Turn numbers into Roman numerals and read Roman numerals back — 1 to 3999.
+- [Number to Words Converter](https://toolpixi.com/number-to-words-converter/): Write any number in English words — for cheques, invoices and documents.
+- [Morse Code Translator](https://toolpixi.com/morse-code-translator/): Text to dots and dashes, Morse back to text — with real beep playback.
+- [Unix Timestamp Converter](https://toolpixi.com/unix-timestamp-converter/): Epoch time to human dates and back — the current timestamp, ticking live.
 
 ## Privacy promise
 

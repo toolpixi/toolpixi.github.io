@@ -749,3 +749,148 @@ function tpSalary(amount, from, hoursPerWeek, daysPerWeek) {
   });
   fromHexInput();
 })();
+
+// ==== PURE: roman numerals ====
+function tpToRoman(n) {
+  if (!isFinite(n) || n < 1 || n > 3999 || Math.floor(n) !== n) return null;
+  var table = [[1000, "M"], [900, "CM"], [500, "D"], [400, "CD"], [100, "C"], [90, "XC"], [50, "L"], [40, "XL"], [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]];
+  var out = "";
+  for (var i = 0; i < table.length; i++) { while (n >= table[i][0]) { out += table[i][1]; n -= table[i][0]; } }
+  return out;
+}
+function tpFromRoman(s) {
+  s = (s || "").toUpperCase().replace(/\s+/g, "");
+  if (!s || !/^[IVXLCDM]+$/.test(s)) return null;
+  var vals = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+  var total = 0;
+  for (var i = 0; i < s.length; i++) {
+    var cur = vals[s[i]], next = i + 1 < s.length ? vals[s[i + 1]] : 0;
+    total += cur < next ? -cur : cur;
+  }
+  if (total < 1 || total > 3999 || tpToRoman(total) !== s) return null;
+  return total;
+}
+
+// ==== DOM: roman numeral converter ====
+(function () {
+  var panel = document.getElementById("roman-numeral-converter");
+  if (!panel) return;
+  var numEl = document.getElementById("rn-num"), romEl = document.getElementById("rn-roman"),
+      out = document.getElementById("rn-out"), note = document.getElementById("rn-note");
+  function fromNum() {
+    tpHideError("rn-err");
+    var v = numEl.value.trim();
+    if (!v) { romEl.value = ""; out.textContent = "—"; note.textContent = ""; return; }
+    var n = Number(v), r = tpToRoman(n);
+    if (r === null) { tpShowError("rn-err", "Enter a whole number from 1 to 3999 — the standard Roman system stops there (3999 = MMMCMXCIX)."); return; }
+    romEl.value = r;
+    out.textContent = n.toLocaleString("en-US") + "  =  " + r;
+    note.textContent = "Read it in chunks: thousands, then hundreds, tens and ones.";
+  }
+  function fromRoman() {
+    tpHideError("rn-err");
+    var v = romEl.value.trim();
+    if (!v) { numEl.value = ""; out.textContent = "—"; note.textContent = ""; return; }
+    var n = tpFromRoman(v);
+    if (n === null) { tpShowError("rn-err", "That is not a standard Roman numeral. The rules: I, X, C and M repeat at most three times; V, L and D never repeat; and only one smaller numeral stands before a larger one (IV, IX, XL, XC, CD, CM)."); return; }
+    numEl.value = n;
+    out.textContent = v.toUpperCase() + "  =  " + n.toLocaleString("en-US");
+    note.textContent = "";
+  }
+  numEl.addEventListener("input", fromNum);
+  romEl.addEventListener("input", fromRoman);
+  fromNum();
+})();
+
+// ==== PURE: number to words ====
+var TP_ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+var TP_TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+function tpUnder1000(n) {
+  var parts = [];
+  if (n >= 100) { parts.push(TP_ONES[Math.floor(n / 100)] + " hundred"); n = n % 100; }
+  if (n >= 20) { var t = TP_TENS[Math.floor(n / 10)]; parts.push(n % 10 ? t + "-" + TP_ONES[n % 10] : t); }
+  else if (n > 0) { parts.push(TP_ONES[n]); }
+  return parts.join(" ");
+}
+function tpWordsIntl(n) {
+  if (n === 0) return "zero";
+  var scales = [[1000000000, "billion"], [1000000, "million"], [1000, "thousand"]];
+  var parts = [];
+  for (var i = 0; i < scales.length; i++) {
+    if (n >= scales[i][0]) { parts.push(tpUnder1000(Math.floor(n / scales[i][0])) + " " + scales[i][1]); n = n % scales[i][0]; }
+  }
+  if (n > 0) parts.push(tpUnder1000(n));
+  return parts.join(" ");
+}
+function tpWordsIndian(n) {
+  if (n === 0) return "zero";
+  var parts = [];
+  if (n >= 10000000) { parts.push(tpWordsIndian(Math.floor(n / 10000000)) + " crore"); n = n % 10000000; }
+  if (n >= 100000) { parts.push(tpUnder1000(Math.floor(n / 100000)) + " lakh"); n = n % 100000; }
+  if (n >= 1000) { parts.push(tpUnder1000(Math.floor(n / 1000)) + " thousand"); n = n % 1000; }
+  if (n > 0) parts.push(tpUnder1000(n));
+  return parts.join(" ");
+}
+
+// ==== DOM: number to words converter ====
+(function () {
+  var panel = document.getElementById("number-to-words");
+  if (!panel) return;
+  var numEl = document.getElementById("nw-num"), sysEl = document.getElementById("nw-sys"),
+      out = document.getElementById("nw-out"), lastWords = "";
+  function run() {
+    tpHideError("nw-err");
+    var v = numEl.value.trim();
+    if (!v) { out.textContent = "—"; lastWords = ""; return; }
+    var n = Number(v);
+    if (!isFinite(n) || Math.floor(n) !== n || n < 0 || n > 999999999999) {
+      tpShowError("nw-err", "Enter a whole number from 0 to 999,999,999,999.");
+      out.textContent = "—"; lastWords = ""; return;
+    }
+    var w = sysEl.value === "in" ? tpWordsIndian(n) : tpWordsIntl(n);
+    lastWords = w.charAt(0).toUpperCase() + w.slice(1);
+    out.textContent = lastWords;
+  }
+  numEl.addEventListener("input", run);
+  sysEl.addEventListener("change", run);
+  document.getElementById("nw-go").addEventListener("click", run);
+  document.getElementById("nw-copy").addEventListener("click", function () {
+    if (lastWords) tpCopyWithFeedback(this, lastWords);
+  });
+  run();
+})();
+
+// ==== Hex <-> text (bytes as hex; UTF-8) ====
+function tpTextToHex(s) {
+  var bytes = new TextEncoder().encode(s), out = [];
+  for (var i = 0; i < bytes.length; i++) out.push(("0" + bytes[i].toString(16)).slice(-2).toUpperCase());
+  return out.join("");
+}
+function tpHexToText(hex) {
+  var h = String(hex).replace(/0x/gi, "").replace(/[^0-9A-Fa-f]/g, "");
+  if (h.length % 2) throw new Error("A hex string needs an even number of digits — each character is two digits.");
+  var bytes = new Uint8Array(h.length / 2);
+  for (var i = 0; i < bytes.length; i++) bytes[i] = parseInt(h.substr(i * 2, 2), 16);
+  return new TextDecoder("utf-8").decode(bytes);
+}
+(function () {
+  var panel = document.getElementById("hex-text");
+  if (!panel) return;
+  var txt = document.getElementById("hxt-text"), hex = document.getElementById("hxt-hex");
+  var err = document.getElementById("hxt-err"), busy = false;
+  function showErr(m) { err.textContent = m || ""; }
+  function fromText() {
+    if (busy) return; busy = true; showErr("");
+    hex.value = txt.value ? tpTextToHex(txt.value) : "";
+    busy = false;
+  }
+  function fromHex() {
+    if (busy) return; busy = true; showErr("");
+    try { txt.value = hex.value.trim() ? tpHexToText(hex.value) : ""; }
+    catch (e) { showErr(e.message); }
+    busy = false;
+  }
+  txt.addEventListener("input", fromText);
+  hex.addEventListener("input", fromHex);
+  fromText();
+})();

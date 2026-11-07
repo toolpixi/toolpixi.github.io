@@ -887,3 +887,74 @@ function tpFmtGap(min) {
   });
   runDur(); runAdd();
 })();
+
+// ==== DOM: date calculator — live answers for today ====
+(function () {
+  var tbl = document.getElementById("dc-live");
+  if (!tbl) return;
+  function fmt(d) { return d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }); }
+  var base = new Date(); base.setHours(0, 0, 0, 0);
+  var todayEl = document.getElementById("dc-today");
+  if (todayEl) todayEl.textContent = fmt(base);
+  var cells = tbl.querySelectorAll("[data-dc-add]");
+  for (var i = 0; i < cells.length; i++) {
+    var n = parseInt(cells[i].getAttribute("data-dc-add"), 10);
+    var d = new Date(base); d.setDate(d.getDate() + n);
+    cells[i].textContent = fmt(d);
+  }
+})();
+
+// ==== DOM: unix timestamp converter ====
+(function () {
+  var panel = document.getElementById("unix-timestamp");
+  if (!panel) return;
+  var nowEl = document.getElementById("ut-now"), tsEl = document.getElementById("ut-ts"), dtEl = document.getElementById("ut-dt");
+  function fmtLocal(d) { return d.toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
+  function rel(d) {
+    var diff = Math.round((d.getTime() - Date.now()) / 1000), a = Math.abs(diff);
+    var units = [[31536000, "year"], [2592000, "month"], [604800, "week"], [86400, "day"], [3600, "hour"], [60, "minute"], [1, "second"]];
+    for (var i = 0; i < units.length; i++) {
+      if (a >= units[i][0]) { var n = Math.floor(a / units[i][0]); var s = n + " " + units[i][1] + (n === 1 ? "" : "s"); return diff >= 0 ? "in " + s : s + " ago"; }
+    }
+    return "right now";
+  }
+  function pad(x) { return String(x).padStart(2, "0"); }
+  function toLocalInput(d) {
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + "T" + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+  }
+  function show(d) {
+    document.getElementById("ut-local").textContent = fmtLocal(d);
+    document.getElementById("ut-utc").textContent = d.toUTCString();
+    document.getElementById("ut-rel").textContent = rel(d);
+    document.getElementById("ut-sec").textContent = String(Math.floor(d.getTime() / 1000));
+    document.getElementById("ut-ms").textContent = String(d.getTime());
+  }
+  function fromTs() {
+    tpHideError("ut-err");
+    var v = tsEl.value.trim();
+    if (!v) return;
+    var n = Number(v);
+    if (!isFinite(n)) { tpShowError("ut-err", "That is not a number — paste a Unix timestamp, for example 1767225600."); return; }
+    var d = new Date(Math.abs(n) >= 100000000000 ? n : n * 1000);
+    if (isNaN(d.getTime())) { tpShowError("ut-err", "That timestamp is outside the range a browser can display."); return; }
+    dtEl.value = toLocalInput(d);
+    show(d);
+  }
+  function fromDt() {
+    tpHideError("ut-err");
+    if (!dtEl.value) return;
+    var d = new Date(dtEl.value);
+    if (isNaN(d.getTime())) { tpShowError("ut-err", "Pick a valid date and time."); return; }
+    tsEl.value = String(Math.floor(d.getTime() / 1000));
+    show(d);
+  }
+  function tick() { nowEl.textContent = String(Math.floor(Date.now() / 1000)); }
+  tsEl.addEventListener("input", fromTs);
+  dtEl.addEventListener("input", fromDt);
+  dtEl.addEventListener("change", fromDt);
+  tick(); setInterval(tick, 1000);
+  var now = new Date();
+  tsEl.value = String(Math.floor(now.getTime() / 1000));
+  dtEl.value = toLocalInput(now);
+  show(now);
+})();
