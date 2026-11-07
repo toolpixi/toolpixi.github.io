@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 110 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 111 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,7 +14,7 @@ ToolPixi at https://toolpixi.com/ offers 110 free browser-based tools across 5 c
 
 ## Categories
 
-- Image Tools: 29 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- Image Tools: 30 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 10 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 31 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
 - Text & Generator Tools: 24 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
@@ -132,6 +132,7 @@ ToolPixi at https://toolpixi.com/ offers 110 free browser-based tools across 5 c
 - [Number to Words Converter](https://toolpixi.com/number-to-words-converter/): Write any number in English words — for cheques, invoices and documents.
 - [Morse Code Translator](https://toolpixi.com/morse-code-translator/): Text to dots and dashes, Morse back to text — with real beep playback.
 - [Unix Timestamp Converter](https://toolpixi.com/unix-timestamp-converter/): Epoch time to human dates and back — the current timestamp, ticking live.
+- [Background Remover](https://toolpixi.com/background-remover/): Remove the background from a photo with AI — free, in your browser, nothing uploaded.
 
 ## Privacy promise
 
