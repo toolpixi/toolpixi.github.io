@@ -674,7 +674,8 @@ function tpSalary(amount, from, hoursPerWeek, daysPerWeek) {
   if (!panel) return;
   function el(id) { return document.getElementById(id); }
   var hexEl = el("col-hex"), rEl = el("col-r"), gEl = el("col-g"), bEl = el("col-b"),
-      hEl = el("col-h"), sEl = el("col-s"), lEl = el("col-l"), sw = el("col-swatch");
+      hEl = el("col-h"), sEl = el("col-s"), lEl = el("col-l"), sw = el("col-swatch"),
+      pickEl = el("col-pick");
   function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
   function toHex(r, g, b) {
     return "#" + [r, g, b].map(function (v) {
@@ -715,6 +716,7 @@ function tpSalary(amount, from, hoursPerWeek, daysPerWeek) {
     if (!fromHex) hexEl.value = toHex(r, g, b);
     rEl.value = r; gEl.value = g; bEl.value = b;
     hEl.value = hsl[0]; sEl.value = hsl[1]; lEl.value = hsl[2];
+    if (pickEl) pickEl.value = toHex(r, g, b);
     sw.style.background = toHex(r, g, b);
     el("col-css-rgb").value = "rgb(" + r + ", " + g + ", " + b + ")";
     el("col-css-hsl").value = "hsl(" + hsl[0] + ", " + hsl[1] + "%, " + hsl[2] + "%)";
@@ -739,6 +741,10 @@ function tpSalary(amount, from, hoursPerWeek, daysPerWeek) {
     render(rgb[0], rgb[1], rgb[2], false);
   }
   hexEl.addEventListener("input", fromHexInput);
+  if (pickEl) pickEl.addEventListener("input", function () {
+    hexEl.value = pickEl.value;
+    fromHexInput();
+  });
   [rEl, gEl, bEl].forEach(function (e) { e.addEventListener("input", fromRgb); });
   [hEl, sEl, lEl].forEach(function (e) { e.addEventListener("input", fromHsl); });
   panel.querySelectorAll("[data-col-copy]").forEach(function (btn) {

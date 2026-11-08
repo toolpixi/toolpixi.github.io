@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 111 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 116 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,8 +14,8 @@ ToolPixi at https://toolpixi.com/ offers 111 free browser-based tools across 5 c
 
 ## Categories
 
-- Image Tools: 30 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
-- PDF Tools: 10 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
+- Image Tools: 33 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- PDF Tools: 12 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 31 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
 - Text & Generator Tools: 24 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
 - Converters & Calculators: 16 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
@@ -133,6 +133,11 @@ ToolPixi at https://toolpixi.com/ offers 111 free browser-based tools across 5 c
 - [Morse Code Translator](https://toolpixi.com/morse-code-translator/): Text to dots and dashes, Morse back to text — with real beep playback.
 - [Unix Timestamp Converter](https://toolpixi.com/unix-timestamp-converter/): Epoch time to human dates and back — the current timestamp, ticking live.
 - [Background Remover](https://toolpixi.com/background-remover/): Remove the background from a photo with AI — free, in your browser, nothing uploaded.
+- [Sign PDF](https://toolpixi.com/sign-pdf/): Draw or type your signature and stamp it onto any page of a PDF.
+- [Color Picker from Image](https://toolpixi.com/color-picker-from-image/): Upload a photo and click any pixel to get its HEX, RGB and HSL colour codes.
+- [MP4 to MP3](https://toolpixi.com/mp4-to-mp3/): Extract the audio from an MP4 video as an MP3 file — right in your browser.
+- [Video Compressor](https://toolpixi.com/video-compressor/): Compress an MP4 video in your browser — shrink it for Discord, email or uploads.
+- [PDF to Word](https://toolpixi.com/pdf-to-word/): Convert a text-based PDF into an editable Word (.docx) document.
 
 ## Privacy promise
 
