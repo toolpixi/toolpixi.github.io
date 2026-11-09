@@ -900,3 +900,66 @@ function tpHexToText(hex) {
   hex.addEventListener("input", fromHex);
   fromText();
 })();
+
+// ==== DOM: single-pair converter pages (celsius<->fahrenheit, kg<->lbs, cm<->inches) ====
+(function () {
+  var panel = document.getElementById("pair-converter");
+  if (!panel) return;
+  var cat = panel.getAttribute("data-cat"),
+      from = panel.getAttribute("data-from"),
+      to = panel.getAttribute("data-to");
+  var aEl = document.getElementById("pc-a"), bEl = document.getElementById("pc-b");
+  var last = "a";
+  function round6(v) { return Math.round(v * 1e6) / 1e6; }
+  function setFormula() {
+    var f = document.getElementById("pc-formula");
+    if (!f) return;
+    var av = parseFloat(aEl.value);
+    if (isNaN(av)) {
+      f.textContent = "1 " + from + " = " + tpFmtNum(tpConvert(cat, from, to, 1)) + " " + to;
+    } else {
+      f.textContent = tpFmtNum(av) + " " + from + " = " + tpFmtNum(tpConvert(cat, from, to, av)) + " " + to;
+    }
+  }
+  function convert() {
+    var av = parseFloat(aEl.value), bv = parseFloat(bEl.value);
+    if (last === "a") {
+      bEl.value = isNaN(av) ? "" : String(round6(tpConvert(cat, from, to, av)));
+    } else {
+      aEl.value = isNaN(bv) ? "" : String(round6(tpConvert(cat, to, from, bv)));
+    }
+    setFormula();
+  }
+  aEl.addEventListener("input", function () { last = "a"; convert(); });
+  bEl.addEventListener("input", function () { last = "b"; convert(); });
+  convert();
+})();
+
+// ==== DOM: percentage increase calculator ====
+(function () {
+  var panel = document.getElementById("pct-inc");
+  if (!panel) return;
+  function num(id) { var v = parseFloat(document.getElementById(id).value); return isNaN(v) ? null : v; }
+  document.getElementById("pi-go1").addEventListener("click", function () {
+    tpHideError("pi-err1");
+    var oldV = num("pi-old"), newV = num("pi-new");
+    if (oldV === null || newV === null) { tpShowError("pi-err1", "Enter both values."); return; }
+    if (oldV === 0) { tpShowError("pi-err1", "The old value cannot be zero — a percentage change from zero is undefined."); return; }
+    var diff = newV - oldV, pct = diff / oldV * 100;
+    document.getElementById("pi-r1").textContent = (pct >= 0 ? "+" : "") + tpFmtNum(pct) + "%";
+    document.getElementById("pi-r1-note").textContent =
+      (pct >= 0 ? "An increase" : "A decrease") + " of " + tpFmtNum(Math.abs(diff)) +
+      " (" + tpFmtNum(oldV) + " → " + tpFmtNum(newV) + ").";
+    document.getElementById("pi-result1").classList.add("show");
+  });
+  document.getElementById("pi-go2").addEventListener("click", function () {
+    tpHideError("pi-err2");
+    var v = num("pi-val"), p = num("pi-pct");
+    if (v === null || p === null) { tpShowError("pi-err2", "Enter a value and a percentage."); return; }
+    document.getElementById("pi-pct-label").textContent = String(p);
+    document.getElementById("pi-pct-label2").textContent = String(p);
+    document.getElementById("pi-r2").textContent = tpFmtNum(v * (1 + p / 100));
+    document.getElementById("pi-r2-down").textContent = tpFmtNum(v * (1 - p / 100));
+    document.getElementById("pi-result2").classList.add("show");
+  });
+})();

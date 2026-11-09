@@ -1442,3 +1442,52 @@ function tpMorseToText(code) {
   });
   fromText();
 })();
+
+// ==== DOM: character counter ====
+(function () {
+  var panel = document.getElementById("char-counter");
+  if (!panel) return;
+  var ta = document.getElementById("chc-text");
+  var limitSel = document.getElementById("chc-limit");
+  function update() {
+    var c = tpCountText(ta.value);
+    document.getElementById("chc-chars").textContent = c.chars.toLocaleString();
+    document.getElementById("chc-nospace").textContent = c.charsNoSpaces.toLocaleString();
+    document.getElementById("chc-words").textContent = c.words.toLocaleString();
+    document.getElementById("chc-sent").textContent = c.sentences.toLocaleString();
+    document.getElementById("chc-lines").textContent = ta.value ? String(ta.value.split(/\n/).length) : "0";
+    document.getElementById("chc-para").textContent = c.paragraphs.toLocaleString();
+    var lim = parseInt(limitSel.value, 10);
+    var rem = document.getElementById("chc-remaining");
+    if (lim > 0) {
+      var left = lim - c.chars;
+      rem.textContent = left >= 0
+        ? left.toLocaleString() + " characters left"
+        : (-left).toLocaleString() + " characters over the limit";
+    } else {
+      rem.textContent = "Pick a limit above to see how much room is left.";
+    }
+  }
+  ta.addEventListener("input", update);
+  limitSel.addEventListener("change", update);
+  document.getElementById("chc-clear").addEventListener("click", function () { ta.value = ""; update(); ta.focus(); });
+  update();
+})();
+
+// ==== DOM: reading time calculator ====
+(function () {
+  var panel = document.getElementById("reading-time");
+  if (!panel) return;
+  var ta = document.getElementById("rt-text");
+  function update() {
+    var c = tpCountText(ta.value);
+    document.getElementById("rt-words").textContent = c.words.toLocaleString();
+    document.getElementById("rt-slow").textContent = tpFmtMinutes(c.words / 150);
+    document.getElementById("rt-avg").textContent = tpFmtMinutes(c.words / 200);
+    document.getElementById("rt-fast").textContent = tpFmtMinutes(c.words / 250);
+    document.getElementById("rt-speak").textContent = tpFmtMinutes(c.words / 130);
+  }
+  ta.addEventListener("input", update);
+  document.getElementById("rt-clear").addEventListener("click", function () { ta.value = ""; update(); ta.focus(); });
+  update();
+})();

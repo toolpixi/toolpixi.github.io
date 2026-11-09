@@ -234,6 +234,27 @@ function tpCountdownCells(prefix, target) {
     target = new Date(y, 6, 4);
     if (target < tpStartOfDay(now)) target = new Date(y + 1, 6, 4);
     document.getElementById("du-date-label").textContent = "Independence Day — " + tpFmtDate(target);
+  } else if (kind === "hanukkah") {
+    // Hanukkah (25 Kislev – 2/3 Tevet). First candle lit the evening before
+    // the first day. Verified first-candle evenings (Chabad/Hebcal):
+    // 2026-12-04 (Fri), 2027-12-24 (Fri), 2028-12-12 (Tue),
+    // 2029-12-01 (Sat), 2030-12-20 (Fri).
+    var hanukkahDates = [new Date(2026, 11, 4), new Date(2027, 11, 24), new Date(2028, 11, 12),
+                         new Date(2029, 11, 1), new Date(2030, 11, 20)];
+    target = null;
+    for (var i = 0; i < hanukkahDates.length; i++) {
+      if (hanukkahDates[i] >= tpStartOfDay(now)) { target = hanukkahDates[i]; break; }
+    }
+    if (!target) {
+      document.getElementById("du-date-label").textContent =
+        "Our Hanukkah date list runs through 2030 — this page will be updated with future dates.";
+    } else {
+      document.getElementById("du-date-label").textContent = "First candle of Hanukkah — " + tpFmtDate(target) + " (evening)";
+    }
+  } else if (kind === "st-patricks-day") {
+    target = new Date(y, 2, 17);
+    if (target < tpStartOfDay(now)) target = new Date(y + 1, 2, 17);
+    document.getElementById("du-date-label").textContent = "St Patrick's Day — " + tpFmtDate(target);
   }
   if (target) tpCountdownCells("du", target);
 })();

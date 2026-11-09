@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 116 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 127 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -16,9 +16,9 @@ ToolPixi at https://toolpixi.com/ offers 116 free browser-based tools across 5 c
 
 - Image Tools: 33 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 12 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 31 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 24 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 16 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Date & Time Tools: 33 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 26 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Converters & Calculators: 23 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -138,6 +138,17 @@ ToolPixi at https://toolpixi.com/ offers 116 free browser-based tools across 5 c
 - [MP4 to MP3](https://toolpixi.com/mp4-to-mp3/): Extract the audio from an MP4 video as an MP3 file — right in your browser.
 - [Video Compressor](https://toolpixi.com/video-compressor/): Compress an MP4 video in your browser — shrink it for Discord, email or uploads.
 - [PDF to Word](https://toolpixi.com/pdf-to-word/): Convert a text-based PDF into an editable Word (.docx) document.
+- [Celsius to Fahrenheit](https://toolpixi.com/celsius-to-fahrenheit/): Convert °C to °F — the formula, the table, and an instant two-way converter.
+- [Fahrenheit to Celsius](https://toolpixi.com/fahrenheit-to-celsius/): Convert °F to °C — the formula, the table, and an instant two-way converter.
+- [Kg to Lbs](https://toolpixi.com/kg-to-lbs/): Convert kilograms to pounds — 1 kg = 2.20462 lbs, exact.
+- [Lbs to Kg](https://toolpixi.com/lbs-to-kg/): Convert pounds to kilograms — 1 lb = 0.45359237 kg, exact.
+- [Cm to Inches](https://toolpixi.com/cm-to-inches/): Convert centimetres to inches — 1 inch is exactly 2.54 cm.
+- [Inches to Cm](https://toolpixi.com/inches-to-cm/): Convert inches to centimetres — 1 inch is exactly 2.54 cm.
+- [Character Counter](https://toolpixi.com/character-counter/): Characters with and without spaces, words, sentences — and how much room your limit has left.
+- [Reading Time Calculator](https://toolpixi.com/reading-time-calculator/): How long to read any text — slow, average and fast — plus the speaking time.
+- [Percentage Increase Calculator](https://toolpixi.com/percentage-increase-calculator/): Percentage increase or decrease between two values, and the price after a % rise.
+- [Days Until Hanukkah](https://toolpixi.com/days-until-hanukkah/): A live countdown to the first candle of Hanukkah.
+- [Days Until St Patrick's Day](https://toolpixi.com/days-until-st-patricks-day/): A live countdown to St Patrick’s Day — 17 March.
 
 ## Privacy promise
 
