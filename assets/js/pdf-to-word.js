@@ -9,7 +9,7 @@
   var file = null;
   if (window.pdfjsLib) {
     pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+      "/assets/vendor/pdf.worker.min.js";
   }
   tpDropzone("pdw-drop", "pdw-file", { accept: "application/pdf",
     onFiles: function (files) {
