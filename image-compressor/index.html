@@ -283,6 +283,7 @@
 <a class="dd-row" href="/cm-to-inches/"><span class="dd-ic" style="background:#e3f0fe"><svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-e4b9110001"/></svg></span><span class="dd-name">Cm to Inches</span></a>
 <a class="dd-row" href="/inches-to-cm/"><span class="dd-ic" style="background:#f3efff"><svg viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-e4b9110001"/></svg></span><span class="dd-name">Inches to Cm</span></a>
 <a class="dd-row" href="/percentage-increase-calculator/"><span class="dd-ic" style="background:#e8f8f1"><svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-8348352766"/></svg></span><span class="dd-name">Percentage Increase Calculator</span></a></div></div></div>
+<a class="nav-plain" href="/guides/">Guides</a>
 <a class="nav-plain" href="/about/">About</a>
 </nav>
 <button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-panel"><svg class="ic-open" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="ic-close" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="menu-btn-label">Menu</span></button>
@@ -427,6 +428,7 @@
 <li><a href="/percentage-increase-calculator/"><span class="mic" style="background:#e8f8f1"><svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-8348352766"/></svg></span><span class="mtxt">Percentage Increase Calculator</span></a></li>
 </ul></div>
 <div class="menu-group"><span class="menu-cat">ToolPixi</span><ul>
+<li><a href="/guides/"><span class="mic" style="background:#eef0f6"><svg viewBox="0 0 24 24" fill="none" stroke="#5b6478" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-b2ed5a5c76"/></svg></span><span class="mtxt">Guides</span></a></li>
 <li><a href="/about/"><span class="mic" style="background:#eef0f6"><svg viewBox="0 0 24 24" fill="none" stroke="#5b6478" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-ff9dbc628a"/></svg></span><span class="mtxt">About</span></a></li>
 <li><a href="/privacy/"><span class="mic" style="background:#eef0f6"><svg viewBox="0 0 24 24" fill="none" stroke="#5b6478" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-a6e1aa3801"/></svg></span><span class="mtxt">Privacy</span></a></li>
 <li><a href="/contact/"><span class="mic" style="background:#eef0f6"><svg viewBox="0 0 24 24" fill="none" stroke="#5b6478" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-015fed79f1"/></svg></span><span class="mtxt">Contact</span></a></li>
@@ -481,7 +483,14 @@
 <tr><td><strong>1MB</strong></td><td>Website uploads, email attachments and marketplaces — smaller data, barely any visible quality change.</td></tr>
 </table>
 <p>Every one of them is a chip above, and anything in between is the Custom box — type the size the form demands, in KB, and the compressor works to that exact number. The same target-size pattern exists for documents in the <a href="/compress-pdf/">PDF compressor</a>, which works toward 200KB or 100KB the same way.</p></section>
-<section class="section"><h2>Related tools</h2><div class="related"><a href="/png-to-jpg/">PNG to JPG — Convert PNG images to JPG — smaller files that upload anywhere.</a>
+<section class="section"><h2>File size is a gate, and forms hold the key</h2>
+<p>Nobody compresses a photo because smaller is beautiful. They compress it because a form refused the original: "file must be under 200KB" on a visa application, "photo must be 50KB or less" on an exam entry, "image too large" on a job portal that never says what it actually wants. The camera on a modern phone produces 3–8 MB photographs as a matter of routine, so nearly every official upload in life now begins with this exact problem — a perfectly good photo that is simply too heavy for the gate it has to pass through.</p>
+<p>There are two ways a photo gets lighter, and this tool uses the honest one first: re-encoding at a quality level matched to your target. Quality is a dial, not a cliff — a photo saved at 80% quality is usually indistinguishable from the original on a screen at half the bytes. Only when a very tight target (20KB, say) demands it does the tool also reduce dimensions. The preview matters more than the number: always look at the compressed result before downloading, because a face on an ID photo has to stay recognisably a face, and the right target is the smallest size that still reads clearly.</p>
+<p>Keep the untouched original somewhere safe. The compressed copy is a sending copy, made for one form; the original is the photograph. And because the compression happens in your browser, the photo of your passport page or your child's school form is never uploaded to make it smaller — the gate-check happens entirely on your device.</p></section>
+<section class="section faq"><h2>Questions, answered</h2><details><summary>How do I compress an image to exactly 50KB?</summary><p>Choose your photo, tap the 50KB button (or type any size in the custom box), then press Compress. The tool lowers quality and, only if needed, dimensions until the file fits your target.</p></details>
+<details><summary>Why do forms ask for a photo under 50KB or 200KB?</summary><p>Many exam, visa, job and government application forms set strict upload limits — often 50KB for a photo and 20–200KB for documents. This tool is built for exactly those limits.</p></details>
+<details><summary>Will my photo look worse?</summary><p>We always try the gentlest setting that fits your target first, so quality stays as high as the size allows. Small dimension changes only happen when quality alone cannot reach the size.</p></details>
+<details><summary>Are my photos uploaded anywhere?</summary><p>No. Compression happens on your device, in this browser tab. Nothing is sent to a server and nothing is stored.</p></details></section><section class="section"><h2>Related tools</h2><div class="related"><a href="/png-to-jpg/">PNG to JPG — Convert PNG images to JPG — smaller files that upload anywhere.</a>
 <a href="/png-to-ico/">PNG to ICO — Make a genuine multi-size Windows .ico icon from a PNG.</a>
 <a href="/heic-to-jpg/">HEIC to JPG — Convert iPhone HEIC photos to JPG on any device.</a>
 <a href="/compress-pdf/">Compress PDF — Shrink a PDF toward 200KB or 100KB for upload forms.</a>
@@ -514,7 +523,7 @@
 <div><h4>More Tools</h4>
 <a href="/age-calculator/">Age Calculator</a><a href="/word-counter/">Word Counter</a>
 <a href="/qr-code-generator/">QR Code Generator</a><a href="/unit-converter/">Unit Converter</a>
-<a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a><a href="/terms/">Terms</a>
+<a href="/guides/">Guides</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/contact/">Contact</a><a href="/terms/">Terms</a>
 </div>
 </div>
 <div class="foot-bottom"><span>© 2026 ToolPixi. Free tools, no sign-up.</span><span>Built by <a href="https://hamzaalibasra.com/">Hamza Ali Basra</a>.</span><span>Made to work on any phone or computer.</span><span><a href="https://forg.to/projects/toolpixi" target="_blank" rel="noopener">Shipped on Forg</a></span></div>
