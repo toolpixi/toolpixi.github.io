@@ -420,6 +420,22 @@ pre.out.show{display:block}
   .toolbox-btn{padding:8px 11px}
   .toolbox-btn .tb-label{display:none}
 }
+/* Desktop header fit (2026-11-13): the Downloaders nav item widened the
+   header row past the 1080 wrap, spilling the Toolbox pill off the right
+   edge at laptop widths. Tighten ONLY the top-level nav links (dropdown
+   internals untouched) + header gaps so logo + nav + pill fit again. */
+@media (min-width:880px){
+  .site-header>.wrap{gap:8px;padding-left:10px;padding-right:10px}
+  .main-nav{gap:0}
+  .main-nav>.nav-item>.nav-link,.main-nav>.nav-plain{padding:8px 8px;font-size:13.5px}
+  .nav-link{gap:4px}
+  .toolbox-btn{padding:9px 11px}
+}
+/* Crowded laptop widths: collapse the Toolbox pill to star + count (the
+   same treatment it already gets under 640px) so the header row fits. */
+@media (min-width:880px) and (max-width:1240px){
+  .toolbox-btn .tb-label{display:none}
+}
 /* Toolbox hint toast (favs.js): shown when the Toolbox is still empty */
 .tp-hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:200;background:var(--ink);color:#fff;
   padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(10,60,52,.35);
