@@ -1,7 +1,10 @@
-/* ToolPixi — Favourites + Recently Used.
+/* ToolPixi — My ToolPixi Toolbox (Favourites + Recently Used).
    localStorage only (keys tp_favs / tp_recent). No account, no server, no network.
    Star controls carry [data-fav="slug"]; tool pages carry <body data-tp-slug="slug">;
-   the homepage provides #favourites / #recent sections and window.TP_CATALOG. */
+   the homepage provides #favourites / #recent / #shared-toolbox sections and
+   window.TP_CATALOG. A shared Toolbox arrives as /?toolbox=slug1,slug2 and is
+   rendered read-only from the URL — nothing is stored unless the visitor
+   stars a tool into their own Toolbox. */
 (function () {
   "use strict";
   var FKEY = "tp_favs", RKEY = "tp_recent", RMAX = 8;
@@ -37,7 +40,7 @@
       var g = el.querySelector(".fs-glyph");
       if (g) g.textContent = on ? "★" : "☆";
       var t = el.querySelector(".fs-text");
-      if (t) t.textContent = on ? "Saved to favourites" : "Save to favourites";
+      if (t) t.textContent = on ? "Saved in my Toolbox" : "Save to my Toolbox";
     }
   }
 
@@ -47,7 +50,7 @@
     return '<a class="card" href="/' + slug + '/"><span class="ic" style="background:' + c.bg + '">' + c.ic + "</span>" +
       "<span><h3>" + c.n + "</h3><p>" + c.d + "</p></span>" +
       '<span class="fav-star" data-fav="' + slug + '" role="button" tabindex="0" aria-pressed="false" ' +
-      'aria-label="Save ' + c.n + ' to favourites"><span class="fs-glyph" aria-hidden="true">☆</span></span></a>';
+      'aria-label="Save ' + c.n + ' to my Toolbox"><span class="fs-glyph" aria-hidden="true">☆</span></span></a>';
   }
 
   function filtering() {
@@ -71,6 +74,58 @@
       if (sec) sec.hidden = slugs.length === 0 || filtering();
     }
     paint();
+    renderShared();
+  }
+
+  /* A shared Toolbox: /?toolbox=slug1,slug2 — rendered from the URL alone.
+     Nothing is written to localStorage; starring a card saves it into the
+     visitor's own Toolbox through the normal toggle. */
+  function sharedSlugs() {
+    var cat = window.TP_CATALOG;
+    if (!cat) return [];
+    var raw = null;
+    try { raw = new URLSearchParams(location.search).get("toolbox"); } catch (e) {}
+    if (!raw) return [];
+    var seen = {}, out = [];
+    var parts = raw.split(",");
+    for (var i = 0; i < parts.length && out.length < 30; i++) {
+      var s = parts[i].replace(/\s+/g, "");
+      if (s && cat[s] && !seen[s]) { seen[s] = 1; out.push(s); }
+    }
+    return out;
+  }
+
+  function renderShared() {
+    var grid = document.querySelector('[data-personal-grid="shared"]');
+    if (!grid) return;
+    var slugs = sharedSlugs();
+    grid.innerHTML = slugs.map(cardHtml).join("");
+    var sec = grid.parentNode;
+    while (sec && !(sec.classList && sec.classList.contains("personal-sec"))) sec = sec.parentNode;
+    if (sec) sec.hidden = slugs.length === 0 || filtering();
+    paint();
+  }
+
+  function shareToolbox() {
+    var favs = load(FKEY).filter(function (s) { return !!(window.TP_CATALOG && window.TP_CATALOG[s]); });
+    var msg = document.getElementById("toolbox-share-msg");
+    var link = document.getElementById("toolbox-share-link");
+    if (!favs.length) {
+      if (msg) msg.textContent = "Star a tool first — your Toolbox is empty.";
+      return;
+    }
+    var url = location.origin + "/?toolbox=" + favs.join(",");
+    function showLink(note) {
+      if (link) { link.value = url; link.hidden = false; link.select(); }
+      if (msg) msg.textContent = note;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () {
+        if (msg) msg.textContent = "Link copied — anyone who opens it sees this Toolbox and can save the tools as their own.";
+      }, function () { showLink("Copy your Toolbox link:"); });
+    } else {
+      showLink("Copy your Toolbox link:");
+    }
   }
 
   function refresh() { paint(); renderPersonal(); }
@@ -95,6 +150,9 @@
 
   var slug = document.body ? document.body.getAttribute("data-tp-slug") : null;
   if (slug) recordRecent(slug);
+
+  var shareBtn = document.getElementById("toolbox-share-btn");
+  if (shareBtn) shareBtn.addEventListener("click", shareToolbox);
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", refresh);
   else refresh();
