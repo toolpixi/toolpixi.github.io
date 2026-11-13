@@ -401,3 +401,26 @@ pre.out.show{display:block}
 .tp-stars button.on{color:var(--amber)}
 .tp-stars button:hover{transform:scale(1.12)}
 .tp-rating-meta{color:var(--muted);font-size:13.5px}
+
+/* Header "My Toolbox" button (2026-11-13): pill beside the desktop nav /
+   beside the hamburger on mobile; label collapses away on small screens
+   so the star + count badge still fit a 360px header without overflow.
+   Count badge + star state are driven by favs.js from tp_favs. */
+.toolbox-btn{display:inline-flex;align-items:center;gap:7px;flex:none;background:#fff;color:var(--ink);
+  border:1.5px solid var(--line);border-radius:999px;padding:9px 15px;font-weight:700;font-size:15px;line-height:1}
+.toolbox-btn:hover{border-color:var(--primary);color:var(--primary-dark);background:var(--primary-soft);text-decoration:none}
+.toolbox-btn .tb-star{font-size:17px;color:var(--amber);line-height:1}
+.tb-count{background:var(--primary);color:#fff;border-radius:999px;font-size:11.5px;font-weight:800;padding:2px 7px;line-height:1.25}
+.menu-toolbox{display:flex;align-items:center;gap:10px;background:var(--primary-soft);border:1px solid var(--line);
+  border-radius:14px;padding:12px 14px;font-weight:700;color:var(--primary-dark);margin-bottom:14px}
+.menu-toolbox:hover{text-decoration:none;border-color:var(--primary)}
+.menu-toolbox .tb-star{font-size:19px;color:var(--amber)}
+.menu-toolbox .tb-count-txt{color:var(--muted);font-weight:600;font-size:13.5px}
+@media (max-width:639px){
+  .toolbox-btn{padding:8px 11px}
+  .toolbox-btn .tb-label{display:none}
+}
+/* Toolbox hint toast (favs.js): shown when the Toolbox is still empty */
+.tp-hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:200;background:var(--ink);color:#fff;
+  padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(10,60,52,.35);
+  max-width:calc(100vw - 24px);text-align:center;cursor:pointer}

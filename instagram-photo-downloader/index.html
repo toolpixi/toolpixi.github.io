@@ -21,7 +21,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/css/style.css?v=20261113c">
+<link rel="stylesheet" href="/assets/css/style.css?v=20261113d">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Instagram Photo Downloader \u2014 Full-Size Photos Free", "url": "https://toolpixi.com/instagram-photo-downloader/", "description": "Download the full-size photo from any public Instagram post \u2014 paste the link and save the original JPG, not a screenshot. Free, no sign-up, no app.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What size is the downloaded photo?", "acceptedAnswer": {"@type": "Answer", "text": "The largest size Instagram serves publicly for that post \u2014 normally the full 1080-pixel-wide original, far sharper than the feed preview or a screenshot."}}, {"@type": "Question", "name": "Can I download every photo from a multi-photo post?", "acceptedAnswer": {"@type": "Answer", "text": "This tool returns the post's first photo \u2014 the cover image Instagram itself leads with. Downloading a whole carousel one-by-one is not supported yet."}}, {"@type": "Question", "name": "Does it work for private accounts?", "acceptedAnswer": {"@type": "Answer", "text": "No. Private posts are only visible to approved followers who are logged in, and this tool never logs in \u2014 so they are out of reach, by design."}}, {"@type": "Question", "name": "Is the photo stored on your server?", "acceptedAnswer": {"@type": "Answer", "text": "No. The link is used once to find the image address; the photo itself comes from Instagram's servers and is never stored by us."}}]}]}</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9717573976248563" crossorigin="anonymous"></script>
 </head>
@@ -297,8 +297,10 @@
 <a class="nav-plain" href="/about/">About</a>
 </nav>
 <button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-panel"><svg class="ic-open" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="ic-close" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="menu-btn-label">Menu</span></button>
+<a class="toolbox-btn" href="/#favourites" aria-label="My Toolbox — your saved tools"><span class="tb-star" aria-hidden="true">☆</span><span class="tb-label">My Toolbox</span><span class="tb-count" hidden></span></a>
 </div>
 <div class="menu-panel" id="menu-panel" hidden><div class="wrap">
+<a class="menu-toolbox" href="/#favourites"><span class="tb-star" aria-hidden="true">☆</span><span>My ToolPixi Toolbox</span><span class="tb-count-txt"></span></a>
 <div class="menu-grid">
 <div class="menu-group"><a class="menu-cat" href="/#image">Image Tools</a><ul>
 <li><a href="/image-compressor/"><span class="mic" style="background:#f3efff"><svg viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/sprite.svg#i-78ce4314ca"/></svg></span><span class="mtxt">Image Compressor to KB</span></a></li>

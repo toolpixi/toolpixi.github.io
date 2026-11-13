@@ -128,7 +128,7 @@
     }
   }
 
-  function refresh() { paint(); renderPersonal(); }
+  function refresh() { paint(); renderPersonal(); updateToolboxBtn(); }
 
   /* One delegated handler covers homepage card stars, the stars inside the
      personal sections, and the tool-page toggle button. The star lives inside
@@ -163,4 +163,93 @@
   for (var p = 0; p < pills.length; p++) {
     pills[p].addEventListener("click", function () { setTimeout(renderPersonal, 0); });
   }
+
+  /* Header "My Toolbox" button + the mobile menu's Toolbox row: the count
+     comes from the same tp_favs store as everything else, kept in sync by
+     refresh() above and by cross-tab 'storage' events. Click behaviour:
+     with saved tools it goes to the homepage Toolbox section (smooth
+     scroll when already home); with an empty Toolbox it never dead-ends —
+     it lands on the tools catalogue with a hint toast instead. */
+  function updateToolboxBtn() {
+    var n = load(FKEY).length;
+    var counts = document.querySelectorAll(".tb-count");
+    for (var i = 0; i < counts.length; i++) {
+      counts[i].textContent = String(n);
+      counts[i].hidden = n === 0;
+    }
+    var txts = document.querySelectorAll(".tb-count-txt");
+    for (var j = 0; j < txts.length; j++) txts[j].textContent = n ? "· " + n + " saved" : "";
+    var stars = document.querySelectorAll(".toolbox-btn .tb-star, .menu-toolbox .tb-star");
+    for (var k = 0; k < stars.length; k++) stars[k].textContent = n ? "★" : "☆";
+  }
+
+  function scrollToFav() {
+    var s = document.getElementById("favourites");
+    if (s && !s.hidden) { s.scrollIntoView({ behavior: "smooth", block: "start" }); return true; }
+    return false;
+  }
+  function scrollToCatalogue() {
+    var t = document.querySelector(".cat") || document.getElementById("browse-family") ||
+            document.getElementById("tool-search");
+    if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function showHint() {
+    if (document.querySelector(".tp-hint")) return;
+    var d = document.createElement("div");
+    d.className = "tp-hint";
+    d.setAttribute("role", "status");
+    d.textContent = "Tap ☆ on any tool to save it to your Toolbox — your saved tools will live here.";
+    d.addEventListener("click", function () { d.remove(); });
+    document.body.appendChild(d);
+    setTimeout(function () { if (d.parentNode) d.remove(); }, 6000);
+  }
+
+  document.addEventListener("click", function (e) {
+    var b = e.target && e.target.closest ? e.target.closest(".toolbox-btn, .menu-toolbox") : null;
+    if (!b) return;
+    var n = load(FKEY).length;
+    var onHome = !!document.getElementById("favourites");
+    if (n > 0) {
+      if (onHome) { e.preventDefault(); scrollToFav(); }
+      /* elsewhere: follow the /#favourites link; the arrival code below
+         performs the scroll once the section is rendered. */
+    } else {
+      e.preventDefault();
+      if (onHome) { scrollToCatalogue(); showHint(); }
+      else {
+        try { sessionStorage.setItem("tp_toolbox_hint", "1"); } catch (err) {}
+        location.href = "/";
+      }
+    }
+  });
+
+  window.addEventListener("storage", function (e) {
+    if (e.key === FKEY) { paint(); updateToolboxBtn(); }
+  });
+
+  /* Same-document hash jumps (in-page /#favourites links, manual hash
+     edits) fire no page load, so handle them here too. */
+  window.addEventListener("hashchange", function () {
+    if (location.hash !== "#favourites") return;
+    renderPersonal();
+    if (load(FKEY).length > 0) setTimeout(scrollToFav, 60);
+    else showHint();
+  });
+
+  /* Arrival handling on the homepage: a /#favourites landing scrolls to
+     the (now unhidden) Toolbox section; an empty-Toolbox landing that
+     came via the header button shows the hint instead of a dead anchor. */
+  function arrival() {
+    var hint = false;
+    try { hint = sessionStorage.getItem("tp_toolbox_hint") === "1"; sessionStorage.removeItem("tp_toolbox_hint"); } catch (err) {}
+    if (location.hash === "#favourites") {
+      if (load(FKEY).length > 0) setTimeout(scrollToFav, 80);
+      else showHint();
+    } else if (hint) {
+      showHint();
+    }
+    updateToolboxBtn();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", arrival);
+  else arrival();
 })();
