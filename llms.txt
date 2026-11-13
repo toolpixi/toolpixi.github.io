@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 127 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 132 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -17,7 +17,7 @@ ToolPixi at https://toolpixi.com/ offers 127 free browser-based tools across 5 c
 - Image Tools: 33 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 12 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 33 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 26 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Text & Generator Tools: 31 tools — including Word Counter, QR Code Generator, YouTube Thumbnail Downloader, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
 - Converters & Calculators: 23 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
@@ -149,6 +149,11 @@ ToolPixi at https://toolpixi.com/ offers 127 free browser-based tools across 5 c
 - [Percentage Increase Calculator](https://toolpixi.com/percentage-increase-calculator/): Percentage increase or decrease between two values, and the price after a % rise.
 - [Days Until Hanukkah](https://toolpixi.com/days-until-hanukkah/): A live countdown to the first candle of Hanukkah.
 - [Days Until St Patrick's Day](https://toolpixi.com/days-until-st-patricks-day/): A live countdown to St Patrick’s Day — 17 March.
+- [Instagram Reel & Video Downloader](https://toolpixi.com/instagram-video-downloader/): Download videos and reels from public Instagram posts — paste the link, save the MP4.
+- [Instagram Photo Downloader](https://toolpixi.com/instagram-photo-downloader/): Save the full-size photo from any public Instagram post — paste the link, download the JPG.
+- [TikTok Video Downloader](https://toolpixi.com/tiktok-video-downloader/): Download public TikTok videos in HD — clean streams straight from TikTok, no app needed.
+- [Facebook Video Downloader](https://toolpixi.com/facebook-video-downloader/): Download public Facebook videos in HD or SD — paste the link, save the MP4.
+- [X (Twitter) Video Downloader](https://toolpixi.com/twitter-video-downloader/): Download videos from public X (Twitter) posts — pick the quality, save the MP4.
 
 ## Privacy promise
 
