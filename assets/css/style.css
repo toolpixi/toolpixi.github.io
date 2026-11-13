@@ -338,3 +338,28 @@ pre.out.show{display:block}
 .lap-list li{display:flex;justify-content:space-between;gap:10px;padding:9px 12px;background:#f2f9f5;
   border:1px solid var(--line);border-radius:10px;margin-bottom:6px;font-variant-numeric:tabular-nums}
 .lap-list .lap-n{font-weight:700;color:var(--muted)}
+
+/* Homepage load-more + polish (2026-11-13) — homepage only, scoped under .home
+   (the hero exists only on the homepage too). Existing tokens only. */
+.home .cat-sub{color:var(--muted);font-size:14.5px}
+.home .section{margin:30px 0}
+.home .cat h2,.home .section h2,.home .personal-sec h2{margin-bottom:6px}
+.home .personal-sec .cat-sub{margin:0 0 14px}
+.home .card h3{line-height:1.3;min-height:2.6em;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden}
+.hero .search-box{max-width:560px}
+.hero .search-box input{padding:15px 18px 15px 46px;border-width:2px;font-size:16.5px;
+  box-shadow:0 2px 6px rgba(10,60,52,.07),0 18px 34px -18px rgba(13,115,119,.35)}
+.hero .search-box svg{left:16px;width:20px;height:20px}
+.load-more{text-align:center;margin:30px 0 6px}
+.load-more-status{color:var(--muted);font-size:14px;margin:10px 0 0}
+@media (max-width:639px){
+  .home .grid{grid-template-columns:1fr 1fr;gap:10px}
+  .home .card{flex-direction:column;gap:9px;padding:13px 40px 13px 12px}
+  .home .card .ic{width:44px;height:44px;border-radius:12px}
+  .home .card .ic svg{width:22px;height:22px}
+  .home .card h3{font-size:15px}
+  .home .card p{font-size:12.8px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;
+    -webkit-box-orient:vertical;overflow:hidden}
+  .home .load-more .btn{width:100%}
+}
