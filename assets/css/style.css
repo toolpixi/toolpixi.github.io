@@ -253,19 +253,12 @@ progress::-moz-progress-bar{background:var(--primary);border-radius:99px}
 .dd-ic svg{width:20px;height:20px;display:block}
 .dd-name{font-size:14.5px;font-weight:600;line-height:1.35;min-width:0;white-space:normal;overflow-wrap:break-word}
 
-/* ---------- homepage category pills ---------- */
-.cat-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:26px 0 6px}
-.pill{border:1.5px solid var(--line);background:#fff;color:var(--muted);font-size:14px;font-weight:700;padding:9px 20px;border-radius:999px;cursor:pointer;transition:all .15s;white-space:nowrap}
-.pill:hover{border-color:var(--primary);color:var(--primary-dark)}
-.pill.active{background:var(--ink);border-color:var(--ink);color:#fff}
 @media (min-width:960px){
   .grid{grid-template-columns:1fr 1fr 1fr}
   .menu-grid{grid-template-columns:1fr 1fr 1fr}
 }
 @media (max-width:639px){
   .tool-panel .btn:not(.small){width:100%}
-  .cat-pills{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;padding-bottom:6px;margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px;scrollbar-width:none}
-  .cat-pills::-webkit-scrollbar{display:none}
 }
 
 /* Growth batch 2026-10-12: world clock, diff, json, hex colour, svg */
@@ -351,7 +344,7 @@ pre.out.show{display:block}
 .hero .search-box input{padding:15px 18px 15px 46px;border-width:2px;font-size:16.5px;
   box-shadow:0 2px 6px rgba(10,60,52,.07),0 18px 34px -18px rgba(13,115,119,.35)}
 .hero .search-box svg{left:16px;width:20px;height:20px}
-.all-tools-note{text-align:center;color:var(--muted);font-size:14px;margin:4px 0 0}
+
 @media (max-width:639px){
   .home .grid{grid-template-columns:1fr 1fr;gap:10px}
   .home .card{flex-direction:column;gap:9px;padding:13px 40px 13px 12px}
@@ -361,3 +354,50 @@ pre.out.show{display:block}
   .home .card p{font-size:12.8px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;
     -webkit-box-orient:vertical;overflow:hidden}
 }
+
+/* Homepage compact all-tools catalogue (2026-11-13) — every tool visible
+   at once, grouped by family as small tiles so the homepage stays short.
+   Homepage only, scoped under .home; existing tokens only. */
+.home .cat-group{margin:28px 0 0}
+.home .cat-group h2{font-size:19px;margin:0 0 3px;letter-spacing:-.01em}
+.home .cat-group .hub-line{margin:10px 0 0}
+.home .tiles{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.home .tile{position:relative;min-width:0;display:flex;gap:10px;align-items:center;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:8px 30px 8px 9px;color:var(--ink);
+  box-shadow:var(--shadow);transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease}
+.home .tile:hover{transform:translateY(-1px);border-color:#93cdbd;text-decoration:none;
+  box-shadow:0 2px 4px rgba(10,60,52,.06),0 10px 22px -12px rgba(13,115,119,.35)}
+.home .tile .tic{width:34px;height:34px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 0 0 1px rgba(10,60,52,.06)}
+.home .tile .tic svg{width:18px;height:18px}
+.home .tile .ttx{min-width:0}
+.home .tile .tn{display:block;font-weight:700;font-size:14px;line-height:1.25}
+.home .tile .td{display:block;color:var(--muted);font-size:12px;line-height:1.4;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home .tile .fav-star{width:28px;height:28px;font-size:17px;top:4px;right:4px}
+@media (min-width:700px){
+  .home .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (min-width:1024px){
+  .home .tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:639px){
+  .home .tiles{gap:7px}
+  .home .tile{gap:7px;padding:7px 24px 7px 8px}
+  .home .tile .tic{width:30px;height:30px;border-radius:8px}
+  .home .tile .tic svg{width:16px;height:16px}
+  .home .tile .tn{font-size:12.8px;display:-webkit-box;-webkit-line-clamp:2;
+    -webkit-box-orient:vertical;overflow:hidden}
+  .home .tile .td{display:none}
+}
+
+/* Tool ratings (2026-11-13): anonymous 5-star widget on tool pages,
+   backed by the ToolPixi API. Empty until JS fills it — no layout box. */
+.tp-rating{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 2px}
+.tp-rating:empty{display:none}
+.tp-rating-label{font-weight:700;font-size:14.5px}
+.tp-stars{display:inline-flex;gap:2px}
+.tp-stars button{background:none;border:0;padding:2px;cursor:pointer;font-size:22px;line-height:1;color:#c3d4cb}
+.tp-stars button.on{color:var(--amber)}
+.tp-stars button:hover{transform:scale(1.12)}
+.tp-rating-meta{color:var(--muted);font-size:13.5px}
