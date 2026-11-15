@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 126 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 127 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -16,7 +16,7 @@ ToolPixi at https://toolpixi.com/ offers 126 free browser-based tools across 5 c
 
 - Image Tools: 33 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 12 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 33 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Days Until New Year. Ages, countdowns and date differences, calculated instantly.
+- Date & Time Tools: 34 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
 - Text & Generator Tools: 25 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
 - Converters & Calculators: 23 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
@@ -38,6 +38,7 @@ ToolPixi at https://toolpixi.com/ offers 126 free browser-based tools across 5 c
 - [Age on a Specific Date](https://toolpixi.com/age-on-date/): How old were you — or will you be — on any chosen date?
 - [Days Between Dates](https://toolpixi.com/days-between-dates/): Count the days between two dates, with weeks and months too.
 - [Days Until Christmas](https://toolpixi.com/days-until-christmas/): A live countdown to Christmas Day.
+- [Christmas Countdown](https://toolpixi.com/christmas-countdown/): How many days until Christmas? Live timer with days, weeks, weekends and sleeps left.
 - [Days Until New Year](https://toolpixi.com/days-until-new-year/): Count down to January 1st, live to the second.
 - [Days Until Ramadan](https://toolpixi.com/days-until-ramadan/): When does Ramadan start? Live countdown with the expected date.
 - [Days Until Any Date](https://toolpixi.com/days-until/): Build a countdown to your birthday, exam, trip or deadline.
