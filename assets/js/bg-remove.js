@@ -1,7 +1,11 @@
 "use strict";
-/* ToolPixi Background Remover — MODNet portrait matting (Apache-2.0 model),
-   run locally with ONNX Runtime Web (MIT). Runtime and model are both
-   self-hosted in /assets; the photo never leaves the device. */
+/* ToolPixi Background Remover — ISNet (DIS) general-purpose segmentation
+   model (Apache-2.0), int8-quantized build, run locally with ONNX Runtime
+   Web (MIT). Runtime and model are both self-hosted in /assets; the photo
+   never leaves the device.
+   Preprocessing mirrors rembg's DisSession exactly: resize to 1024x1024,
+   divide by the image's own max pixel value, then (x - 0.5) / 1.0;
+   the first model output is min-max renormalised into the alpha matte. */
 (function () {
   var panel = document.getElementById("bg-remover");
   if (!panel) return;
@@ -39,8 +43,8 @@
   async function ensureSession() {
     if (session) return session;
     if (typeof ort === "undefined") throw new Error("The AI runtime failed to load — check your connection and reload the page.");
-    status("Downloading the AI model (about 7 MB — one time only, then it is cached)…");
-    session = await ort.InferenceSession.create("/assets/models/modnet-quantized.onnx", { executionProviders: ["wasm"] });
+    status("Downloading the AI model (about 46 MB — one time only, then it is cached)…");
+    session = await ort.InferenceSession.create("/assets/models/isnet-general-use-int8.onnx", { executionProviders: ["wasm"] });
     return session;
   }
 
@@ -49,32 +53,49 @@
     busy = true; goBtn.disabled = true; tpHideError("bgr-err");
     try {
       var sess = await ensureSession();
-      status("Removing the background — this runs on your device and can take a few seconds…");
+      status("Removing the background — this runs on your device with a large AI model, so it can take a while on a phone. Please keep this tab open…");
       await new Promise(function (r) { setTimeout(r, 30); }); // let the status paint
-      var S = 512;
+      var S = 1024;
       var c = document.createElement("canvas"); c.width = S; c.height = S;
       var cx = c.getContext("2d", { willReadFrequently: true });
+      cx.imageSmoothingEnabled = true; cx.imageSmoothingQuality = "high";
       cx.drawImage(img, 0, 0, S, S);
       var px = cx.getImageData(0, 0, S, S).data;
-      var mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225];
+      // rembg DisSession normalisation: divide by the image's own max
+      // pixel value, then (x - 0.5) / 1.0 per channel.
+      var maxVal = 0;
+      for (var m = 0; m < S * S; m++) {
+        if (px[m * 4] > maxVal) maxVal = px[m * 4];
+        if (px[m * 4 + 1] > maxVal) maxVal = px[m * 4 + 1];
+        if (px[m * 4 + 2] > maxVal) maxVal = px[m * 4 + 2];
+      }
+      if (maxVal < 1) maxVal = 255;
       var data = new Float32Array(3 * S * S);
       for (var i = 0; i < S * S; i++)
         for (var ch = 0; ch < 3; ch++)
-          data[ch * S * S + i] = (px[i * 4 + ch] / 255 - mean[ch]) / std[ch];
+          data[ch * S * S + i] = px[i * 4 + ch] / maxVal - 0.5;
       var inputName = sess.inputNames[0];
       var feeds = {}; feeds[inputName] = new ort.Tensor("float32", data, [1, 3, S, S]);
       var out = await sess.run(feeds);
-      var mask = out[sess.outputNames[0]].data;
-      // mask -> alpha image at 512, then scaled to output size
+      var outTensor = out[sess.outputNames[0]];
+      var mask = outTensor.data;
+      var npix = S * S;
+      if (mask.length < npix) throw new Error("The model returned an unexpected result — please try another photo.");
+      // min-max renormalise the matte (rembg behaviour)
+      var mi = Infinity, ma = -Infinity;
+      for (var j = 0; j < npix; j++) { if (mask[j] < mi) mi = mask[j]; if (mask[j] > ma) ma = mask[j]; }
+      var range = ma - mi; if (!(range > 1e-9)) range = 1;
+      // matte -> alpha image at 1024, then scaled to output size
       var mc = document.createElement("canvas"); mc.width = S; mc.height = S;
       var mx = mc.getContext("2d");
       var mid = mx.createImageData(S, S);
-      for (var j = 0; j < S * S; j++) {
-        var a = Math.max(0, Math.min(255, Math.round(mask[j] * 255)));
-        mid.data[j * 4] = 255; mid.data[j * 4 + 1] = 255; mid.data[j * 4 + 2] = 255; mid.data[j * 4 + 3] = a;
+      for (var p = 0; p < npix; p++) {
+        var a = (mask[p] - mi) / range;
+        a = Math.max(0, Math.min(255, Math.round(a * 255)));
+        mid.data[p * 4] = 255; mid.data[p * 4 + 1] = 255; mid.data[p * 4 + 2] = 255; mid.data[p * 4 + 3] = a;
       }
       mx.putImageData(mid, 0, 0);
-      // output canvas: original photo (long edge capped at 4096), alpha from mask
+      // output canvas: original photo (long edge capped at 4096), alpha from matte
       var ow = img.naturalWidth, oh = img.naturalHeight;
       var cap = 4096 / Math.max(ow, oh);
       if (cap < 1) { ow = Math.round(ow * cap); oh = Math.round(oh * cap); }
@@ -83,7 +104,7 @@
       ox.drawImage(img, 0, 0, ow, oh);
       var sc = document.createElement("canvas"); sc.width = ow; sc.height = oh;
       var sx = sc.getContext("2d", { willReadFrequently: true });
-      sx.imageSmoothingEnabled = true;
+      sx.imageSmoothingEnabled = true; sx.imageSmoothingQuality = "high";
       sx.drawImage(mc, 0, 0, ow, oh);
       var base = ox.getImageData(0, 0, ow, oh), alpha = sx.getImageData(0, 0, ow, oh).data;
       for (var k = 0; k < ow * oh; k++) base.data[k * 4 + 3] = alpha[k * 4 + 3];
