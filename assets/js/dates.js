@@ -50,10 +50,17 @@ function tpCountdownCells(prefix, target) {
       if (done) done.style.display = "block";
       return;
     }
-    var days = Math.floor(diff / 86400000);
-    var hrs = Math.floor(diff / 3600000) % 24;
-    var min = Math.floor(diff / 60000) % 60;
-    var sec = Math.floor(diff / 1000) % 60;
+    // Days = CALENDAR days between today and the target date — the number
+    // people mean by "days until" (and what tpDaysBetween / the generic
+    // Days Until tool report). A plain floor(diff/86400000) reads one less
+    // for most of every day. Fixed 2026-11-16.
+    var days = tpDaysBetween(now, target);
+    // Hours/min/sec = what is left of today (or, when the target falls
+    // later today, the exact time left to it).
+    var rem = days <= 0 ? diff : 86400000 - (now - tpStartOfDay(now)) - 1;
+    var hrs = Math.floor(rem / 3600000);
+    var min = Math.floor(rem / 60000) % 60;
+    var sec = Math.floor(rem / 1000) % 60;
     dEl.textContent = days; hEl.textContent = hrs; mEl.textContent = min; sEl.textContent = sec;
     setTimeout(tick, 500);
   }
@@ -255,6 +262,43 @@ function tpCountdownCells(prefix, target) {
     target = new Date(y, 2, 17);
     if (target < tpStartOfDay(now)) target = new Date(y + 1, 2, 17);
     document.getElementById("du-date-label").textContent = "St Patrick's Day — " + tpFmtDate(target);
+  } else if (kind === "chinese-new-year") {
+    // Chinese New Year (Spring Festival, 1st day of the 1st lunar month).
+    // Verified dates (Hong Kong Observatory tables):
+    // 2026-02-17 (Tue, Horse), 2027-02-06 (Sat, Goat), 2028-01-26 (Wed, Monkey),
+    // 2029-02-13 (Tue, Rooster), 2030-02-03 (Sun, Dog).
+    var cnyDates = [new Date(2026, 1, 17), new Date(2027, 1, 6), new Date(2028, 0, 26),
+                    new Date(2029, 1, 13), new Date(2030, 1, 3)];
+    target = null;
+    for (var i = 0; i < cnyDates.length; i++) {
+      if (cnyDates[i] >= tpStartOfDay(now)) { target = cnyDates[i]; break; }
+    }
+    if (!target) {
+      document.getElementById("du-date-label").textContent =
+        "Our Chinese New Year date list runs through 2030 — this page will be updated with future dates.";
+    } else {
+      document.getElementById("du-date-label").textContent = "Chinese New Year — " + tpFmtDate(target);
+    }
+  } else if (kind === "summer") {
+    // First day of summer = the June solstice (Northern Hemisphere).
+    // Solstice instants in UTC (timeanddate / NREL solar position):
+    // 2026-06-21 08:24, 2027-06-21 14:10, 2028-06-20 20:01,
+    // 2029-06-21 01:48, 2030-06-21 07:31. The calendar date can be 20 June
+    // in the Americas in 2028 and 2029, so the label shows the local date
+    // of the instant and the page table lists the UTC times.
+    var solstices = [Date.UTC(2026, 5, 21, 8, 24), Date.UTC(2027, 5, 21, 14, 10),
+                     Date.UTC(2028, 5, 20, 20, 1), Date.UTC(2029, 5, 21, 1, 48),
+                     Date.UTC(2030, 5, 21, 7, 31)];
+    target = null;
+    for (var i = 0; i < solstices.length; i++) {
+      if (solstices[i] >= now.getTime()) { target = new Date(solstices[i]); break; }
+    }
+    if (!target) {
+      document.getElementById("du-date-label").textContent =
+        "Our solstice list runs through 2030 — this page will be updated with future dates.";
+    } else {
+      document.getElementById("du-date-label").textContent = "First day of summer (June solstice) — " + tpFmtDate(target);
+    }
   }
   if (target) tpCountdownCells("du", target);
 })();

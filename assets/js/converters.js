@@ -1,7 +1,7 @@
 /* ToolPixi — unit converters + calculators (BMI, percentage, tip) */
 // ==== PURE ====
 var TP_UNITS = {
-  length: { label: "Length", units: { cm: 0.01, m: 1, km: 1000, inches: 0.0254, feet: 0.3048, yards: 0.9144, miles: 1609.344 }, def: ["cm", "inches"] },
+  length: { label: "Length", units: { mm: 0.001, cm: 0.01, m: 1, km: 1000, inches: 0.0254, feet: 0.3048, yards: 0.9144, miles: 1609.344 }, def: ["cm", "inches"] },
   weight: { label: "Weight", units: { kg: 1, g: 0.001, lbs: 0.45359237, oz: 0.0283495231, stone: 6.35029318 }, def: ["kg", "lbs"] },
   temperature: { label: "Temperature", units: { "°C": "c", "°F": "f", K: "k" }, def: ["°C", "°F"], temp: true },
   distance: { label: "Distance", units: { km: 1000, miles: 1609.344, m: 1, feet: 0.3048 }, def: ["km", "miles"] }
@@ -18,7 +18,11 @@ function tpFmtNum(n) {
   if (!isFinite(n)) return "—";
   var a = Math.abs(n);
   var s = a !== 0 && (a >= 1e12 || a < 1e-4) ? n.toExponential(4) : String(Math.round(n * 1e6) / 1e6);
-  return s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // Group only the integer part: grouping the whole string inserts a comma
+  // inside the decimals ("0.984,252"). Fixed 2026-11-16.
+  var parts = s.split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return parts.join(".");
 }
 function tpBMI(weightKg, heightCm) {
   var m = heightCm / 100;
@@ -385,14 +389,20 @@ function tpHexToRgb(hex) {
       if (isNaN(g) || isNaN(w)) continue;
       n++; sw += w; swg += g * w;
     }
-    if (n === 0 || sw <= 0) {
-      document.getElementById("gr-result").classList.remove("show");
-      return;
+    // The weighted average and the "what do I need on the final?" sections
+    // are independent: the final-exam answer must work even when no grade
+    // rows are filled in. (Previously run() returned early when n === 0 and
+    // the final-exam block silently never updated. Fixed 2026-11-16.)
+    var hasRows = n > 0 && sw > 0;
+    if (hasRows) {
+      var avg = swg / sw;
+      document.getElementById("gr-avg").textContent = avg.toFixed(1) + "% — " + tpLetterGrade(avg);
+      document.getElementById("gr-note").textContent = "Weights total " + sw.toFixed(0) +
+        "% across " + n + " item" + (n === 1 ? "" : "s") + ".";
+    } else {
+      document.getElementById("gr-avg").textContent = "—";
+      document.getElementById("gr-note").textContent = "Add at least one graded item above to see your weighted average.";
     }
-    var avg = swg / sw;
-    document.getElementById("gr-avg").textContent = avg.toFixed(1) + "% — " + tpLetterGrade(avg);
-    document.getElementById("gr-note").textContent = "Weights total " + sw.toFixed(0) +
-      "% across " + n + " item" + (n === 1 ? "" : "s") + ".";
     // "What do I need on the final?"
     var cur = parseFloat(document.getElementById("gr-current").value);
     var want = parseFloat(document.getElementById("gr-want").value);
@@ -901,7 +911,7 @@ function tpHexToText(hex) {
   fromText();
 })();
 
-// ==== DOM: single-pair converter pages (celsius<->fahrenheit, kg<->lbs, cm<->inches) ====
+// ==== DOM: single-pair converter pages (celsius<->fahrenheit, kg<->lbs, cm<->inches, mm<->inches, m<->feet) ====
 (function () {
   var panel = document.getElementById("pair-converter");
   if (!panel) return;

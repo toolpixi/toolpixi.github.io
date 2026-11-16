@@ -53,6 +53,12 @@
 
   el("pdw-go").addEventListener("click", function () {
     if (!file) { tpShowError("pdw-err", "Choose a PDF first."); return; }
+    // Engine guard: if a library failed to load, say so honestly instead of
+    // letting the failure surface as "your PDF may be encrypted or damaged".
+    if (typeof pdfjsLib === "undefined" || typeof docx === "undefined") {
+      tpShowError("pdw-err", "The conversion engine could not be loaded. Check your connection and refresh the page, then try again.");
+      return;
+    }
     var btn = el("pdw-go");
     tpHideError("pdw-err");
     btn.disabled = true; btn.textContent = "Converting…";

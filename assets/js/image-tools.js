@@ -404,19 +404,27 @@ function tpSvgWithSize(svgText, w, h) {
   });
 })();
 
-// ==== PURE: build a real multi-size .ico from ImageData frames ====
-// frames: [{ size: <int>, data: <ImageData RGBA> }]
-// Writes ICONDIR + ICONDIRENTRY table + per-image BMP-style data
-// (BITMAPINFOHEADER + bottom-up BGRA XOR mask + zeroed AND mask).
-// Returns Blob with type "image/x-icon".
+// ==== PURE: build a real multi-size .ico from frames ====
+// frames: [{ size: <int>, data: <ImageData RGBA> }] for BMP-style entries, or
+//         [{ size: <int>, png: <Uint8Array> }] for PNG-compressed entries
+// (the modern form for 64px and up — a 256px BMP entry would be ~256 KB of
+// raw pixels; PNG keeps the whole icon small and every current Windows /
+// browser build reads PNG entries). Writes ICONDIR + ICONDIRENTRY table +
+// per-image data (BMP: BITMAPINFOHEADER + bottom-up BGRA XOR mask + zeroed
+// AND mask). Returns Blob with type "image/x-icon".
 function tpBuildIco(frames) {
   var n = frames.length, i, j;
-  // Bytes for each image: 40-byte header + XOR mask + AND mask (rows padded to 4 bytes).
+  // Bytes for each image: PNG bytes verbatim, or 40-byte header + XOR mask
+  // + AND mask (rows padded to 4 bytes).
   var sizes = [], imgSize, total = 6 + 16 * n; // header + directory
   for (i = 0; i < n; i++) {
     var s = frames[i].size;
-    var andRow = Math.ceil(s / 32) * 4;         // AND-mask row bytes, 32-bit aligned
-    imgSize = 40 + 4 * s * s + andRow * s;
+    if (frames[i].png) {
+      imgSize = frames[i].png.length;
+    } else {
+      var andRow = Math.ceil(s / 32) * 4;         // AND-mask row bytes, 32-bit aligned
+      imgSize = 40 + 4 * s * s + andRow * s;
+    }
     sizes.push(imgSize);
     total += imgSize;
   }
@@ -443,6 +451,12 @@ function tpBuildIco(frames) {
   // --- Image data ---
   var off = 6 + 16 * n;
   for (i = 0; i < n; i++) {
+    if (frames[i].png) {
+      // PNG-compressed entry: the PNG bytes ARE the image resource.
+      new Uint8Array(buf, off, frames[i].png.length).set(frames[i].png);
+      off += frames[i].png.length;
+      continue;
+    }
     var size = frames[i].size, px = frames[i].data.data; // RGBA, top-down
     // BITMAPINFOHEADER (40 bytes)
     dv.setUint32(off + 0, 40, true);        // biSize
@@ -475,12 +489,37 @@ function tpBuildIco(frames) {
   return new Blob([buf], { type: "image/x-icon" });
 }
 
+// The full modern icon set: BMP entries up to 48px (max compatibility),
+// PNG-compressed entries from 64px up (sharp on high-DPI screens, small file).
+var TP_ICO_SIZES = [16, 24, 32, 48, 64, 128, 256];
+// Draws the centre-cropped square of img at each requested size and returns
+// tpBuildIco frames. Async because PNG entries come from canvas blobs.
+async function tpIcoFrames(img, sx, sy, side, sizes) {
+  var frames = [];
+  for (var i = 0; i < sizes.length; i++) {
+    var size = sizes[i];
+    var c = document.createElement("canvas");
+    c.width = size; c.height = size;
+    var ctx = c.getContext("2d");
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+    if (size >= 64) {
+      var blob = await tpCanvasToBlob(c, "image/png");
+      frames.push({ size: size, png: new Uint8Array(await blob.arrayBuffer()) });
+    } else {
+      frames.push({ size: size, data: ctx.getImageData(0, 0, size, size) });
+    }
+  }
+  return frames;
+}
+
 // ==== DOM: Favicon Generator ====
 (function () {
   var panel = document.getElementById("favicon-gen");
   if (!panel) return;
   var file = null, loaded = null, icoBlob = null;
-  var FV_SIZES = [16, 32, 48];
+  var FV_SIZES = TP_ICO_SIZES;
   var preview = document.getElementById("fv-preview");
   var info = document.getElementById("fv-info");
   var goBtn = document.getElementById("fv-go");
@@ -512,7 +551,7 @@ function tpBuildIco(frames) {
     }
   });
 
-  goBtn.addEventListener("click", function () {
+  goBtn.addEventListener("click", async function () {
     tpHideError("fv-err");
     resetResult();
     if (!file || !loaded) { tpShowError("fv-err", "Please choose an image first."); return; }
@@ -523,13 +562,7 @@ function tpBuildIco(frames) {
       var side = Math.min(img.naturalWidth, img.naturalHeight);
       var sx = Math.round((img.naturalWidth - side) / 2);
       var sy = Math.round((img.naturalHeight - side) / 2);
-      var frames = FV_SIZES.map(function (size) {
-        var c = document.createElement("canvas");
-        c.width = size; c.height = size;
-        var ctx = c.getContext("2d");
-        ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
-        return { size: size, data: ctx.getImageData(0, 0, size, size) };
-      });
+      var frames = await tpIcoFrames(img, sx, sy, side, FV_SIZES);
       icoBlob = tpBuildIco(frames);
       document.getElementById("fv-result").classList.add("show");
     } catch (err) {
@@ -723,14 +756,14 @@ function tpBuildIco(frames) {
   var panel = document.getElementById("png-to-ico");
   if (!panel) return;
   var file = null, loaded = null, icoBlob = null;
-  var sizes = [16, 32, 48];
+  var sizes = TP_ICO_SIZES.slice();
   function currentSizes() { return sizes.slice(); }
   panel.querySelectorAll("[data-sizes]").forEach(function (b) {
     b.addEventListener("click", function () {
       panel.querySelectorAll("[data-sizes]").forEach(function (x) { x.classList.remove("on"); });
       b.classList.add("on");
       var v = b.getAttribute("data-sizes");
-      sizes = v === "all" ? [16, 32, 48] : [parseInt(v, 10)];
+      sizes = v === "all" ? TP_ICO_SIZES.slice() : [parseInt(v, 10)];
     });
   });
   tpDropzone("pi-drop", "pi-file", {
@@ -752,7 +785,7 @@ function tpBuildIco(frames) {
       });
     }
   });
-  document.getElementById("pi-go").addEventListener("click", function () {
+  document.getElementById("pi-go").addEventListener("click", async function () {
     tpHideError("pi-err");
     if (!file || !loaded) { tpShowError("pi-err", "Please choose a PNG image first."); return; }
     var btn = this; btn.disabled = true; btn.textContent = "Building…";
@@ -761,13 +794,7 @@ function tpBuildIco(frames) {
       var side = Math.min(img.naturalWidth, img.naturalHeight);
       var sx = Math.round((img.naturalWidth - side) / 2);
       var sy = Math.round((img.naturalHeight - side) / 2);
-      var frames = currentSizes().map(function (size) {
-        var c = document.createElement("canvas");
-        c.width = size; c.height = size;
-        var ctx = c.getContext("2d");
-        ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
-        return { size: size, data: ctx.getImageData(0, 0, size, size) };
-      });
+      var frames = await tpIcoFrames(img, sx, sy, side, currentSizes());
       icoBlob = tpBuildIco(frames);
       var lbl = currentSizes().map(function (s) { return s + "×" + s; }).join(", ");
       document.getElementById("pi-new").textContent =
@@ -1019,7 +1046,90 @@ function tpBuildIco(frames) {
   });
   document.getElementById("wm-download").addEventListener("click", function () {
     if (!srcImg) return;
-    if (canvas.toBlob) canvas.toBlob(function (b) { if (b) tpDownload(b, srcName + "-watermarked.png"); }, "image/png");
-    else tpDownload(canvas.toDataURL("image/png"), srcName + "-watermarked.png");
+    // Output format is the user's choice (added 2026-11-16): PNG is lossless
+    // but turns a small photo into a several-times-larger file; JPG/WebP at
+    // high quality keep the photo close to its original size.
+    var fmtSel = document.getElementById("wm-format");
+    var fmt = fmtSel ? fmtSel.value : "png";
+    if (fmt === "jpg") {
+      // JPG has no transparency: flatten onto white first.
+      var flat = document.createElement("canvas");
+      flat.width = canvas.width; flat.height = canvas.height;
+      var fctx = flat.getContext("2d");
+      fctx.fillStyle = "#ffffff"; fctx.fillRect(0, 0, flat.width, flat.height);
+      fctx.drawImage(canvas, 0, 0);
+      if (flat.toBlob) flat.toBlob(function (b) { if (b) tpDownload(b, srcName + "-watermarked.jpg"); }, "image/jpeg", 0.92);
+    } else if (fmt === "webp") {
+      if (canvas.toBlob) canvas.toBlob(function (b) { if (b) tpDownload(b, srcName + "-watermarked.webp"); }, "image/webp", 0.92);
+    } else {
+      if (canvas.toBlob) canvas.toBlob(function (b) { if (b) tpDownload(b, srcName + "-watermarked.png"); }, "image/png");
+      else tpDownload(canvas.toDataURL("image/png"), srcName + "-watermarked.png");
+    }
+  });
+})();
+
+// ==== DOM: Passport Photo Maker ====
+(function () {
+  var panel = document.getElementById("passport-photo");
+  if (!panel) return;
+  // Exact print sizes at 300 dpi: 35×45 mm = 413×531 px, 2×2 in = 600×600 px,
+  // 51×51 mm = 600×600 px (the Indian passport size).
+  var SIZES = {
+    "35x45": { w: 413, h: 531, label: "35 × 45 mm (413 × 531 px at 300 dpi)" },
+    "2x2": { w: 600, h: 600, label: "2 × 2 in (600 × 600 px at 300 dpi)" },
+    "51x51": { w: 600, h: 600, label: "51 × 51 mm (600 × 600 px at 300 dpi)" }
+  };
+  var loaded = null, outBlob = null, outExt = "jpg";
+  function sizeNote() {
+    var s = SIZES[document.getElementById("pp-size").value];
+    document.getElementById("pp-size-note").textContent = "Output: " + s.label +
+      " — cropped from the centre of your photo, then resized to exactly that size.";
+  }
+  document.getElementById("pp-size").addEventListener("change", sizeNote);
+  sizeNote();
+  tpDropzone("pp-drop", "pp-file", {
+    accept: "image/*", multiple: false,
+    onFiles: function (files) {
+      tpHideError("pp-err");
+      tpFileList("pp-list", files);
+      document.getElementById("pp-go").disabled = false;
+      tpLoadImageFromFile(files[0]).then(function (r) {
+        if (loaded) URL.revokeObjectURL(loaded.url);
+        loaded = r;
+        document.getElementById("pp-orig").textContent =
+          "Original: " + r.img.naturalWidth + " × " + r.img.naturalHeight + " px";
+      }).catch(function (err) { tpShowError("pp-err", err.message); });
+    }
+  });
+  document.getElementById("pp-fmt").addEventListener("change", function (e) {
+    outExt = e.target.value === "image/png" ? "png" : "jpg";
+  });
+  document.getElementById("pp-go").addEventListener("click", async function () {
+    tpHideError("pp-err");
+    if (!loaded) { tpShowError("pp-err", "Please choose a photo first."); return; }
+    var s = SIZES[document.getElementById("pp-size").value];
+    var W = loaded.img.naturalWidth, H = loaded.img.naturalHeight;
+    var ratio = s.w / s.h, sw, sh;
+    if (W / H > ratio) { sh = H; sw = Math.round(H * ratio); }
+    else { sw = W; sh = Math.round(W / ratio); }
+    var sx = Math.round((W - sw) / 2), sy = Math.round((H - sh) / 2);
+    var canvas = document.createElement("canvas");
+    canvas.width = s.w; canvas.height = s.h;
+    var ctx = canvas.getContext("2d");
+    var mime = document.getElementById("pp-fmt").value;
+    if (mime === "image/jpeg" || document.getElementById("pp-white").checked) {
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, s.w, s.h);
+    }
+    ctx.drawImage(loaded.img, sx, sy, sw, sh, 0, 0, s.w, s.h);
+    var blob = await tpCanvasToBlob(canvas, mime, 0.92);
+    if (!blob) { tpShowError("pp-err", "This browser cannot encode that format. Try PNG."); return; }
+    outBlob = blob;
+    document.getElementById("pp-new").textContent =
+      "Ready: " + s.w + " × " + s.h + " px (" + s.label.split("(")[0].trim() + ") — " + tpFormatBytes(blob.size) + ".";
+    document.getElementById("pp-preview").src = URL.createObjectURL(blob);
+    document.getElementById("pp-result").classList.add("show");
+  });
+  document.getElementById("pp-download").addEventListener("click", function () {
+    if (outBlob) tpDownload(outBlob, "passport-photo." + outExt);
   });
 })();

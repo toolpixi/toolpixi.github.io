@@ -162,6 +162,7 @@ progress::-webkit-progress-bar{background:#dcefe7;border-radius:99px}
 progress::-webkit-progress-value{background:var(--primary);border-radius:99px}
 progress::-moz-progress-bar{background:var(--primary);border-radius:99px}
 .thumb-preview{max-width:260px;border-radius:10px;border:1px solid var(--line)}
+.pdf-preview{max-width:100%;border:1px solid var(--line);border-radius:10px;cursor:crosshair;display:block;background:#fff}
 .countdown{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px}
 .countdown .cell{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
   min-width:78px;padding:12px 8px;text-align:center}

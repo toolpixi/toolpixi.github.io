@@ -131,7 +131,9 @@ async function tpRenderPageToPng(page, scale) {
   canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
   var ctx = canvas.getContext("2d");
   // No white fill on purpose: PNG keeps a transparent background where the page has none.
-  await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+  // pdf.js paints an opaque WHITE background by default, so the transparent
+  // background has to be requested explicitly. Fixed 2026-11-16.
+  await page.render({ canvasContext: ctx, viewport: viewport, background: "rgba(0, 0, 0, 0)" }).promise;
   return tpCanvasToBlob(canvas, "image/png");
 }
 (function () {
@@ -181,7 +183,9 @@ async function tpRenderPageToWebp(page, scale, quality) {
   canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
   var ctx = canvas.getContext("2d");
   // No white fill on purpose: WebP keeps a transparent background where the page has none.
-  await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+  // pdf.js paints an opaque WHITE background by default — request transparency
+  // explicitly (same fix as PDF to PNG, 2026-11-16).
+  await page.render({ canvasContext: ctx, viewport: viewport, background: "rgba(0, 0, 0, 0)" }).promise;
   return tpCanvasToBlob(canvas, "image/webp", quality);
 }
 (function () {
@@ -334,5 +338,174 @@ async function tpRenderPageToWebp(page, scale, quality) {
     if (!file) return;
     var blob = new Blob([outputEl.value], { type: "text/plain" });
     tpDownload(blob, tpStripExt(file.name) + ".txt");
+  });
+})();
+
+// ==== DOM: Add Text to PDF (click-to-place overlay; pdf.js preview + pdf-lib stamp) ====
+(function () {
+  var panel = document.getElementById("add-text-to-pdf");
+  if (!panel) return;
+  tpSetupPdfJs(panel.getAttribute("data-worker"));
+  function el(id) { return document.getElementById(id); }
+  var file = null, pdfBytes = null, pdfName = "", pdfDoc = null, pageCount = 0, curPage = 1,
+      pageW = 0, pageH = 0, items = [], pending = null, rendering = false;
+  var canvas = el("at-preview"), ctx = canvas.getContext("2d");
+  function hexRgb(hex) {
+    var n = parseInt(String(hex).replace("#", ""), 16);
+    return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255 };
+  }
+  function drawItems() {
+    items.forEach(function (it) {
+      if (it.page !== curPage) return;
+      var sx = canvas.width / pageW, sy = canvas.height / pageH;
+      var px = it.x * sx, py = (pageH - it.y) * sy, fs = it.size * sy;
+      ctx.font = fs + "px Helvetica, Arial, sans-serif";
+      if (it.whiteout) {
+        var tw = ctx.measureText(it.text).width;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(px - 4, py - fs * 1.05, tw + 8, fs * 1.35);
+      }
+      ctx.fillStyle = it.color;
+      ctx.fillText(it.text, px, py);
+    });
+    if (pending) {
+      var sx = canvas.width / pageW, sy = canvas.height / pageH;
+      var px = pending.x * sx, py = (pageH - pending.y) * sy;
+      ctx.strokeStyle = "#dc2626"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(px - 8, py); ctx.lineTo(px + 8, py);
+      ctx.moveTo(px, py - 8); ctx.lineTo(px, py + 8); ctx.stroke();
+    }
+  }
+  async function renderPage(n) {
+    if (!pdfDoc || rendering) return;
+    rendering = true;
+    try {
+      var page = await pdfDoc.getPage(n);
+      var vp1 = page.getViewport({ scale: 1 });
+      pageW = vp1.width; pageH = vp1.height;
+      var scale = Math.min(1.5, 900 / vp1.width);
+      var vp = page.getViewport({ scale: scale });
+      canvas.width = Math.round(vp.width); canvas.height = Math.round(vp.height);
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      drawItems();
+      el("at-page-label").textContent = "Page " + n + " of " + pageCount;
+      el("at-page").value = n;
+    } catch (e) {
+      tpShowError("at-err", "That page could not be rendered.");
+    }
+    rendering = false;
+  }
+  function refreshItems() {
+    var box = el("at-items");
+    if (!items.length) { box.innerHTML = "<p class=\"note\">No text placed yet — click on the preview, type the text, and press Add text.</p>"; return; }
+    box.innerHTML = items.map(function (it, i) {
+      return '<div class="fi"><span class="nm">Page ' + it.page + ': &ldquo;' + it.text.replace(/</g, "&lt;") +
+        '&rdquo; (' + it.size + "pt" + (it.whiteout ? ", whiteout" : "") + ')</span>' +
+        '<button class="btn ghost" type="button" data-at-del="' + i + '">Remove</button></div>';
+    }).join("");
+    box.querySelectorAll("[data-at-del]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        items.splice(parseInt(b.getAttribute("data-at-del"), 10), 1);
+        refreshItems(); renderPage(curPage);
+      });
+    });
+  }
+  tpDropzone("at-drop", "at-file", {
+    accept: "application/pdf", multiple: false,
+    onFiles: function (files) {
+      tpHideError("at-err");
+      file = files[0];
+      if (!/\.pdf$/i.test(file.name) && file.type !== "application/pdf") {
+        tpShowError("at-err", "That file is not a PDF. Choose a .pdf document."); return;
+      }
+      if (!tpPdfJsReady()) { tpShowError("at-err", "The PDF engine could not be loaded. Check your connection and refresh."); return; }
+      file.arrayBuffer().then(function (buf) {
+        // Copy the bytes: pdf.js takes ownership of `buf` (transfers it to
+        // its worker, detaching the original), and pdf-lib needs its own copy.
+        pdfBytes = new Uint8Array(buf.slice(0));
+        pdfName = file.name;
+        return pdfjsLib.getDocument({ data: buf }).promise;
+      }).then(function (doc) {
+        pdfDoc = doc; pageCount = doc.numPages; curPage = 1;
+        items = []; pending = null;
+        tpFileList("at-list", [file], function () { return "· " + pageCount + (pageCount === 1 ? " page" : " pages"); });
+        el("at-page").max = pageCount; el("at-page").value = 1;
+        el("at-preview-wrap").style.display = "";
+        el("at-controls").style.display = "";
+        refreshItems();
+        renderPage(1);
+      }).catch(function () {
+        tpShowError("at-err", "That PDF could not be read — it may be encrypted or damaged. Try an unprotected copy.");
+      });
+    }
+  });
+  canvas.addEventListener("click", function (e) {
+    if (!pdfDoc) return;
+    var r = canvas.getBoundingClientRect();
+    var cx = (e.clientX - r.left) * canvas.width / r.width;
+    var cy = (e.clientY - r.top) * canvas.height / r.height;
+    pending = { x: cx * pageW / canvas.width, y: pageH - cy * pageH / canvas.height };
+    el("at-pos").textContent = "Text will start here — page " + curPage +
+      ", " + Math.round(pending.x) + "pt from the left, " + Math.round(pending.y) + "pt up from the bottom. Type the text below and press Add text.";
+    renderPage(curPage);
+  });
+  el("at-prev").addEventListener("click", function () {
+    if (curPage > 1) { curPage--; pending = null; renderPage(curPage); }
+  });
+  el("at-next").addEventListener("click", function () {
+    if (curPage < pageCount) { curPage++; pending = null; renderPage(curPage); }
+  });
+  el("at-page").addEventListener("change", function () {
+    var n = Math.min(Math.max(parseInt(el("at-page").value, 10) || 1, 1), pageCount);
+    curPage = n; pending = null; renderPage(curPage);
+  });
+  el("at-add").addEventListener("click", function () {
+    tpHideError("at-err");
+    if (!pdfDoc) { tpShowError("at-err", "Choose a PDF first."); return; }
+    if (!pending) { tpShowError("at-err", "Click on the preview first — that is where the text will start."); return; }
+    var text = el("at-text").value.replace(/^\s+|\s+$/g, "");
+    if (!text) { tpShowError("at-err", "Type the text to add first."); return; }
+    items.push({ page: curPage, x: pending.x, y: pending.y, text: text,
+      size: parseInt(el("at-size").value, 10) || 18,
+      color: el("at-color").value, whiteout: el("at-whiteout").checked });
+    pending = null;
+    el("at-pos").textContent = "Placed. Click another spot to add more text, or download the finished PDF.";
+    el("at-text").value = "";
+    refreshItems(); renderPage(curPage);
+  });
+  el("at-go").addEventListener("click", function () {
+    tpHideError("at-err");
+    if (!pdfDoc) { tpShowError("at-err", "Choose a PDF first."); return; }
+    if (!items.length) { tpShowError("at-err", "Place at least one piece of text first — click on the preview, then Add text."); return; }
+    if (typeof PDFLib === "undefined") {
+      tpShowError("at-err", "The PDF engine could not be loaded. Check your connection and refresh."); return;
+    }
+    var btn = this; btn.disabled = true; btn.textContent = "Adding text…";
+    PDFLib.PDFDocument.load(pdfBytes, { ignoreEncryption: true }).then(function (doc) {
+      return doc.embedFont(PDFLib.StandardFonts.Helvetica).then(function (font) {
+        items.forEach(function (it) {
+          var page = doc.getPage(it.page - 1);
+          var c = hexRgb(it.color);
+          if (it.whiteout) {
+            var tw = font.widthOfTextAtSize(it.text, it.size);
+            page.drawRectangle({ x: it.x - 4, y: it.y - it.size * 0.3,
+              width: tw + 8, height: it.size * 1.35, color: PDFLib.rgb(1, 1, 1) });
+          }
+          page.drawText(it.text, { x: it.x, y: it.y, size: it.size, font: font,
+            color: PDFLib.rgb(c.r, c.g, c.b) });
+        });
+        return doc.save();
+      });
+    }).then(function (outBytes) {
+      tpDownload(new Blob([outBytes], { type: "application/pdf" }), tpStripExt(pdfName) + "-with-text.pdf");
+      el("at-done").textContent = "Downloaded: " + tpStripExt(pdfName) + "-with-text.pdf — " +
+        items.length + " piece(s) of text added. Your original file is untouched.";
+      el("at-result").classList.add("show");
+    }).catch(function () {
+      tpShowError("at-err", "Adding the text failed — the PDF may use a structure this tool cannot edit. Your original file is untouched.");
+    }).then(function () {
+      btn.disabled = false; btn.textContent = "Add text & download PDF";
+    });
   });
 })();

@@ -146,7 +146,7 @@ function tpNoLib(id) {
       }
     }
   });
-  function loadSrc() { return PDFLib.PDFDocument.load(file.arrayBuffer()); }
+  async function loadSrc() { return PDFLib.PDFDocument.load(await file.arrayBuffer()); }
   document.getElementById("sp-go").addEventListener("click", async function () {
     tpHideError("sp-err");
     var btn = this; btn.disabled = true; btn.textContent = "Splitting…";
@@ -356,5 +356,89 @@ function tpNextRotation(current, turn) {
   if (downloadBtn) downloadBtn.addEventListener("click", function () {
     if (!resultBytes || !file) return;
     tpDownload(new Blob([resultBytes], { type: "application/pdf" }), tpStripExt(file.name) + "-numbered.pdf");
+  });
+})();
+
+// ==== DOM: Add Watermark to PDF ====
+(function () {
+  var panel = document.getElementById("add-watermark-to-pdf");
+  if (!panel) return;
+  var file = null, resultBytes = null;
+  var goBtn = document.getElementById("wm-go"), downloadBtn = document.getElementById("wm-download"),
+      resultEl = document.getElementById("wm-result"), doneNote = document.getElementById("wm-done"),
+      opIn = document.getElementById("wm-opacity"), opVal = document.getElementById("wm-opacity-val");
+  opIn.addEventListener("input", function () { opVal.textContent = opIn.value + "%"; });
+  tpDropzone("wm-drop", "wm-file", {
+    accept: "application/pdf", multiple: false,
+    onFiles: function (files) {
+      tpHideError("wm-err");
+      file = files[0];
+      tpFileList("wm-list", [file]);
+      resultEl.classList.remove("show");
+      goBtn.disabled = false;
+    }
+  });
+  function hexRgb(hex) {
+    var n = parseInt(hex.replace("#", ""), 16);
+    return PDFLib.rgb(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
+  }
+  goBtn.addEventListener("click", function () {
+    tpHideError("wm-err");
+    resultEl.classList.remove("show");
+    var text = document.getElementById("wm-text").value.replace(/^\s+|\s+$/g, "");
+    if (!file) { tpShowError("wm-err", "Choose a PDF first."); return; }
+    if (!text) { tpShowError("wm-err", "Type the watermark text first."); return; }
+    if (typeof PDFLib === "undefined") {
+      tpShowError("wm-err", "The PDF engine could not be loaded. Check your connection and refresh.");
+      return;
+    }
+    var size = parseInt(document.getElementById("wm-size").value, 10);
+    if (isNaN(size) || size < 12 || size > 200) size = 54;
+    var angle = parseInt(document.getElementById("wm-angle").value, 10) || 0;
+    var opacity = Math.min(80, Math.max(5, parseInt(opIn.value, 10) || 30)) / 100;
+    var color = hexRgb(document.getElementById("wm-color").value || "#808080");
+    goBtn.disabled = true;
+    goBtn.textContent = "Watermarking…";
+    file.arrayBuffer().then(function (buf) {
+      return PDFLib.PDFDocument.load(buf, { ignoreEncryption: true });
+    }).then(function (doc) {
+      return doc.embedFont(PDFLib.StandardFonts.Helvetica).then(function (font) {
+        var pages = doc.getPages();
+        pages.forEach(function (page) {
+          var W = page.getWidth(), H = page.getHeight();
+          var s = size, tw = font.widthOfTextAtSize(text, s);
+          // A diagonal watermark can be longer than the page is wide:
+          // shrink it until it fits across the page.
+          while (angle !== 0 && tw > Math.max(W, H) * 1.25 && s > 12) {
+            s -= 6; tw = font.widthOfTextAtSize(text, s);
+          }
+          var x, y;
+          if (angle === 0) { x = (W - tw) / 2; y = (H - s) / 2; }
+          else {
+            // Rotate about the text origin: offset so the text's midpoint
+            // lands on the page centre (cos -45° = sin 45° ≈ 0.7071).
+            x = W / 2 - 0.3536 * tw;
+            y = H / 2 + 0.3536 * tw;
+          }
+          page.drawText(text, { x: x, y: y, size: s, font: font, color: color,
+            opacity: opacity, rotate: PDFLib.degrees(angle) });
+        });
+        return doc.save();
+      });
+    }).then(function (bytes) {
+      resultBytes = bytes;
+      doneNote.textContent = "Watermarked — every page now carries “" + text + "” at " +
+        Math.round(opacity * 100) + "% opacity. Download below.";
+      resultEl.classList.add("show");
+    }).catch(function () {
+      tpShowError("wm-err", "Could not process that PDF. It may be corrupted or password-protected.");
+    }).then(function () {
+      goBtn.disabled = false;
+      goBtn.textContent = "Add watermark";
+    });
+  });
+  if (downloadBtn) downloadBtn.addEventListener("click", function () {
+    if (!resultBytes || !file) return;
+    tpDownload(new Blob([resultBytes], { type: "application/pdf" }), tpStripExt(file.name) + "-watermarked.pdf");
   });
 })();

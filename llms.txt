@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 127 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 137 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,11 +14,11 @@ ToolPixi at https://toolpixi.com/ offers 127 free browser-based tools across 5 c
 
 ## Categories
 
-- Image Tools: 33 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
-- PDF Tools: 12 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 34 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 25 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 23 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Image Tools: 34 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- PDF Tools: 14 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
+- Date & Time Tools: 36 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 26 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
+- Converters & Calculators: 27 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -149,6 +149,16 @@ ToolPixi at https://toolpixi.com/ offers 127 free browser-based tools across 5 c
 - [Percentage Increase Calculator](https://toolpixi.com/percentage-increase-calculator/): Percentage increase or decrease between two values, and the price after a % rise.
 - [Days Until Hanukkah](https://toolpixi.com/days-until-hanukkah/): A live countdown to the first candle of Hanukkah.
 - [Days Until St Patrick's Day](https://toolpixi.com/days-until-st-patricks-day/): A live countdown to St Patrick’s Day — 17 March.
+- [Mm to Inches](https://toolpixi.com/mm-to-inches/): Convert millimetres to inches — 1 inch is exactly 25.4 mm.
+- [Inches to Mm](https://toolpixi.com/inches-to-mm/): Convert inches to millimetres — 1 inch is exactly 25.4 mm.
+- [Meters to Feet](https://toolpixi.com/meters-to-feet/): Convert metres to feet — 1 metre is 3.28084 feet.
+- [Feet to Meters](https://toolpixi.com/feet-to-meters/): Convert feet to metres — 1 foot is exactly 0.3048 m.
+- [Days Until Chinese New Year](https://toolpixi.com/days-until-chinese-new-year/): A live countdown to Chinese New Year — the Spring Festival.
+- [Days Until Summer](https://toolpixi.com/days-until-summer/): A live countdown to the first day of summer — the June solstice.
+- [Add Text to PDF](https://toolpixi.com/add-text-to-pdf/): Type on a PDF: click anywhere on the page and add your own text.
+- [Add Watermark to PDF](https://toolpixi.com/add-watermark-to-pdf/): Stamp a diagonal or straight text watermark on every page of a PDF.
+- [Passport Photo Maker](https://toolpixi.com/passport-photo-maker/): Crop any photo to an exact passport size — 35×45 mm, 2×2 in or 51×51 mm.
+- [XML Formatter](https://toolpixi.com/xml-formatter/): Validate, pretty-print and minify XML — errors shown with line and column.
 
 ## Privacy promise
 

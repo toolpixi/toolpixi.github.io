@@ -378,6 +378,111 @@ function tpJsonErrorPos(err, text) {
   });
 })();
 
+// ==== DOM: XML formatter ====
+(function () {
+  var panel = document.getElementById("xml-formatter");
+  if (!panel) return;
+  var out = document.getElementById("xf-out");
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function declOf(text) {
+    var m = text.match(/^\s*(<\?xml[^?]*\?>)/);
+    return m ? m[1] : "";
+  }
+  function parseXml(text) {
+    var doc = new DOMParser().parseFromString(text, "text/xml");
+    var err = doc.getElementsByTagName("parsererror")[0];
+    if (err) {
+      var msg = (err.textContent || "Invalid XML").replace(/\s+/g, " ").trim();
+      // Browsers put the position in the message ("error on line 3 at column 12").
+      tpShowError("xf-err", "Invalid XML: " + msg.slice(0, 220));
+      return null;
+    }
+    return doc;
+  }
+  function pretty(node, depth) {
+    var pad = new Array(depth + 1).join("  ");
+    if (node.nodeType === 3) return node.nodeValue.replace(/^\s+|\s+$/g, "");
+    if (node.nodeType !== 1) return pad + new XMLSerializer().serializeToString(node);
+    var tag = node.tagName, attrs = "";
+    for (var a = 0; a < node.attributes.length; a++) {
+      attrs += " " + node.attributes[a].name + '="' + node.attributes[a].value + '"';
+    }
+    var kids = [];
+    for (var i = 0; i < node.childNodes.length; i++) kids.push(node.childNodes[i]);
+    var elemKids = kids.filter(function (k) { return k.nodeType === 1; });
+    var live = kids.filter(function (k) {
+      return k.nodeType === 1 || k.nodeType === 4 || k.nodeType === 7 || k.nodeType === 8 ||
+        (k.nodeType === 3 && k.nodeValue.replace(/\s/g, ""));
+    });
+    if (!elemKids.length) {
+      var t = live.filter(function (k) { return k.nodeType === 3; })
+                  .map(function (k) { return k.nodeValue.replace(/^\s+|\s+$/g, ""); }).join("");
+      if (!live.length) return pad + "<" + tag + attrs + " />";
+      if (live.length === 1 && live[0].nodeType === 3) return pad + "<" + tag + attrs + ">" + esc(t) + "</" + tag + ">";
+    }
+    var lines = [pad + "<" + tag + attrs + ">"];
+    live.forEach(function (k) {
+      if (k.nodeType === 1) lines.push(pretty(k, depth + 1));
+      else if (k.nodeType === 3) lines.push(pad + "  " + esc(k.nodeValue.replace(/^\s+|\s+$/g, "")));
+      else lines.push(pad + new XMLSerializer().serializeToString(k));
+    });
+    lines.push(pad + "</" + tag + ">");
+    return lines.join("\n");
+  }
+  function stripWs(node) {
+    for (var i = node.childNodes.length - 1; i >= 0; i--) {
+      var k = node.childNodes[i];
+      if (k.nodeType === 3 && !k.nodeValue.replace(/\s/g, "")) node.removeChild(k);
+      else if (k.nodeType === 1) stripWs(k);
+    }
+  }
+  function read() {
+    var text = document.getElementById("xf-in").value;
+    if (!text.trim()) { tpShowError("xf-err", "Paste some XML first."); return null; }
+    return { text: text, doc: parseXml(text) };
+  }
+  document.getElementById("xf-validate").addEventListener("click", function () {
+    tpHideError("xf-err");
+    var r = read();
+    if (!r || !r.doc) return;
+    var root = r.doc.documentElement;
+    out.textContent = "Valid XML — root element <" + root.tagName + ">, " +
+      root.getElementsByTagName("*").length + " element(s) inside.";
+    out.classList.add("show");
+  });
+  document.getElementById("xf-pretty").addEventListener("click", function () {
+    var r = read();
+    if (!r || !r.doc) return;
+    tpHideError("xf-err");
+    var d = declOf(r.text);
+    out.textContent = (d ? d + "\n" : "") + pretty(r.doc.documentElement, 0);
+    out.classList.add("show");
+  });
+  document.getElementById("xf-minify").addEventListener("click", function () {
+    var r = read();
+    if (!r || !r.doc) return;
+    tpHideError("xf-err");
+    stripWs(r.doc.documentElement);
+    var d = declOf(r.text);
+    out.textContent = (d ? d : "") + new XMLSerializer().serializeToString(r.doc.documentElement);
+    out.classList.add("show");
+  });
+  document.getElementById("xf-sample").addEventListener("click", function () {
+    document.getElementById("xf-in").value = '<library><book id="1"><title>ToolPixi Guide</title><author>Hamza Ali Basra</author><year>2026</year></book><book id="2"><title>Second Book</title><author>Another Author</author><year>2025</year></book></library>';
+    tpHideError("xf-err");
+  });
+  document.getElementById("xf-clear").addEventListener("click", function () {
+    document.getElementById("xf-in").value = ""; out.textContent = ""; out.classList.remove("show");
+    tpHideError("xf-err");
+  });
+  document.getElementById("xf-copy").addEventListener("click", function () {
+    if (!out.textContent) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(out.textContent);
+    var btn = this; btn.textContent = "Copied!";
+    setTimeout(function () { btn.textContent = "Copy result"; }, 1500);
+  });
+})();
+
 function tpRollDie(sides) {
   if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     var arr = new Uint32Array(1);

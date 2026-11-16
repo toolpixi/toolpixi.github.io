@@ -81,7 +81,10 @@ function extOf(name) {
       var inName = "input" + extOf(file.name);
       await ffmpeg.writeFile(inName, await fetchFile(file));
       var q = el("m3-quality").value;
-      var code = await ffmpeg.exec(["-i", inName, "-vn", "-codec:a", "libmp3lame", "-b:a", q, "output.mp3"]);
+      // The select's values are bare numbers ("192"); ffmpeg reads "-b:a 192"
+      // as 192 BITS/s and LAME clamps to its minimum (~65 kbps out). The "k"
+      // suffix is what makes it 192 kbps. Fixed 2026-11-16.
+      var code = await ffmpeg.exec(["-i", inName, "-vn", "-codec:a", "libmp3lame", "-b:a", String(q).replace(/k$/i, "") + "k", "output.mp3"]);
       if (code !== 0) throw new Error("ffmpeg exit " + code);
       var data = await ffmpeg.readFile("output.mp3");
       var blob = new Blob([data.buffer], { type: "audio/mpeg" });
