@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 137 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 138 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,7 +14,7 @@ ToolPixi at https://toolpixi.com/ offers 137 free browser-based tools across 5 c
 
 ## Categories
 
-- Image Tools: 34 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- Image Tools: 35 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 14 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 36 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
 - Text & Generator Tools: 26 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
@@ -159,6 +159,7 @@ ToolPixi at https://toolpixi.com/ offers 137 free browser-based tools across 5 c
 - [Add Watermark to PDF](https://toolpixi.com/add-watermark-to-pdf/): Stamp a diagonal or straight text watermark on every page of a PDF.
 - [Passport Photo Maker](https://toolpixi.com/passport-photo-maker/): Crop any photo to an exact passport size — 35×45 mm, 2×2 in or 51×51 mm.
 - [XML Formatter](https://toolpixi.com/xml-formatter/): Validate, pretty-print and minify XML — errors shown with line and column.
+- [Compress Image to 50KB](https://toolpixi.com/compress-image-to-50kb/): Shrink a photo to exactly 50KB for exam, visa and job portals — free, in your browser.
 
 ## Privacy promise
 
