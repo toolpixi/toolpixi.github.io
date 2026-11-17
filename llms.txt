@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 138 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 143 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -18,7 +18,7 @@ ToolPixi at https://toolpixi.com/ offers 138 free browser-based tools across 5 c
 - PDF Tools: 14 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 36 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
 - Text & Generator Tools: 26 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 27 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Converters & Calculators: 32 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -160,6 +160,11 @@ ToolPixi at https://toolpixi.com/ offers 138 free browser-based tools across 5 c
 - [Passport Photo Maker](https://toolpixi.com/passport-photo-maker/): Crop any photo to an exact passport size — 35×45 mm, 2×2 in or 51×51 mm.
 - [XML Formatter](https://toolpixi.com/xml-formatter/): Validate, pretty-print and minify XML — errors shown with line and column.
 - [Compress Image to 50KB](https://toolpixi.com/compress-image-to-50kb/): Shrink a photo to exactly 50KB for exam, visa and job portals — free, in your browser.
+- [Mortgage Calculator](https://toolpixi.com/mortgage-calculator/): Your real monthly mortgage payment — tax, insurance and PMI included, with the full amortization schedule.
+- [Currency Converter](https://toolpixi.com/currency-converter/): Live exchange rates for 30+ currencies — dollars, euros, pounds, rupees, dirhams and more.
+- [GPA Calculator](https://toolpixi.com/gpa-calculator/): Semester and cumulative GPA from your course grades and credits, on the 4.0 scale.
+- [Scientific Calculator](https://toolpixi.com/scientific-calculator/): Trig, logarithms, powers, roots and brackets — a full scientific keypad in your browser.
+- [Auto Loan Calculator](https://toolpixi.com/auto-loan-calculator/): Car loan payments with down payment, trade-in and sales tax all worked in.
 
 ## Privacy promise
 

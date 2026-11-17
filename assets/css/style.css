@@ -441,3 +441,23 @@ pre.out.show{display:block}
 .tp-hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:200;background:var(--ink);color:#fff;
   padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(10,60,52,.35);
   max-width:calc(100vw - 24px);text-align:center;cursor:pointer}
+
+/* 2026-11-17 high-volume tools: mortgage / currency / GPA / scientific / auto loan */
+.sched-wrap{max-height:340px;overflow:auto;margin-top:12px;border:1px solid var(--line);border-radius:12px}
+.sched-wrap table{width:100%;margin:0}
+.gp-row .field{margin-bottom:0}
+@media (max-width:640px){
+  .gp-row{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}
+}
+.sc-display{width:100%;box-sizing:border-box;font-size:26px;font-weight:800;letter-spacing:-.01em;
+  padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:#f8fafc;text-align:right;color:var(--ink)}
+.sc-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.sc-keys button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px 0;
+  font-weight:700;font-size:16px;cursor:pointer;color:var(--ink)}
+.sc-keys button:hover{border-color:#2563eb}
+.sc-keys button.fn{background:#eef4ff;font-weight:600}
+.sc-keys button.op{background:#eaf1fe}
+.sc-keys button.eq{background:#2563eb;border-color:#2563eb;color:#fff;font-size:19px}
+.sc-keys button.wide{grid-column:span 2}
+.sc-keys button.danger{background:#fef0f0;color:#b91c1c}
+@media (max-width:480px){ .sc-keys button{font-size:14px;padding:10px 0} .sc-display{font-size:22px} }

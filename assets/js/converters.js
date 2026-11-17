@@ -973,3 +973,492 @@ function tpHexToText(hex) {
     document.getElementById("pi-result2").classList.add("show");
   });
 })();
+
+// ==== 2026-11-17 high-volume tools: mortgage, currency, GPA, scientific, auto loan ====
+
+// ==== PURE: mortgage maths (P&I + tax + insurance + PMI + yearly schedule) ====
+function tpMortgage(price, downPct, annualRatePct, years, taxPct, insYearly, pmiPct) {
+  var down = price * downPct / 100;
+  var loan = price - down;
+  var L = tpLoan(loan, annualRatePct, years);
+  var r = annualRatePct / 1200, n = Math.round(years * 12);
+  var taxM = price * taxPct / 100 / 12;
+  var insM = (insYearly || 0) / 12;
+  var pmiM = downPct < 20 ? loan * (pmiPct || 0) / 100 / 12 : 0;
+  // Yearly amortization schedule, aggregated from the monthly walk.
+  var schedule = [], bal = loan, yPay = 0, yPrin = 0, yInt = 0;
+  for (var m = 1; m <= n; m++) {
+    var interest = bal * r;
+    var princ = L.monthly - interest;
+    if (m === n || princ > bal) princ = bal;
+    bal -= princ;
+    yPay += L.monthly; yPrin += princ; yInt += interest;
+    if (m % 12 === 0 || m === n) {
+      schedule.push({ year: Math.ceil(m / 12), paid: yPay, principal: yPrin, interest: yInt, balance: Math.max(bal, 0) });
+      yPay = 0; yPrin = 0; yInt = 0;
+    }
+    if (bal <= 0) break;
+  }
+  return {
+    down: down, loan: loan, pi: L.monthly, taxM: taxM, insM: insM, pmiM: pmiM,
+    totalMonthly: L.monthly + taxM + insM + pmiM,
+    totalInterest: L.totalInterest, totalPI: L.totalPaid, payments: n, schedule: schedule
+  };
+}
+
+// ==== DOM: mortgage calculator ====
+(function () {
+  var panel = document.getElementById("mortgage-calc");
+  if (!panel) return;
+  function run() {
+    tpHideError("mg-err");
+    var price = parseFloat(document.getElementById("mg-price").value);
+    var downPct = parseFloat(document.getElementById("mg-downpct").value);
+    var rate = parseFloat(document.getElementById("mg-rate").value);
+    var years = parseFloat(document.getElementById("mg-years").value);
+    var tax = parseFloat(document.getElementById("mg-tax").value) || 0;
+    var ins = parseFloat(document.getElementById("mg-ins").value) || 0;
+    var pmi = parseFloat(document.getElementById("mg-pmi").value) || 0;
+    var res = document.getElementById("mg-result");
+    if (isNaN(price) || isNaN(downPct) || isNaN(rate) || isNaN(years) ||
+        price <= 0 || downPct < 0 || downPct >= 100 || rate < 0 || years <= 0 || years > 50) {
+      tpShowError("mg-err", "Enter the home price, a down payment under 100%, the rate and a term of up to 50 years.");
+      res.classList.remove("show");
+      return;
+    }
+    var M = tpMortgage(price, downPct, rate, years, tax, ins, pmi);
+    document.getElementById("mg-monthly").textContent = tpMoney(M.totalMonthly);
+    document.getElementById("mg-count").textContent = M.payments + " monthly payments · loan of " + tpMoney(M.loan) +
+      " after a " + tpMoney(M.down) + " down payment";
+    document.getElementById("mg-pi").textContent = tpMoney(M.pi);
+    document.getElementById("mg-taxm").textContent = tpMoney(M.taxM);
+    document.getElementById("mg-insm").textContent = tpMoney(M.insM);
+    var pmiRow = document.getElementById("mg-pmirow");
+    if (M.pmiM > 0) { pmiRow.style.display = ""; document.getElementById("mg-pmim").textContent = tpMoney(M.pmiM); }
+    else pmiRow.style.display = "none";
+    document.getElementById("mg-interest").textContent = tpMoney(M.totalInterest);
+    document.getElementById("mg-totalpi").textContent = tpMoney(M.totalPI);
+    var rows = M.schedule.map(function (s) {
+      return "<tr><td>" + s.year + "</td><td>" + tpMoney(s.paid) + "</td><td>" + tpMoney(s.principal) +
+        "</td><td>" + tpMoney(s.interest) + "</td><td>" + tpMoney(s.balance) + "</td></tr>";
+    }).join("");
+    document.getElementById("mg-schedule").innerHTML = rows;
+    res.classList.add("show");
+  }
+  document.getElementById("mg-go").addEventListener("click", run);
+  ["mg-price", "mg-downpct", "mg-rate", "mg-years", "mg-tax", "mg-ins", "mg-pmi"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", function () {
+      var core = ["mg-price", "mg-downpct", "mg-rate", "mg-years"];
+      if (core.every(function (i) { return document.getElementById(i).value !== ""; })) run();
+    });
+  });
+})();
+
+// ==== PURE: auto loan maths (tax on price minus trade-in, the common US rule) ====
+function tpAutoLoan(price, down, trade, taxPct, annualRatePct, years) {
+  var taxable = Math.max(price - trade, 0);
+  var tax = taxable * taxPct / 100;
+  var financed = price - down - trade + tax;
+  var L = tpLoan(Math.max(financed, 0), annualRatePct, years);
+  return {
+    taxable: taxable, tax: tax, financed: financed, monthly: L.monthly,
+    totalInterest: L.totalInterest, totalPayments: L.totalPaid,
+    totalCost: down + trade + L.totalPaid, payments: L.payments
+  };
+}
+
+// ==== DOM: auto loan calculator ====
+(function () {
+  var panel = document.getElementById("auto-loan-calc");
+  if (!panel) return;
+  function run() {
+    tpHideError("al-err");
+    var price = parseFloat(document.getElementById("al-price").value);
+    var down = parseFloat(document.getElementById("al-down").value) || 0;
+    var trade = parseFloat(document.getElementById("al-trade").value) || 0;
+    var tax = parseFloat(document.getElementById("al-tax").value) || 0;
+    var rate = parseFloat(document.getElementById("al-rate").value);
+    var years = parseFloat(document.getElementById("al-years").value);
+    var res = document.getElementById("al-result");
+    if (isNaN(price) || isNaN(rate) || isNaN(years) || price <= 0 || rate < 0 || years <= 0 || years > 12 ||
+        down < 0 || trade < 0 || down + trade > price) {
+      tpShowError("al-err", "Enter the vehicle price, the rate and a term of up to 12 years. Down payment plus trade-in cannot exceed the price.");
+      res.classList.remove("show");
+      return;
+    }
+    var A = tpAutoLoan(price, down, trade, tax, rate, years);
+    document.getElementById("al-monthly").textContent = tpMoney(A.monthly);
+    document.getElementById("al-count").textContent = A.payments + " monthly payments";
+    document.getElementById("al-financed").textContent = tpMoney(A.financed);
+    document.getElementById("al-taxamt").textContent = tpMoney(A.tax) + " (on " + tpMoney(A.taxable) + " after trade-in)";
+    document.getElementById("al-interest").textContent = tpMoney(A.totalInterest);
+    document.getElementById("al-total").textContent = tpMoney(A.totalCost);
+    res.classList.add("show");
+  }
+  document.getElementById("al-go").addEventListener("click", run);
+  ["al-price", "al-down", "al-trade", "al-tax", "al-rate", "al-years"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", function () {
+      var core = ["al-price", "al-rate", "al-years"];
+      if (core.every(function (i) { return document.getElementById(i).value !== ""; })) run();
+    });
+  });
+})();
+
+// ==== PURE: GPA maths (credit-weighted, 4.0 scale) ====
+var TP_GRADE_POINTS = { "A+": 4.0, "A": 4.0, "A-": 3.7, "B+": 3.3, "B": 3.0, "B-": 2.7,
+  "C+": 2.3, "C": 2.0, "C-": 1.7, "D+": 1.3, "D": 1.0, "D-": 0.7, "F": 0.0 };
+function tpGPA(rows, prevGpa, prevCredits) {
+  var pts = 0, cr = 0;
+  rows.forEach(function (r) { pts += r.points * r.credits; cr += r.credits; });
+  var gpa = cr > 0 ? pts / cr : null;
+  var cum = null;
+  if (gpa !== null && prevGpa !== null && prevGpa !== undefined && prevCredits > 0)
+    cum = (prevGpa * prevCredits + pts) / (prevCredits + cr);
+  else if (gpa !== null && (prevCredits === 0 || prevGpa === null || prevGpa === undefined))
+    cum = gpa;
+  return { gpa: gpa, credits: cr, points: pts, cumulative: cum };
+}
+
+// ==== DOM: GPA calculator ====
+(function () {
+  var panel = document.getElementById("gpa-calc");
+  if (!panel) return;
+  var rowsEl = document.getElementById("gp-rows");
+  var gradeOpts = Object.keys(TP_GRADE_POINTS).map(function (g) {
+    return '<option value="' + g + '">' + g + " (" + TP_GRADE_POINTS[g].toFixed(1) + ")</option>";
+  }).join("");
+  function addRow(grade, credits) {
+    var div = document.createElement("div");
+    div.className = "row gp-row";
+    div.innerHTML =
+      '<div class="field"><label>Course <span class="hint">(optional)</span></label><input type="text" class="gp-name" placeholder="e.g. Biology 101"></div>' +
+      '<div class="field"><label>Grade</label><select class="gp-grade">' + gradeOpts + "</select></div>" +
+      '<div class="field"><label>Credits</label><input type="number" class="gp-credits" min="0" step="any" placeholder="3"></div>' +
+      '<div class="field"><label>&nbsp;</label><button class="btn ghost small gp-del" type="button">Remove</button></div>';
+    if (grade) div.querySelector(".gp-grade").value = grade;
+    if (credits !== undefined) div.querySelector(".gp-credits").value = credits;
+    div.querySelector(".gp-del").addEventListener("click", function () { div.remove(); run(); });
+    rowsEl.appendChild(div);
+    div.querySelectorAll("input, select").forEach(function (i) { i.addEventListener("input", run); });
+  }
+  document.getElementById("gp-add").addEventListener("click", function () { addRow(); });
+  function run() {
+    var rows = [];
+    rowsEl.querySelectorAll(".gp-row").forEach(function (row) {
+      var g = row.querySelector(".gp-grade").value;
+      var c = parseFloat(row.querySelector(".gp-credits").value);
+      if (!isNaN(c) && c > 0) rows.push({ points: TP_GRADE_POINTS[g], credits: c });
+    });
+    var pg = parseFloat(document.getElementById("gp-pgpa").value);
+    var pc = parseFloat(document.getElementById("gp-pcredits").value) || 0;
+    var R = tpGPA(rows, isNaN(pg) ? null : pg, pc);
+    var res = document.getElementById("gp-result");
+    if (R.gpa === null) {
+      document.getElementById("gp-sem").textContent = "—";
+      document.getElementById("gp-note").textContent = "Add a course with credits to see your GPA.";
+      res.classList.remove("show");
+      return;
+    }
+    document.getElementById("gp-sem").textContent = R.gpa.toFixed(2);
+    document.getElementById("gp-note").textContent = "Across " + tpFmtNum(R.credits) + " credits this term.";
+    var cumEl = document.getElementById("gp-cum");
+    if (!isNaN(pg) && pc > 0 && R.cumulative !== null)
+      cumEl.textContent = "Cumulative GPA (with your previous " + tpFmtNum(pc) + " credits at " +
+        pg.toFixed(2) + "): " + R.cumulative.toFixed(2);
+    else cumEl.textContent = "";
+    res.classList.add("show");
+  }
+  document.getElementById("gp-go").addEventListener("click", run);
+  ["gp-pgpa", "gp-pcredits"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", run);
+  });
+  addRow("A", 3); addRow("B", 3); addRow("", 3); addRow("", 3);
+  run();
+})();
+
+// ==== PURE: scientific calculator — tokenizer + recursive-descent parser (no eval) ====
+function tpGamma(z) { // Lanczos approximation — lets x! work for non-integers too
+  var p = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313,
+    -176.61502916214059, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * tpGamma(1 - z));
+  z -= 1;
+  var x = p[0];
+  for (var i = 1; i < p.length; i++) x += p[i] / (z + i);
+  var t = z + p.length - 1.5;
+  return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+}
+function tpFact(n) {
+  if (n < 0) throw new Error("Factorial of a negative");
+  if (Math.abs(n - Math.round(n)) > 1e-9) return tpGamma(n + 1);
+  var r = 1;
+  for (var i = 2; i <= n; i++) r *= i;
+  return r;
+}
+function tpSciTokens(s) {
+  var toks = [], i = 0;
+  while (i < s.length) {
+    var c = s[i];
+    if (c === " ") { i++; continue; }
+    if (/[0-9.]/.test(c)) {
+      var j = i, dot = false;
+      while (j < s.length && /[0-9.]/.test(s[j])) {
+        if (s[j] === ".") { if (dot) throw new Error("Bad number"); dot = true; }
+        j++;
+      }
+      toks.push({ t: "num", v: parseFloat(s.slice(i, j)) });
+      i = j; continue;
+    }
+    if (c === "π") { toks.push({ t: "id", v: "pi" }); i++; continue; }
+    if (/[a-zA-Z]/.test(c)) {
+      var k = i;
+      while (k < s.length && /[a-zA-Z]/.test(s[k])) k++;
+      toks.push({ t: "id", v: s.slice(i, k) });
+      i = k; continue;
+    }
+    if ("+-*/%^!()".indexOf(c) >= 0) { toks.push({ t: c }); i++; continue; }
+    throw new Error("Unexpected character: " + c);
+  }
+  return toks;
+}
+function tpSciFn(name, x, deg) {
+  var toRad = deg ? Math.PI / 180 : 1, fromRad = deg ? 180 / Math.PI : 1;
+  switch (name) {
+    case "sin": return Math.sin(x * toRad);
+    case "cos": return Math.cos(x * toRad);
+    case "tan": return Math.tan(x * toRad);
+    case "asin": return Math.asin(x) * fromRad;
+    case "acos": return Math.acos(x) * fromRad;
+    case "atan": return Math.atan(x) * fromRad;
+    case "log": return Math.log10(x);
+    case "ln": return Math.log(x);
+    case "sqrt": return Math.sqrt(x);
+    case "abs": return Math.abs(x);
+    case "exp": return Math.exp(x);
+  }
+  throw new Error("Unknown function: " + name);
+}
+function tpSciEval(src, deg) {
+  var toks = tpSciTokens(src), pos = 0;
+  function peek() { return toks[pos]; }
+  function next() { return toks[pos++]; }
+  function parseExpr() {
+    var v = parseTerm();
+    while (peek() && (peek().t === "+" || peek().t === "-")) {
+      var op = next().t, rhs = parseTerm();
+      v = op === "+" ? v + rhs : v - rhs;
+    }
+    return v;
+  }
+  function parseTerm() {
+    var v = parseFactor();
+    while (peek() && (peek().t === "*" || peek().t === "/" || peek().t === "%" ||
+                       peek().t === "(" || peek().t === "id")) {
+      if (peek().t === "(" || peek().t === "id") { v = v * parseFactor(); continue; }
+      var op = next().t, rhs = parseFactor();
+      v = op === "*" ? v * rhs : op === "/" ? v / rhs : v % rhs;
+    }
+    return v;
+  }
+  function parseFactor() {
+    var base = parseUnary();
+    if (peek() && peek().t === "^") { next(); return Math.pow(base, parseFactor()); }
+    return base;
+  }
+  function parseUnary() {
+    if (peek() && peek().t === "-") { next(); return -parseUnary(); }
+    if (peek() && peek().t === "+") { next(); return parseUnary(); }
+    return parsePostfix();
+  }
+  function parsePostfix() {
+    var v = parsePrimary();
+    while (peek() && peek().t === "!") { next(); v = tpFact(v); }
+    return v;
+  }
+  function parsePrimary() {
+    var tk = next();
+    if (!tk) throw new Error("Incomplete expression");
+    if (tk.t === "num") return tk.v;
+    if (tk.t === "(") {
+      var v = parseExpr(), cl = next();
+      if (!cl || cl.t !== ")") throw new Error("Missing closing bracket");
+      return v;
+    }
+    if (tk.t === "id") {
+      var name = tk.v.toLowerCase();
+      if (name === "pi") return Math.PI;
+      if (name === "e") return Math.E;
+      var open = next();
+      if (!open || open.t !== "(") throw new Error("Expected ( after " + name);
+      var arg = parseExpr(), cl2 = next();
+      if (!cl2 || cl2.t !== ")") throw new Error("Missing closing bracket");
+      return tpSciFn(name, arg, deg);
+    }
+    throw new Error("Unexpected token");
+  }
+  var out = parseExpr();
+  if (pos < toks.length) throw new Error("Trailing characters");
+  return out;
+}
+
+// ==== DOM: scientific calculator ====
+(function () {
+  var panel = document.getElementById("scientific-calculator");
+  if (!panel) return;
+  var disp = document.getElementById("sc-display");
+  var hist = document.getElementById("sc-history");
+  var deg = true, justSolved = false;
+  function setDeg(d) {
+    deg = d;
+    document.getElementById("sc-deg").classList.toggle("on", d);
+    document.getElementById("sc-rad").classList.toggle("on", !d);
+  }
+  document.getElementById("sc-deg").addEventListener("click", function () { setDeg(true); });
+  document.getElementById("sc-rad").addEventListener("click", function () { setDeg(false); });
+  function insert(txt) {
+    if (justSolved && /[0-9.(π]/.test(txt.charAt(0)) && txt !== "(") disp.value = "";
+    justSolved = false;
+    disp.value += txt;
+    disp.focus();
+  }
+  function solve() {
+    var raw = disp.value.trim();
+    if (!raw) return;
+    var norm = raw.replace(/×/g, "*").replace(/÷/g, "/").replace(/−/g, "-").replace(/√/g, "sqrt");
+    try {
+      var v = tpSciEval(norm, deg);
+      if (typeof v !== "number" || isNaN(v)) throw new Error("No result");
+      if (!isFinite(v)) throw new Error("Overflow");
+      hist.textContent = raw + " =";
+      disp.value = String(parseFloat(v.toPrecision(10)));
+      justSolved = true;
+    } catch (e) {
+      hist.textContent = raw;
+      disp.value = "Error";
+      justSolved = true;
+    }
+    disp.focus();
+  }
+  panel.querySelectorAll("[data-ins]").forEach(function (b) {
+    b.addEventListener("click", function () { insert(b.getAttribute("data-ins")); });
+  });
+  document.getElementById("sc-clear").addEventListener("click", function () {
+    disp.value = ""; hist.textContent = ""; justSolved = false; disp.focus();
+  });
+  document.getElementById("sc-back").addEventListener("click", function () {
+    if (justSolved) { disp.value = ""; justSolved = false; }
+    else disp.value = disp.value.slice(0, -1);
+    disp.focus();
+  });
+  document.getElementById("sc-neg").addEventListener("click", function () {
+    if (!disp.value) { disp.value = "-"; return; }
+    disp.value = disp.value.charAt(0) === "-" ? disp.value.slice(1) : "-(" + disp.value + ")";
+    disp.focus();
+  });
+  document.getElementById("sc-eq").addEventListener("click", solve);
+  disp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); solve(); } });
+  document.addEventListener("keydown", function (e) {
+    if (e.target !== document.body && e.target !== disp) return;
+    if (/^[0-9.+\-*/%^!()]$/.test(e.key)) { insert(e.key); e.preventDefault(); }
+    else if (e.key === "Enter" || e.key === "=") { solve(); e.preventDefault(); }
+    else if (e.key === "Backspace") { disp.value = disp.value.slice(0, -1); e.preventDefault(); }
+    else if (e.key === "Escape") { disp.value = ""; hist.textContent = ""; }
+  });
+})();
+
+// ==== DOM: currency converter (Frankfurter/ECB primary + open feed for the
+// currencies the ECB does not publish, e.g. PKR, AED, SAR; offline snapshot last) ====
+(function () {
+  var panel = document.getElementById("currency-converter");
+  if (!panel) return;
+  var CURRENCIES = [
+    ["USD", "US Dollar"], ["EUR", "Euro"], ["GBP", "British Pound"], ["PKR", "Pakistani Rupee"],
+    ["INR", "Indian Rupee"], ["AED", "UAE Dirham"], ["SAR", "Saudi Riyal"], ["QAR", "Qatari Riyal"],
+    ["KWD", "Kuwaiti Dinar"], ["BDT", "Bangladeshi Taka"], ["LKR", "Sri Lankan Rupee"], ["NPR", "Nepalese Rupee"],
+    ["CAD", "Canadian Dollar"], ["AUD", "Australian Dollar"], ["NZD", "New Zealand Dollar"],
+    ["JPY", "Japanese Yen"], ["CNY", "Chinese Yuan"], ["HKD", "Hong Kong Dollar"], ["SGD", "Singapore Dollar"],
+    ["CHF", "Swiss Franc"], ["TRY", "Turkish Lira"], ["ZAR", "South African Rand"], ["KRW", "South Korean Won"],
+    ["MYR", "Malaysian Ringgit"], ["IDR", "Indonesian Rupiah"], ["PHP", "Philippine Peso"], ["THB", "Thai Baht"],
+    ["BRL", "Brazilian Real"], ["MXN", "Mexican Peso"], ["SEK", "Swedish Krona"], ["NOK", "Norwegian Krone"],
+    ["DKK", "Danish Krone"], ["PLN", "Polish Zloty"], ["RUB", "Russian Ruble"]
+  ];
+  // Offline snapshot (open.er-api.com, 17 Nov 2026) — used ONLY if both live
+  // feeds are unreachable, and the page says so when it happens.
+  var FALLBACK = { USD: 1, EUR: 0.908584, GBP: 0.758255, PKR: 276.55578, INR: 93.959855, AED: 3.6725,
+    SAR: 3.75, QAR: 3.64, KWD: 0.311177, BDT: 124.589647, LKR: 332.677303, NPR: 150.338359,
+    CAD: 1.42937, AUD: 1.483068, NZD: 1.816952, JPY: 159.580113, CNY: 6.679257, HKD: 7.846956,
+    SGD: 1.288895, CHF: 0.839814, TRY: 50.421147, ZAR: 16.959311, KRW: 1335.485864, MYR: 4.094237,
+    IDR: 18273.211135, PHP: 63.93553, THB: 33.886826, BRL: 5.714693, MXN: 18.548392,
+    SEK: 10.092701, NOK: 9.629694, DKK: 6.789305, PLN: 4.001322, RUB: 82.518177 };
+  var rates = null, sourceNote = "";
+  var fromSel = document.getElementById("fx-from"), toSel = document.getElementById("fx-to");
+  var opts = CURRENCIES.map(function (c) { return '<option value="' + c[0] + '">' + c[0] + " — " + c[1] + "</option>"; }).join("");
+  fromSel.innerHTML = opts; toSel.innerHTML = opts;
+  fromSel.value = "USD"; toSel.value = "EUR";
+  function fmtRate(v) {
+    if (v >= 100) return tpFmtNum(Math.round(v * 100) / 100);
+    if (v >= 1) return String(parseFloat(v.toPrecision(5)));
+    return String(parseFloat(v.toPrecision(5)));
+  }
+  function convert() {
+    if (!rates) return;
+    var amt = parseFloat(document.getElementById("fx-amount").value);
+    var f = fromSel.value, t = toSel.value, res = document.getElementById("fx-result");
+    if (isNaN(amt) || amt < 0 || !rates[f] || !rates[t]) { res.classList.remove("show"); return; }
+    var rate = rates[t] / rates[f];
+    var out = amt * rate;
+    document.getElementById("fx-big").textContent =
+      tpFmtNum(amt) + " " + f + " = " + tpFmtNum(Math.round(out * 100) / 100) + " " + t;
+    document.getElementById("fx-rate").textContent = "1 " + f + " = " + fmtRate(rate) + " " + t +
+      " · 1 " + t + " = " + fmtRate(1 / rate) + " " + f;
+    document.getElementById("fx-src").textContent = sourceNote;
+    buildTable();
+    res.classList.add("show");
+  }
+  function buildTable() {
+    if (!rates) return;
+    var f = fromSel.value;
+    var majors = ["USD", "EUR", "GBP", "PKR", "INR", "AED", "SAR", "CAD", "AUD", "JPY", "CNY", "CHF", "TRY", "KWD"];
+    var rows = majors.filter(function (c) { return c !== f && rates[c]; }).map(function (c) {
+      return "<tr><td>1 " + f + " → " + c + "</td><td>" + fmtRate(rates[c] / rates[f]) + "</td></tr>";
+    }).join("");
+    document.getElementById("fx-table").innerHTML = rows;
+    document.getElementById("fx-table-title").textContent = "What 1 " + f + " buys today";
+  }
+  function ready(note) { sourceNote = note; convert(); }
+  function loadFallback() {
+    rates = FALLBACK;
+    ready("Live rates could not be reached, so this page is showing a saved snapshot from 17 November 2026. Treat the figures as a guide until you are back online.");
+  }
+  function loadOpenFeed(primary) {
+    fetch("https://open.er-api.com/v6/latest/USD").then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.rates) throw new Error("bad feed");
+      if (primary) {
+        rates = d.rates;
+        ready("Live rates from the open ExchangeRate feed, updated " + (d.time_last_update_utc || "today") + ".");
+      } else {
+        // Top up the ECB table with the currencies it does not publish.
+        Object.keys(d.rates).forEach(function (k) { if (!(k in rates)) rates[k] = d.rates[k]; });
+        convert();
+      }
+    }).catch(function () { if (primary) loadFallback(); });
+  }
+  fetch("https://api.frankfurter.app/latest?from=USD").then(function (r) { return r.json(); }).then(function (d) {
+    if (!d || !d.rates) throw new Error("bad feed");
+    rates = d.rates; rates.USD = 1;
+    ready("Live mid-market rates from the European Central Bank (via Frankfurter), " + d.date +
+      ". A second free feed adds the currencies the ECB does not publish, such as PKR and AED.");
+    loadOpenFeed(false);
+  }).catch(function () { loadOpenFeed(true); });
+  document.getElementById("fx-go").addEventListener("click", convert);
+  document.getElementById("fx-swap").addEventListener("click", function () {
+    var v = fromSel.value; fromSel.value = toSel.value; toSel.value = v; convert();
+  });
+  ["fx-amount"].forEach(function (id) { document.getElementById(id).addEventListener("input", convert); });
+  [fromSel, toSel].forEach(function (s) { s.addEventListener("change", convert); });
+  panel.querySelectorAll("[data-pair]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var p = b.getAttribute("data-pair").split("/");
+      fromSel.value = p[0]; toSel.value = p[1]; convert();
+    });
+  });
+})();
