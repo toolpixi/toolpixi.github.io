@@ -79,6 +79,11 @@ async function tpCompressToKB(img, targetBytes, onProgress) {
   var outBlob = null;
 
   var chips = panel.querySelectorAll("[data-kb]");
+  // 2026-11-18: the default target follows the chip marked "on" in the page
+  // HTML, so a preset page (50KB / 100KB) compresses to its own size with no
+  // click. Falls back to 50 when no chip is marked (generic compressor).
+  var _onChip = panel.querySelector(".chip.on");
+  if (_onChip) { var _v = parseInt(_onChip.getAttribute("data-kb"), 10); if (_v > 0) targetKB = _v; }
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () {
       chips.forEach(function (c) { c.classList.remove("on"); });
