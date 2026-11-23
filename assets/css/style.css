@@ -39,7 +39,11 @@ img{max-width:100%}
 .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
 
 /* Header — flat, slim, sticky (v3) */
-.site-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:60}
+/* z-index 80 (v8): must stay above the hero search box (z-70 since the
+   2026-11-24 suggestions fix), because the menu scrim/panel live inside
+   the header's stacking context — at 60 the hero search pill painted
+   over the open drawer. */
+.site-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:80}
 .site-header>.wrap{display:flex;align-items:center;gap:12px;padding-top:8px;padding-bottom:8px}
 .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:20px;color:#12211e;letter-spacing:-.02em;flex:none}
 .logo:hover{text-decoration:none}
@@ -56,19 +60,20 @@ img{max-width:100%}
 .menu-btn .ic-close{display:none}
 .menu-btn[aria-expanded="true"] .ic-open{display:none}
 .menu-btn[aria-expanded="true"] .ic-close{display:block}
-/* Menu — slide-in panel (v7): jewel-teal themed drawer from the right
-   over a dimmed scrim. Head row (logo + close), a working search box,
-   the Toolbox link, five family rows, a short Popular list and the
-   trust line pinned to the bottom. The Menu button only exists below
+/* Menu — slide-in panel (v7; v8: drawer opens from the LEFT):
+   jewel-teal themed drawer over a dimmed scrim. Head row (logo +
+   close), a working search box, the Toolbox link, five family rows,
+   a short Popular list, an Explore info section (v8) and the trust
+   line pinned to the bottom. The Menu button only exists below
    880px, so the panel is a mobile/tablet component; the desktop hover
    dropdowns above are a separate component and keep their own styles. */
 .menu-scrim{position:fixed;inset:0;background:rgba(9,20,32,.46);z-index:80;opacity:0;
   transition:opacity .26s ease}
 .menu-scrim.open{opacity:1}
 .menu-scrim[hidden]{display:none}
-.menu-panel{position:fixed;top:0;right:0;z-index:90;width:min(372px,94vw);height:100dvh;
-  background:#fff;box-shadow:-28px 0 56px -24px rgba(11,21,38,.4);
-  transform:translateX(106%);transition:transform .3s cubic-bezier(.32,.72,.22,1);
+.menu-panel{position:fixed;top:0;left:0;z-index:90;width:min(372px,94vw);height:100dvh;
+  background:#fff;box-shadow:28px 0 56px -24px rgba(11,21,38,.4);
+  transform:translateX(-106%);transition:transform .3s cubic-bezier(.32,.72,.22,1);
   overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
   padding:16px 18px 20px;display:flex;flex-direction:column}
 .menu-panel.open{transform:none}
@@ -111,6 +116,11 @@ img{max-width:100%}
   box-shadow:inset 0 0 0 1px rgba(11,21,38,.05)}
 .mp-pop .mic svg{width:18px;height:18px;display:block}
 .mp-pop .mtxt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Explore — plain info rows under Popular (v8): same row rhythm as
+   .mp-pop but text + arrow only, no icon chips. */
+.mp-explore{margin-top:22px}
+.mp-explore li a{min-height:42px}
+.mp-explore .mp-arrow{margin-left:auto;color:#b3c2cf;font-weight:700;flex:none}
 .mp-trust{margin:auto 0 0;padding-top:20px;color:var(--faint);font-size:12.8px;text-align:center}
 
 /* Hero — minimal strip (v3): no panel, no mesh. One headline line, the
@@ -286,25 +296,30 @@ progress::-moz-progress-bar{background:var(--primary);border-radius:99px}
   font-size:14px;color:#123f3a;margin:16px 0}
 
 /* Footer — light and clean with a gradient hairline, brand-only (v3) */
-.site-footer{background:#f3f6f9;color:#52637a;margin-top:52px;position:relative}
+.site-footer{background:#f3f6f9;color:#52637a;margin-top:40px;position:relative}
 .site-footer::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
-.site-footer .wrap{padding-top:34px;padding-bottom:26px}
-.foot-grid{display:grid;grid-template-columns:1fr;gap:20px}
-.site-footer h4{color:var(--ink);font-size:12.5px;font-weight:750;margin:0 0 11px;text-transform:uppercase;letter-spacing:.1em}
-.site-footer a{color:#52637a;font-size:14px;display:block;padding:2.5px 0}
+.site-footer .wrap{padding-top:24px;padding-bottom:18px}
+/* v8: on mobile the link columns sit in a 2-column grid (brand spans
+   the full width above them) instead of one long stack. */
+.foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 22px}
+.foot-brand{grid-column:1/-1}
+.site-footer h4{color:var(--ink);font-size:12.5px;font-weight:750;margin:0 0 8px;text-transform:uppercase;letter-spacing:.1em}
+.site-footer a{color:#52637a;font-size:14px;display:block;padding:2px 0}
 .site-footer a:hover{color:var(--primary-dark);text-decoration:none}
 .site-footer .logo{color:#12211e}
 .site-footer .logo-word em{color:#0d7377}
 .foot-brand p{font-size:13.8px;color:#7286a0;margin:8px 0 0;max-width:340px;line-height:1.6}
-.foot-bottom{border-top:1px solid var(--line);margin-top:22px;padding-top:14px;font-size:13px;color:#7286a0;
-  display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.foot-bottom{border-top:1px solid var(--line);margin-top:16px;padding-top:12px;font-size:13px;color:#7286a0;
+  display:flex;justify-content:space-between;gap:6px 12px;flex-wrap:wrap}
 .foot-bottom a{display:inline}
+.foot-legal{font-size:12.5px}
 
 /* Wider screens: same content and features, denser layout (mobile parity) */
 @media (min-width:640px){
   .grid{grid-template-columns:1fr 1fr}
   .related{grid-template-columns:1fr 1fr}
   .foot-grid{grid-template-columns:1.4fr 1fr 1fr 1fr}
+  .foot-brand{grid-column:auto}
   .hero h1{font-size:40px}
   .page-head h1{font-size:36px}
   .timer-face{font-size:66px}
@@ -745,7 +760,7 @@ pre.out.show{display:block}
 
 /* Footer v5 — white, brand + trust chips, rearranged columns */
 .site-footer{background:#fff;border-top:1px solid var(--line)}
-.foot-trust{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.foot-trust{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
 .foot-trust span{font-size:12px;font-weight:700;color:var(--primary-dark);background:var(--primary-soft);
   border-radius:999px;padding:4px 10px}
 .foot-trust span::before{content:"✓ ";color:var(--primary)}
@@ -822,3 +837,131 @@ pre.out.show{display:block}
   .alltools-sec{padding:20px 14px 14px;border-radius:18px}
   .at-group{padding:14px 14px 11px}
 }
+
+/* ============================================================
+   v8 (2026-11-24, Hamza's order) — dark / light theme.
+   The theme is set on <html data-theme="..."> BEFORE first paint by
+   the inline script in layout() (localStorage "tp-theme", else the
+   visitor's prefers-color-scheme). Two controls carry
+   [data-theme-toggle] and stay in sync: the header icon button and
+   the Dark mode switch row in the menu drawer. The palette below
+   re-points the CSS variables to a dark slate / teal-tinted scheme;
+   the rules after it fix the surfaces that were hard-coded light.
+   The jewel family colours stay — their pale tints are re-mixed
+   into a dark base where a background is needed. */
+:root{color-scheme:light}
+.theme-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;
+  flex:none;border-radius:11px;border:1px solid var(--line);background:#fff;color:var(--ink-2);
+  cursor:pointer;transition:border-color .15s ease,background .15s ease,color .15s ease}
+.theme-btn:hover{border-color:#bcd6dd;color:var(--primary-dark);background:#f4faf9}
+.theme-btn .ic-sun{display:none}
+.mp-theme{display:flex;align-items:center;gap:12px;width:100%;margin-top:22px;padding:12px 14px;
+  border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font:inherit;
+  font-weight:700;font-size:15.5px;cursor:pointer;text-align:left;
+  transition:background .12s ease,border-color .12s ease}
+.mp-theme:hover{background:#f7fafa;border-color:#bcd6dd}
+.mp-switch{margin-left:auto;width:46px;height:26px;border-radius:999px;background:#d7e2ec;
+  position:relative;flex:none;transition:background .18s ease}
+.mp-knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(11,21,38,.3);transition:transform .18s ease}
+.mp-theme.on .mp-switch{background:var(--primary)}
+.mp-theme.on .mp-knob{transform:translateX(20px)}
+
+[data-theme="dark"]{color-scheme:dark;
+  --primary:#2dd4bf; --primary-dark:#5eead4; --primary-soft:rgba(45,212,191,.15); --teal:#2dd4bf;
+  --accent:#38bdf8; --accent-dark:#7dd3fc; --accent-soft:rgba(56,189,248,.15);
+  --ink:#e9f2ef; --ink-2:#c4d6d1; --muted:#a5bab4; --faint:#7f968f;
+  --bg:#0a1518; --card:#102227; --line:#244046; --line-soft:#1a2f34;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.35),0 3px 10px -6px rgba(0,0,0,.45);
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 14px 32px -18px rgba(0,0,0,.65);
+  --shadow-hover:0 2px 4px rgba(0,0,0,.35),0 18px 34px -16px rgba(0,0,0,.7)}
+[data-theme="dark"] ::selection{background:#134e4a;color:#e9f2ef}
+/* Header + nav */
+[data-theme="dark"] .site-header{background:#0d1d21}
+[data-theme="dark"] .logo{color:var(--ink)}
+[data-theme="dark"] .logo-word em{color:#2dd4bf}
+[data-theme="dark"] .main-nav a:hover{background:rgba(45,212,191,.1)}
+[data-theme="dark"] .menu-btn{background:var(--card)}
+[data-theme="dark"] .menu-btn:hover{background:#14333a;border-color:#33565e}
+[data-theme="dark"] .theme-btn{background:var(--card)}
+[data-theme="dark"] .theme-btn:hover{background:#14333a;border-color:#33565e}
+[data-theme="dark"] .theme-btn .ic-sun{display:block}
+[data-theme="dark"] .theme-btn .ic-moon{display:none}
+[data-theme="dark"] .head-search{background:#0b1c20}
+[data-theme="dark"] .tp-dropdown{background:var(--card);box-shadow:0 24px 60px rgba(0,0,0,.55)}
+/* Menu drawer */
+[data-theme="dark"] .menu-panel{background:var(--card)}
+[data-theme="dark"] .mp-close{background:var(--card)}
+[data-theme="dark"] .mp-close:hover{background:#14333a;border-color:#33565e}
+[data-theme="dark"] .mp-search{background:#0b1c20}
+[data-theme="dark"] .mp-search:focus-within{background:#0b1c20}
+[data-theme="dark"] .mp-cat:hover{background:#14333a;border-color:#33565e}
+[data-theme="dark"] .mp-cat:active{background:#173d45}
+[data-theme="dark"] .mp-pop li a:hover{background:#14333a}
+[data-theme="dark"] .mp-pop li a:active{background:#173d45}
+[data-theme="dark"] .mp-theme{background:var(--card)}
+[data-theme="dark"] .mp-theme:hover{background:#14333a;border-color:#33565e}
+[data-theme="dark"] .mp-switch{background:#33565e}
+[data-theme="dark"] .mp-theme.on .mp-switch{background:var(--primary)}
+/* Hero + search */
+[data-theme="dark"] .search-box{background:var(--card);border-color:var(--line)}
+[data-theme="dark"] .search-suggest{background:var(--card)}
+[data-theme="dark"] .ss-item:hover,[data-theme="dark"] .ss-item.ss-on{background:#14333a}
+[data-theme="dark"] .trust-row span{background:var(--card)}
+[data-theme="dark"] .quick-row a{background:var(--card)}
+[data-theme="dark"] .quick-row a:hover{border-color:#2b6f66}
+[data-theme="dark"] .stats-strip{background:#0e2126}
+/* Home sections */
+[data-theme="dark"] .fam-card{background:var(--card)}
+[data-theme="dark"] .fam-strip{background:var(--card)}
+[data-theme="dark"] .fam-fade{background:linear-gradient(to right,rgba(10,21,24,0),#0a1518 88%)}
+[data-theme="dark"] .fam-btn{background:var(--card)}
+[data-theme="dark"] .fam-dot{background:#33565e}
+[data-theme="dark"] .pop-rail{background:var(--card)}
+[data-theme="dark"] .pop-pill:hover{background:#14333a}
+[data-theme="dark"] .home .pop-tile:hover{border-color:#2b6f66}
+[data-theme="dark"] .feat-card{background:var(--card)}
+[data-theme="dark"] .feat-card:hover{border-color:#33565e}
+[data-theme="dark"] .alltools-sec{background:var(--card)}
+[data-theme="dark"] .at-group{background:color-mix(in srgb,var(--fam) 15%,#0c1e23)}
+[data-theme="dark"] .at-count{background:#0b1a1e}
+@media (max-width:639px){[data-theme="dark"] .home .pop-sec{background:#0e2126}}
+/* Hub + tool pages */
+[data-theme="dark"] .hub-hero{background:linear-gradient(180deg,color-mix(in srgb,var(--fam) 20%,#0a1518),rgba(10,21,24,0) 88%)}
+[data-theme="dark"] .steps .step{background:var(--card)}
+[data-theme="dark"] .drop,[data-theme="dark"] .dropzone{border-color:#2b5a54}
+/* Shared tool-page components that were hard-coded light */
+[data-theme="dark"] .tool-panel{background:var(--card)}
+[data-theme="dark"] .drop,[data-theme="dark"] .dropzone{background:linear-gradient(180deg,#0e2a2c,#0b2124)}
+[data-theme="dark"] .drop:hover,[data-theme="dark"] .drop.drag,
+[data-theme="dark"] .dropzone:hover,[data-theme="dark"] .dropzone.drag{background:var(--primary-soft)}
+[data-theme="dark"] .btn-ghost,[data-theme="dark"] .btn.ghost{background:var(--card)}
+[data-theme="dark"] .btn-ghost:hover,[data-theme="dark"] .btn.ghost:hover{background:var(--primary-soft)}
+[data-theme="dark"] .chip{background:var(--card)}
+[data-theme="dark"] .chip:hover{border-color:#2b6f66}
+[data-theme="dark"] .seg{background:#0b1c20}
+[data-theme="dark"] .seg button.on{background:#1d4046;color:var(--ink)}
+[data-theme="dark"] .result{background:rgba(14,159,110,.14);border-color:#1d5c43}
+[data-theme="dark"] .result td{border-bottom-color:#1d5c43}
+[data-theme="dark"] .file-list .fi,[data-theme="dark"] .lap-list li{background:#0e2126}
+[data-theme="dark"] .faq details{background:var(--card)}
+[data-theme="dark"] .related a{background:var(--card)}
+[data-theme="dark"] .countdown .cell{background:var(--card)}
+[data-theme="dark"] .wc-card{background:var(--card)}
+[data-theme="dark"] pre.out{background:#0b1c20}
+[data-theme="dark"] .md-preview{background:var(--card)}
+[data-theme="dark"] .md-preview code{background:#0b1c20}
+[data-theme="dark"] .fav-toggle{background:var(--card)}
+[data-theme="dark"] .fav-toggle.on{background:rgba(240,201,106,.13)}
+[data-theme="dark"] .privacy-badge{background:rgba(13,148,136,.14);border-color:#1d5c54;color:#9fd8cf}
+[data-theme="dark"] #dr-history li{background:var(--card)}
+[data-theme="dark"] main input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]),
+[data-theme="dark"] main select,[data-theme="dark"] main textarea{
+  background-color:#0b1c20;color:var(--ink);border-color:var(--line)}
+/* Footer */
+[data-theme="dark"] .site-footer{background:#0c1a1e;color:#93a8a2}
+[data-theme="dark"] .site-footer a{color:#a5bab4}
+[data-theme="dark"] .site-footer a:hover{color:var(--primary-dark)}
+[data-theme="dark"] .site-footer .logo{color:var(--ink)}
+[data-theme="dark"] .foot-brand p{color:#84998f}
+[data-theme="dark"] .foot-bottom{color:#84998f}
