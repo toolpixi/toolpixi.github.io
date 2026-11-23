@@ -717,3 +717,59 @@ pre.out.show{display:block}
 @media (min-width:640px){.foot-grid.home{grid-template-columns:1.3fr 1fr 1fr}}
 @media (min-width:1100px){.foot-grid.home{grid-template-columns:1.3fr 1fr 1fr 1fr .95fr}}
 .cat-group{scroll-margin-top:84px}
+
+/* v6 (2026-11-24) — swipe affordances for the family row, popular
+   polish, and the compact All-Tools index that replaced the repeated
+   homepage tile catalogue. */
+/* Family swipe row: the fade and the controls exist only where the
+   row actually slides (mobile); desktop keeps the static grid. */
+.fam-scroll{position:relative}
+.fam-fade{display:none}
+.fam-nav{display:none}
+@media (max-width:899px){
+  .fam-fade{display:block;position:absolute;top:0;right:0;bottom:12px;width:54px;pointer-events:none;
+    background:linear-gradient(to right,rgba(251,252,253,0),#fbfcfd 88%);transition:opacity .25s ease}
+  .fam-scroll.at-end .fam-fade{opacity:0}
+  .fam-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:2px}
+  .fam-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;
+    color:var(--primary-dark);font-family:inherit;font-size:19px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);
+    transition:opacity .15s ease,border-color .15s ease}
+  .fam-btn:disabled{opacity:.32;cursor:default}
+  .fam-btn:not(:disabled):active{border-color:var(--primary)}
+  .fam-dots{display:flex;gap:6px;align-items:center}
+  .fam-dot{width:7px;height:7px;border-radius:999px;border:0;padding:0;background:#c9d6de;
+    cursor:pointer;transition:width .18s ease,background .18s ease}
+  .fam-dot.on{width:20px;background:var(--primary)}
+}
+/* Popular polish: cleaner icon chips, a gentler lift, the #1 tag. */
+.pop-head{margin-bottom:22px}
+.home .pop-tile{padding:11px 32px 11px 11px;border-radius:16px}
+.home .pop-tile:hover{transform:translateY(-2px);border-color:#8fd0c7}
+.home .pop-tile .tic{width:38px;height:38px;border-radius:11px;
+  box-shadow:inset 0 0 0 1px rgba(11,21,38,.06),0 2px 6px -2px rgba(11,21,38,.18)}
+.home .pop-tile .tic svg{width:20px;height:20px}
+.pop-tag{position:absolute;top:6px;right:34px;background:linear-gradient(120deg,#0d9488,#0891b2);
+  color:#fff;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px;box-shadow:var(--shadow-sm);white-space:nowrap}
+.pop-pill.on{box-shadow:0 4px 10px -4px rgba(13,148,136,.55)}
+/* All-Tools index — a compact directory strip, not a visual section:
+   small text links grouped by family under small linked headings. */
+.alltools-sec{margin:46px 0 0;background:#fff;border:1px solid var(--line);border-radius:20px;
+  padding:26px 28px 22px;box-shadow:var(--shadow-sm)}
+.alltools-sec h2{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:0 0 3px}
+.alltools-sec .cat-sub{margin:0}
+.at-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 26px;margin-top:20px}
+.at-group{scroll-margin-top:84px;min-width:0}
+.at-group h3{font-size:14.5px;font-weight:800;margin:0 0 8px;letter-spacing:-.01em}
+.at-group h3 a{color:var(--ink)}
+.at-group h3 a:hover{color:var(--primary-dark)}
+.at-links{display:flex;flex-direction:column;gap:5px}
+.at-link{font-size:13.5px;color:var(--muted);line-height:1.35}
+.at-link:hover{color:var(--primary-dark)}
+@media (min-width:1100px){.at-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (max-width:1023px){.at-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:639px){
+  .alltools-sec{padding:20px 16px 16px;border-radius:18px}
+  .at-grid{grid-template-columns:1fr 1fr;gap:18px 16px}
+}
