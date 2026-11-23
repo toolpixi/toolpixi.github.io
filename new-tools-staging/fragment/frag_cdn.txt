@@ -1,0 +1,5 @@
+    # Gap batch 2026-11-23: gif.js (GIF Maker), jsQR (QR Code Scanner) and
+    # jsPDF (Resume Builder + Invoice Generator) — self-hosted like the rest.
+    "gifjs": "/assets/vendor/gif.js",
+    "jsqr": "/assets/vendor/jsQR.js",
+    "jspdf": "/assets/vendor/jspdf.umd.min.js",

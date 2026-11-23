@@ -1,0 +1,14 @@
+    # High-demand gap batch 2026-11-23 (owner-approved, voice call): the
+    # tools the worldwide demand audit found heavily searched but missing
+    # from ToolPixi — all 100% in-browser, no server. Research:
+    # audit-2026-11-23/gap-new.md + gap-pdf.md, plan in GAP_PLAN.md.
+    ('typing-speed-test', 'Typing Speed Test', 'How fast do you type? A 30 or 60 second test with live WPM and accuracy — no sign-up.', 'text', 'timer'),
+    ('meme-generator', 'Meme Generator', 'Make a meme in seconds — your photo or a built-in scene, bold top and bottom text, PNG download.', 'image', 'wand'),
+    ('gif-maker', 'GIF Maker', 'Turn a set of photos into an animated GIF — frame timing and size are yours.', 'image', 'video'),
+    ('qr-code-scanner', 'QR Code Scanner', 'Scan a QR code or barcode from an image or your camera — decoded on your device, never uploaded.', 'text', 'qr-code-generator'),
+    ('resume-builder', 'Resume Builder', 'Build a clean, professional resume and download the PDF — three templates, no sign-up, no watermark.', 'text', 'list'),
+    ('image-to-text', 'Image to Text (OCR)', 'Pull the text out of any photo or screenshot with OCR — copy it or download it as a text file.', 'image', 'word-counter'),
+    ('invoice-generator', 'Invoice Generator', 'Fill in the form, download a professional PDF invoice — items, tax and totals worked out for you.', 'calc', 'table'),
+    ('screen-recorder', 'Screen Recorder', 'Record your screen, a tab or a window right in the browser and download the video — nothing uploaded.', 'image', 'video'),
+    ('video-to-gif', 'Video to GIF', 'Turn the best seconds of a video into an animated GIF — trim, size and download in your browser.', 'image', 'reverse'),
+    ('photo-collage-maker', 'Photo Collage Maker', 'Arrange your photos into a clean grid collage and download it as PNG or JPG.', 'image', 'palette'),
