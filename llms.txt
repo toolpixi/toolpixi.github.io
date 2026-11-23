@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 159 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 160 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -17,7 +17,7 @@ ToolPixi at https://toolpixi.com/ offers 159 free browser-based tools across 5 c
 - Image Tools: 39 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 14 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 36 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 28 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
+- Text & Generator Tools: 29 tools — including Word Counter, QR Code Generator, Barcode Generator, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
 - Converters & Calculators: 42 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
@@ -45,6 +45,7 @@ ToolPixi at https://toolpixi.com/ offers 159 free browser-based tools across 5 c
 - [Online Timer & Stopwatch](https://toolpixi.com/timer/): Countdown timer with alarm, presets and a lap stopwatch.
 - [Word Counter](https://toolpixi.com/word-counter/): Words, characters, sentences and reading time as you type.
 - [QR Code Generator](https://toolpixi.com/qr-code-generator/): Make a QR code for any link or text and download the PNG.
+- [Barcode Generator](https://toolpixi.com/barcode-generator/): Make Code 128, UPC-A, EAN-13, Code 39 and ITF barcodes and download PNG or SVG.
 - [Random Number Generator](https://toolpixi.com/random-number-generator/): Pick random numbers in any range — unique and sorted if you like.
 - [Unit Converter](https://toolpixi.com/unit-converter/): cm to inches, kg to lbs, °C to °F, km to miles and more.
 - [BMI Calculator](https://toolpixi.com/bmi-calculator/): Body mass index from your height and weight, metric or imperial.
