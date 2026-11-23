@@ -679,6 +679,11 @@ pre.out.show{display:block}
 .pop-pill:hover{background:#eef4f6;color:var(--ink);text-decoration:none}
 .pop-pill.on{background:#0d9488;color:#fff}
 .pop-tile .tcat{display:block;font-size:12px;font-weight:700;margin-top:1px}
+/* v9: family-coloured small labels take their colour from the --fc var
+   set inline per family; dark mode swaps in the bright --fc-l variant. */
+.tcat{color:var(--fc)}
+.hub-item .hcat{color:var(--fc)}
+.feat-more{color:var(--fc)}
 .home .pop-tile .td{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 @media (min-width:700px) and (max-width:1023px){.pop-wrap .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1024px){.pop-wrap .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -965,3 +970,54 @@ pre.out.show{display:block}
 [data-theme="dark"] .site-footer .logo{color:var(--ink)}
 [data-theme="dark"] .foot-brand p{color:#84998f}
 [data-theme="dark"] .foot-bottom{color:#84998f}
+
+/* ---------- v9 dark readability fixes (2026-11-24) ----------
+   Found by a full-site computed-contrast sweep in dark mode.
+   Prose: .section / FAQ text was hard-coded #33445c (dark navy) and
+   never flipped — invisible on the dark page (1.87:1). */
+[data-theme="dark"] .section p,[data-theme="dark"] .section li{color:var(--ink-2)}
+[data-theme="dark"] .faq details p{color:var(--ink-2)}
+/* Family-coloured small labels use the bright per-family variant. */
+[data-theme="dark"] .tcat,[data-theme="dark"] .hcat,[data-theme="dark"] .feat-more{color:var(--fc-l)}
+[data-theme="dark"] .hf-n,[data-theme="dark"] .at-count,[data-theme="dark"] .at-view,
+[data-theme="dark"] .fam-strip a{color:var(--fam-l)}
+/* Homepage stats numerals (inline jewel colours) brightened. */
+[data-theme="dark"] .stats-strip .stat:nth-child(1) .sn{color:#2dd4bf !important}
+[data-theme="dark"] .stats-strip .stat:nth-child(2) .sn{color:#38bdf8 !important}
+[data-theme="dark"] .stats-strip .stat:nth-child(3) .sn{color:#a5b4fc !important}
+[data-theme="dark"] .stats-strip .stat:nth-child(4) .sn{color:#fbbf24 !important}
+/* Scientific calculator: keys/display were white with flipped pale text. */
+[data-theme="dark"] .sc-display{background:#0b1c20}
+[data-theme="dark"] .sc-keys button{background:var(--card)}
+[data-theme="dark"] .sc-keys button.fn,[data-theme="dark"] .sc-keys button.op{background:#14333a}
+[data-theme="dark"] .sc-keys button.danger{background:rgba(185,28,28,.16);color:#f87171}
+/* Typing test: the passage panel stayed light with grey text. */
+[data-theme="dark"] #tt-passage{background:#0b1c20;border-color:var(--line)}
+[data-theme="dark"] .tt-ch{color:#637d75}
+[data-theme="dark"] .tt-ch.ok{color:#4ade80}
+[data-theme="dark"] .tt-ch.bad{color:#fca5a5;background:rgba(185,28,28,.28)}
+/* Resume Builder: entry cards stayed white while labels flipped pale. */
+[data-theme="dark"] .rb-entry{background:#0e2126;border-color:var(--line)}
+[data-theme="dark"] .rb-rm{color:#f87171}
+/* PDF tools: light chips/cards whose text inherits the theme. */
+[data-theme="dark"] .cp-checks label{background:#0e2126}
+[data-theme="dark"] .og-card{background:var(--card)}
+[data-theme="dark"] .og-btns button{background:#14333a;color:var(--ink)}
+[data-theme="dark"] .og-btns button:hover{background:#173d45}
+[data-theme="dark"] .cm-col{background:var(--card)}
+[data-theme="dark"] .cm-line{border-bottom-color:#1a2f34}
+[data-theme="dark"] .cm-name{color:var(--muted)}
+[data-theme="dark"] .cm-del{background:rgba(185,28,28,.22);color:#fca5a5}
+[data-theme="dark"] .cm-ins{background:rgba(21,128,61,.22);color:#86efac}
+[data-theme="dark"] .cm-line-del{background:rgba(185,28,28,.10)}
+[data-theme="dark"] .cm-line-ins{background:rgba(21,128,61,.10)}
+[data-theme="dark"] .cm-line-changed{background:rgba(180,83,9,.12)}
+[data-theme="dark"] #px-status{color:var(--muted)}
+[data-theme="dark"] #px-progress{background:#1a2f34}
+/* Text diff rows: light row tints became dark tints, gutters brightened. */
+[data-theme="dark"] .dl-del{background:rgba(185,28,28,.16)}
+[data-theme="dark"] .dl-del .dl-g{color:#f87171}
+[data-theme="dark"] .dl-add{background:rgba(4,120,87,.18)}
+[data-theme="dark"] .dl-add .dl-g{color:#34d399}
+[data-theme="dark"] .wdel{background:rgba(185,28,28,.32)}
+[data-theme="dark"] .wadd{background:rgba(4,120,87,.32)}
