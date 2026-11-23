@@ -76,7 +76,7 @@ async function tpCompressToKB(img, targetBytes, onProgress) {
   var panel = document.getElementById("kb-compressor");
   if (!panel) return;
   var file = null, loaded = null, targetKB = 50;
-  var outBlob = null;
+  var outBlob = null, outName = null;
 
   var chips = panel.querySelectorAll("[data-kb]");
   // 2026-11-18: the default target follows the chip marked "on" in the page
@@ -120,19 +120,44 @@ async function tpCompressToKB(img, targetBytes, onProgress) {
     var bar = document.getElementById("kb-progress"); bar.style.display = "block"; bar.value = 10;
     try {
       var target = targetKB * 1024;
+      var res = document.getElementById("kb-result");
+      // D-1 guard (2026-11-23 audit): never "compress" a file into a bigger
+      // one. If the original already fits the target — or even the best
+      // re-encode cannot beat it — hand the original back unchanged and say
+      // so plainly, instead of claiming a saving that never happened.
+      function showOriginal(note) {
+        outBlob = file; outName = file.name;
+        bar.value = 100;
+        res.classList.add("show");
+        document.getElementById("kb-orig-size").textContent = tpFormatBytes(file.size);
+        document.getElementById("kb-new-size").textContent = tpFormatBytes(file.size) + " (your original, unchanged)";
+        document.getElementById("kb-saved").textContent = "No compression needed";
+        document.getElementById("kb-preview").src = URL.createObjectURL(file);
+        document.getElementById("kb-note").textContent = note;
+      }
+      if (file.size <= target) {
+        showOriginal("Your image is already smaller than " + targetKB + " KB (" + tpFormatBytes(file.size) +
+          "), so there is nothing to compress — re-encoding it would only make the file bigger. " +
+          "Download below gives you your original file, unchanged.");
+        return;
+      }
       var packed = await tpCompressToKB(loaded.img, target, function (n) {
         bar.value = Math.min(95, 10 + n * 6);
       });
       if (!packed) throw new Error("Compression failed for this image. Try a smaller target or a different photo.");
       var bestBlob = packed.blob;
-      outBlob = bestBlob;
+      if (bestBlob.size >= file.size) {
+        showOriginal("We could not make this image any smaller without wrecking it — even the tightest " +
+          "re-encode came out bigger than your original. Download below gives you your original file, unchanged.");
+        return;
+      }
+      outBlob = bestBlob; outName = tpStripExt(file.name) + "-compressed.jpg";
       bar.value = 100;
-      var res = document.getElementById("kb-result");
       res.classList.add("show");
       document.getElementById("kb-orig-size").textContent = tpFormatBytes(file.size);
       document.getElementById("kb-new-size").textContent = tpFormatBytes(bestBlob.size);
       document.getElementById("kb-saved").textContent =
-        Math.max(0, Math.round((1 - bestBlob.size / file.size) * 100)) + "% smaller";
+        Math.round((1 - bestBlob.size / file.size) * 100) + "% smaller";
       var prev = document.getElementById("kb-preview");
       prev.src = URL.createObjectURL(bestBlob);
       document.getElementById("kb-note").textContent = bestBlob.size <= target
@@ -147,7 +172,7 @@ async function tpCompressToKB(img, targetBytes, onProgress) {
   });
 
   document.getElementById("kb-download").addEventListener("click", function () {
-    if (outBlob) tpDownload(outBlob, tpStripExt(file.name) + "-compressed.jpg");
+    if (outBlob) tpDownload(outBlob, outName || (tpStripExt(file.name) + "-compressed.jpg"));
   });
 })();
 

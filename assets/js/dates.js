@@ -79,6 +79,12 @@ function tpCountdownCells(prefix, target) {
   }
   function run() {
     tpHideError("ag-err");
+    // D-3 (2026-11-23 audit): hide any previous result before validating, so
+    // a validation error can never sit next to a stale computed result (the
+    // auto-run on field change made that pairing possible: compute once,
+    // then clear/shorten the 'on' date and the error appeared above the
+    // old answer).
+    document.getElementById("ag-result").classList.remove("show");
     var dob = tpParseYMD(document.getElementById("ag-dob").value);
     var on = currentOnDate();
     if (!dob) { tpShowError("ag-err", "Please pick a date of birth."); return; }

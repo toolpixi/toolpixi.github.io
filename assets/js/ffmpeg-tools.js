@@ -1,54 +1,65 @@
-/* ToolPixi — ffmpeg.wasm tools (MP4 to MP3, Video Compressor).
+/* ToolPixi — ffmpeg.wasm tools (MP4 to MP3, Video Compressor, Discord).
    The FFmpeg core runs entirely in the browser via WebAssembly:
    media files are written to the in-memory virtual filesystem only,
-   never uploaded anywhere. Loaded as a module from the tool pages. */
-import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js";
-import { toBlobURL, fetchFile } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js";
+   never uploaded anywhere. Loaded as a module from the tool pages.
 
-var CORE = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm";
-var PKG = "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm";
+   D-2 fix (2026-11-23 audit): the engine used to be imported from the
+   jsDelivr CDN with top-level static imports — if the CDN was unreachable
+   the whole module died before any code ran, leaving a dead dropzone and
+   a permanently disabled button with no error. The engine is now
+   SELF-HOSTED under /assets/vendor/ffmpeg/ (same pattern as JsBarcode)
+   and loaded with dynamic imports inside loadFFmpeg(), so this module
+   always runs, the panels always wire up, and a load failure surfaces a
+   plain, retryable error message instead of silence. */
+var VENDOR = "/assets/vendor/ffmpeg";
 var ffmpegPromise = null;
+var fetchFileImpl = null; // @ffmpeg/util fetchFile, set by loadFFmpeg()
 var activeBar = null; // <progress> element of the panel currently converting
 
-/* The package's worker.js imports two tiny sibling modules (const.js,
-   errors.js). A worker created from a blob URL cannot resolve those
-   relative imports, so fetch all three files and inline them into one
-   self-contained worker script. */
-function stripModule(src) {
-  return src.split("\n").filter(function (line) {
-    return !/^\s*import\s/.test(line);
-  }).join("\n").replace(/^export\s+/gm, "");
-}
-async function makeClassWorkerURL() {
-  var names = ["const.js", "errors.js", "worker.js"], parts = [];
-  for (var i = 0; i < names.length; i++) {
-    var r = await fetch(PKG + "/" + names[i]);
-    if (!r.ok) throw new Error("Could not fetch the conversion engine (" + names[i] + ").");
-    parts.push(stripModule(await r.text()));
-  }
-  return URL.createObjectURL(new Blob([parts.join("\n")], { type: "text/javascript" }));
+function tpLoadError() {
+  var e = new Error("The conversion engine could not be loaded.");
+  e.tpLoad = true;
+  return e;
 }
 
 function loadFFmpeg() {
   if (!ffmpegPromise) {
     ffmpegPromise = (async function () {
-      var ffmpeg = new FFmpeg();
+      var lib, util;
+      try {
+        lib = await import(VENDOR + "/ffmpeg/index.js");
+        util = await import(VENDOR + "/util/index.js");
+      } catch (e) {
+        throw tpLoadError();
+      }
+      fetchFileImpl = util.fetchFile;
+      var ffmpeg = new lib.FFmpeg();
       ffmpeg.on("progress", function (e) {
         if (activeBar && e && typeof e.progress === "number") {
           activeBar.style.display = "block";
           activeBar.value = Math.max(0, Math.min(100, Math.round(e.progress * 100)));
         }
       });
-      var classWorkerURL = await makeClassWorkerURL();
-      var coreURL = await toBlobURL(CORE + "/ffmpeg-core.js", "text/javascript");
-      var wasmURL = await toBlobURL(CORE + "/ffmpeg-core.wasm", "application/wasm");
-      await ffmpeg.load({ classWorkerURL: classWorkerURL, coreURL: coreURL, wasmURL: wasmURL });
+      try {
+        // No classWorkerURL: the package's own worker.js sits next to the
+        // vendored classes.js and, as a real same-origin module worker,
+        // resolves its relative imports natively — no blob inlining needed.
+        await ffmpeg.load({
+          coreURL: VENDOR + "/core/ffmpeg-core.js",
+          wasmURL: VENDOR + "/core/ffmpeg-core.wasm"
+        });
+      } catch (e) {
+        throw tpLoadError();
+      }
       return ffmpeg;
     })();
     ffmpegPromise.catch(function () { ffmpegPromise = null; });
   }
   return ffmpegPromise;
 }
+
+var TP_LOAD_MSG = "The conversion engine could not be loaded, so this tool cannot start. " +
+  "Check your internet connection, then press the button again to retry — your file has not been touched.";
 
 function extOf(name) {
   var m = /\.([a-z0-9]+)$/i.exec(name || "");
@@ -79,7 +90,7 @@ function extOf(name) {
       var ffmpeg = await loadFFmpeg();
       status.textContent = "Extracting the audio on your device…";
       var inName = "input" + extOf(file.name);
-      await ffmpeg.writeFile(inName, await fetchFile(file));
+      await ffmpeg.writeFile(inName, await fetchFileImpl(file));
       var q = el("m3-quality").value;
       // The select's values are bare numbers ("192"); ffmpeg reads "-b:a 192"
       // as 192 BITS/s and LAME clamps to its minimum (~65 kbps out). The "k"
@@ -95,7 +106,11 @@ function extOf(name) {
       el("m3-result").classList.add("show");
       status.textContent = "";
     } catch (e) {
-      tpShowError("m3-err", "Conversion failed. The file may use a codec the in-browser engine cannot read, or the tab ran out of memory on a very large file. Your original file is untouched — try a shorter or smaller video.");
+      if (e && e.tpLoad) {
+        tpShowError("m3-err", TP_LOAD_MSG);
+      } else {
+        tpShowError("m3-err", "Conversion failed. The file may use a codec the in-browser engine cannot read, or the tab ran out of memory on a very large file. Your original file is untouched — try a shorter or smaller video.");
+      }
       status.textContent = "";
     }
     bar.style.display = "none"; activeBar = null; btn.disabled = false;
@@ -132,7 +147,7 @@ function extOf(name) {
       var ffmpeg = await loadFFmpeg();
       status.textContent = "Compressing on your device — video re-encoding is slow work, keep this tab open…";
       var inName = "input" + extOf(file.name);
-      await ffmpeg.writeFile(inName, await fetchFile(file));
+      await ffmpeg.writeFile(inName, await fetchFileImpl(file));
       var preset = el("vc-preset").value, args;
       if (preset === "discord" && duration > 0) {
         var totalBits = 10 * 1024 * 1024 * 8; // aim: about 10 MB
@@ -164,7 +179,11 @@ function extOf(name) {
       el("vc-result").classList.add("show");
       status.textContent = "";
     } catch (e) {
-      tpShowError("vc-err", "Compression failed. The file may use a codec the in-browser engine cannot read, or the tab ran out of memory on a very large file. Your original is untouched — try a shorter video, or the 'Much smaller' preset.");
+      if (e && e.tpLoad) {
+        tpShowError("vc-err", TP_LOAD_MSG);
+      } else {
+        tpShowError("vc-err", "Compression failed. The file may use a codec the in-browser engine cannot read, or the tab ran out of memory on a very large file. Your original is untouched — try a shorter video, or the 'Much smaller' preset.");
+      }
       status.textContent = "";
     }
     bar.style.display = "none"; activeBar = null; btn.disabled = false;
