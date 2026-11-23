@@ -79,3 +79,22 @@ ToolPixi's own Search Console data (last 3 months, exported 2026-11-23) all
    sitemap.xml. Do not delete the `REDIRECT_STUBS` block or the stub folders.
 3. Expected after state: catalogue **122 tools**, sitemap **157 URLs**,
    ads.txt md5 unchanged.
+
+## Result (verified live 2026-11-23)
+- Deploy commit: `5b0603ea22b1775c44c9bc359c818a06fa4e2944` (toolpixi-repo).
+- Catalogue 160 → **122 tools**; sitemap 195 → **157 URLs** (live-verified).
+- Homepage live: 200, 122 tool tiles. Heroes /merge-pdf/ and
+  /image-compressor/ live: 200.
+- Redirect stubs sampled live (12, every group): days-until-ramadan,
+  days-until-black-friday → /days-until/; avif-to-webp → /avif-to-jpg/;
+  heic-to-webp → /heic-to-jpg/; pdf-to-webp → /pdf-to-jpg/;
+  compress-png-to-100kb → /image-compressor/; reading-time-calculator →
+  /word-counter/; reverse-text, morse-code-translator → /text-tools/;
+  base64-to-image → /base64-encoder-decoder/; json-to-csv → /json-formatter/;
+  dice-roller → /random-number-generator/. Each stub: HTTP 200, meta-refresh
+  + canonical to the target, noindex present, target HTTP 200.
+- Built-output link audit: zero built pages link to any removed slug (the
+  only file still naming some removed slugs is the pre-existing working file
+  `pre-upgrade-filelist.txt` — a plain-text inventory, not a page, no links).
+- ads.txt md5 before build, after build and live: all
+  `9e5ab8a9e3daa0f2160b3444d2113bb3` — unchanged.
