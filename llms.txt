@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 160 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 122 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,10 +14,10 @@ ToolPixi at https://toolpixi.com/ offers 160 free browser-based tools across 5 c
 
 ## Categories
 
-- Image Tools: 39 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
-- PDF Tools: 14 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
-- Date & Time Tools: 36 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 29 tools — including Word Counter, QR Code Generator, Barcode Generator, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Image Tools: 31 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- PDF Tools: 13 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
+- Date & Time Tools: 20 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
+- Text & Generator Tools: 16 tools — including Word Counter, QR Code Generator, Barcode Generator, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
 - Converters & Calculators: 42 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
@@ -39,8 +39,6 @@ ToolPixi at https://toolpixi.com/ offers 160 free browser-based tools across 5 c
 - [Days Between Dates](https://toolpixi.com/days-between-dates/): Count the days between two dates, with weeks and months too.
 - [Days Until Christmas](https://toolpixi.com/days-until-christmas/): A live countdown to Christmas Day.
 - [Christmas Countdown](https://toolpixi.com/christmas-countdown/): How many days until Christmas? Live timer with days, weeks, weekends and sleeps left.
-- [Days Until New Year](https://toolpixi.com/days-until-new-year/): Count down to January 1st, live to the second.
-- [Days Until Ramadan](https://toolpixi.com/days-until-ramadan/): When does Ramadan start? Live countdown with the expected date.
 - [Days Until Any Date](https://toolpixi.com/days-until/): Build a countdown to your birthday, exam, trip or deadline.
 - [Online Timer & Stopwatch](https://toolpixi.com/timer/): Countdown timer with alarm, presets and a lap stopwatch.
 - [Word Counter](https://toolpixi.com/word-counter/): Words, characters, sentences and reading time as you type.
@@ -56,7 +54,6 @@ ToolPixi at https://toolpixi.com/ offers 160 free browser-based tools across 5 c
 - [Image Resizer](https://toolpixi.com/image-resizer/): Resize an image to exact pixels or a percentage — for uploads, social posts and print.
 - [PDF to PNG](https://toolpixi.com/pdf-to-png/): Convert each PDF page into a PNG image with a transparent background.
 - [Rotate PDF](https://toolpixi.com/rotate-pdf/): Turn scanned pages upright — rotate a whole PDF 90°, 180° or 270°.
-- [Days Until Eid al-Fitr](https://toolpixi.com/days-until-eid/): A live countdown to Eid al-Fitr, expected 9 March 2027.
 - [Date Calculator](https://toolpixi.com/date-calculator/): Add or subtract days from any date — what is 90 days from today?
 - [Age Difference Calculator](https://toolpixi.com/age-difference-calculator/): The exact age gap between two people, in years, months and days.
 - [Case Converter](https://toolpixi.com/case-converter/): UPPERCASE, lowercase, Title Case, Sentence case and more — one tap.
@@ -69,17 +66,12 @@ ToolPixi at https://toolpixi.com/ offers 160 free browser-based tools across 5 c
 - [Binary Converter](https://toolpixi.com/binary-converter/): Binary, decimal and hex — with the step-by-step working shown.
 - [Hex Converter](https://toolpixi.com/hex-converter/): Hex to decimal and binary, plus hex colours to RGB.
 - [SVG to PNG](https://toolpixi.com/svg-to-png/): Upload an SVG, choose the pixel size, download a crisp PNG.
-- [Days Until Halloween](https://toolpixi.com/days-until-halloween/): A live countdown to Halloween — October 31.
 - [Days Until Thanksgiving](https://toolpixi.com/days-until-thanksgiving/): Live countdown to US Thanksgiving — the fourth Thursday of November.
-- [Text Diff Checker](https://toolpixi.com/text-diff-checker/): Paste two texts and see every addition and removal highlighted.
 - [JSON Formatter](https://toolpixi.com/json-formatter/): Validate, pretty-print and minify JSON — errors shown with line and column.
 - [Favicon Generator](https://toolpixi.com/favicon-generator/): Turn any PNG or JPG into a multi-size favicon.ico for your website.
 - [PDF to Text](https://toolpixi.com/pdf-to-text/): Extract the text from a PDF into a copyable plain-text file.
 - [Add Page Numbers to PDF](https://toolpixi.com/add-page-numbers-to-pdf/): Stamp page numbers on every page of a PDF — position and style are yours.
 - [Sunrise & Sunset Times](https://toolpixi.com/sunrise-sunset-calculator/): Sunrise, sunset and day length for any place and date.
-- [Days Until Diwali](https://toolpixi.com/days-until-diwali/): A live countdown to Diwali, the festival of lights.
-- [Days Until Eid al-Adha](https://toolpixi.com/days-until-eid-al-adha/): Live countdown to Eid al-Adha, the Festival of Sacrifice.
-- [Dice Roller](https://toolpixi.com/dice-roller/): Roll virtual dice — d4 to d100, any count, with modifiers and history.
 - [Lorem Ipsum Generator](https://toolpixi.com/lorem-ipsum-generator/): Generate placeholder text — paragraphs, sentences or words.
 - [Compound Interest Calculator](https://toolpixi.com/compound-interest-calculator/): See how savings grow when interest earns interest, year by year.
 - [Salary Converter](https://toolpixi.com/salary-converter/): Hourly to salary and back — annual, monthly, weekly, daily.
@@ -87,51 +79,28 @@ ToolPixi at https://toolpixi.com/ offers 160 free browser-based tools across 5 c
 - [GIF to JPG](https://toolpixi.com/gif-to-jpg/): Turn a GIF into a JPG photo — animation becomes a still frame.
 - [PNG to ICO](https://toolpixi.com/png-to-ico/): Make a genuine multi-size Windows .ico icon from a PNG.
 - [AVIF to JPG](https://toolpixi.com/avif-to-jpg/): Convert modern AVIF images into JPGs every app can open.
-- [Days Until Easter](https://toolpixi.com/days-until-easter/): A live countdown to Easter Sunday, computed for every year.
-- [Days Until Valentine's Day](https://toolpixi.com/days-until-valentines-day/): A live countdown to February 14.
 - [Weekday Calculator](https://toolpixi.com/weekday-calculator/): What day of the week was any date — or will be?
 - [Business Days Calculator](https://toolpixi.com/business-days-calculator/): Working days between two dates, weekends excluded.
 - [Pregnancy Due Date](https://toolpixi.com/pregnancy-due-date-calculator/): Due date, weeks along and trimester from your last period.
 - [Zodiac Sign](https://toolpixi.com/zodiac-sign-calculator/): Your star sign, element and date range from your birthday.
 - [GIF to PNG](https://toolpixi.com/gif-to-png/): Convert GIF images to PNG — the first frame becomes a still PNG with transparency kept.
-- [GIF to WebP](https://toolpixi.com/gif-to-webp/): Convert GIF images to WebP — the first frame becomes a small, sharp WebP still.
 - [AVIF to PNG](https://toolpixi.com/avif-to-png/): Convert AVIF images to PNG without losing transparency.
-- [AVIF to WebP](https://toolpixi.com/avif-to-webp/): Convert AVIF images to WebP — small files for websites.
-- [SVG to WebP](https://toolpixi.com/svg-to-webp/): Upload an SVG, choose the pixel size, download a crisp WebP with transparency kept.
-- [PDF to WebP](https://toolpixi.com/pdf-to-webp/): Convert each PDF page into a WebP image.
-- [HEIC to WebP](https://toolpixi.com/heic-to-webp/): Convert iPhone HEIC photos to WebP — small files for websites.
 - [Base64 Encoder & Decoder](https://toolpixi.com/base64-encoder-decoder/): Encode text to Base64 or decode it back — Unicode-safe, with a URL-safe option.
-- [URL Encoder & Decoder](https://toolpixi.com/url-encoder-decoder/): Encode or decode URLs and URL parts — component mode or full-URL mode.
 - [Time Zone Converter](https://toolpixi.com/time-zone-converter/): Convert a time between time zones — daylight saving handled automatically.
 - [BMP to JPG](https://toolpixi.com/bmp-to-jpg/): Convert BMP images to JPG — smaller files that upload anywhere.
 - [BMP to PNG](https://toolpixi.com/bmp-to-png/): Convert BMP images to PNG with full quality and transparency kept.
-- [BMP to WebP](https://toolpixi.com/bmp-to-webp/): Convert BMP images to WebP — small, web-ready files.
-- [Days Until Mother's Day](https://toolpixi.com/days-until-mothers-day/): A live countdown to Mother's Day — the second Sunday of May.
-- [Days Until Father's Day](https://toolpixi.com/days-until-fathers-day/): A live countdown to Father's Day — the third Sunday of June.
-- [Days Until Independence Day](https://toolpixi.com/days-until-independence-day/): A live countdown to July 4 — US Independence Day.
-- [Days Until Black Friday](https://toolpixi.com/days-until-black-friday/): A live countdown to Black Friday — the day after US Thanksgiving.
 - [VAT Calculator](https://toolpixi.com/vat-calculator/): Add or remove VAT from a price — with common rates and a custom rate.
 - [Image Cropper](https://toolpixi.com/image-cropper/): Crop a photo to any size or aspect ratio — square, 16:9, 4:3 or custom.
 - [Time Duration Calculator](https://toolpixi.com/time-duration-calculator/): Hours and minutes between two times, or add time to a clock time.
 - [UUID Generator](https://toolpixi.com/uuid-generator/): Generate random UUIDs (v4) — one at a time or 100 in a bulk list.
 - [Hash Generator](https://toolpixi.com/hash-generator/): MD5, SHA-1, SHA-256 and SHA-512 hashes of any text, as you type.
 - [Color Converter](https://toolpixi.com/color-converter/): HEX, RGB and HSL colour values converted live, with a preview swatch.
-- [Slug Generator](https://toolpixi.com/slug-generator/): Turn a title or headline into a clean URL slug in one tap.
-- [Image to Base64](https://toolpixi.com/image-to-base64/): Convert a PNG, JPG or other image into a Base64 string or data URI.
-- [Base64 to Image](https://toolpixi.com/base64-to-image/): Paste a Base64 string or data URI and get the picture back as a PNG.
-- [Remove Duplicate Lines](https://toolpixi.com/remove-duplicate-lines/): Paste a list and strip out repeated lines — first occurrence kept, order preserved.
-- [Sort Lines](https://toolpixi.com/sort-lines/): Alphabetize lines A–Z or Z–A, sort by length, or shuffle them.
-- [Reverse Text](https://toolpixi.com/reverse-text/): Flip text backwards — by characters, by words or by lines.
 - [Online Stopwatch](https://toolpixi.com/stopwatch/): A precise stopwatch with laps and millisecond timing.
-- [JSON Minifier](https://toolpixi.com/json-minifier/): Minify JSON to a single compact line — validated as it compresses.
-- [CSV to JSON](https://toolpixi.com/csv-to-json/): Turn CSV rows into a JSON array — headers become keys.
-- [JSON to CSV](https://toolpixi.com/json-to-csv/): Convert a JSON array of objects into a CSV file you can open in Excel.
 - [Markdown to HTML](https://toolpixi.com/markdown-to-html/): Write Markdown and see clean HTML — live preview plus the raw code.
 - [Image Watermark](https://toolpixi.com/image-watermark/): Add a text watermark to a photo — position, opacity and size are yours.
 - [Text to Speech](https://toolpixi.com/text-to-speech/): Listen to any text read aloud — pick a voice, set the speed and pitch.
 - [Roman Numeral Converter](https://toolpixi.com/roman-numeral-converter/): Turn numbers into Roman numerals and read Roman numerals back — 1 to 3999.
 - [Number to Words Converter](https://toolpixi.com/number-to-words-converter/): Write any number in English words — for cheques, invoices and documents.
-- [Morse Code Translator](https://toolpixi.com/morse-code-translator/): Text to dots and dashes, Morse back to text — with real beep playback.
 - [Unix Timestamp Converter](https://toolpixi.com/unix-timestamp-converter/): Epoch time to human dates and back — the current timestamp, ticking live.
 - [Background Remover](https://toolpixi.com/background-remover/): Remove the background from a photo with AI — free, in your browser, nothing uploaded.
 - [Sign PDF](https://toolpixi.com/sign-pdf/): Draw or type your signature and stamp it onto any page of a PDF.
@@ -146,24 +115,17 @@ ToolPixi at https://toolpixi.com/ offers 160 free browser-based tools across 5 c
 - [Cm to Inches](https://toolpixi.com/cm-to-inches/): Convert centimetres to inches — 1 inch is exactly 2.54 cm.
 - [Inches to Cm](https://toolpixi.com/inches-to-cm/): Convert inches to centimetres — 1 inch is exactly 2.54 cm.
 - [Character Counter](https://toolpixi.com/character-counter/): Characters with and without spaces, words, sentences — and how much room your limit has left.
-- [Reading Time Calculator](https://toolpixi.com/reading-time-calculator/): How long to read any text — slow, average and fast — plus the speaking time.
 - [Percentage Increase Calculator](https://toolpixi.com/percentage-increase-calculator/): Percentage increase or decrease between two values, and the price after a % rise.
-- [Days Until Hanukkah](https://toolpixi.com/days-until-hanukkah/): A live countdown to the first candle of Hanukkah.
-- [Days Until St Patrick's Day](https://toolpixi.com/days-until-st-patricks-day/): A live countdown to St Patrick’s Day — 17 March.
 - [Mm to Inches](https://toolpixi.com/mm-to-inches/): Convert millimetres to inches — 1 inch is exactly 25.4 mm.
 - [Inches to Mm](https://toolpixi.com/inches-to-mm/): Convert inches to millimetres — 1 inch is exactly 25.4 mm.
 - [Meters to Feet](https://toolpixi.com/meters-to-feet/): Convert metres to feet — 1 metre is 3.28084 feet.
 - [Feet to Meters](https://toolpixi.com/feet-to-meters/): Convert feet to metres — 1 foot is exactly 0.3048 m.
-- [Days Until Chinese New Year](https://toolpixi.com/days-until-chinese-new-year/): A live countdown to Chinese New Year — the Spring Festival.
-- [Days Until Summer](https://toolpixi.com/days-until-summer/): A live countdown to the first day of summer — the June solstice.
 - [Add Text to PDF](https://toolpixi.com/add-text-to-pdf/): Type on a PDF: click anywhere on the page and add your own text.
 - [Add Watermark to PDF](https://toolpixi.com/add-watermark-to-pdf/): Stamp a diagonal or straight text watermark on every page of a PDF.
 - [Passport Photo Maker](https://toolpixi.com/passport-photo-maker/): Crop any photo to an exact passport size — 35×45 mm, 2×2 in or 51×51 mm.
-- [XML Formatter](https://toolpixi.com/xml-formatter/): Validate, pretty-print and minify XML — errors shown with line and column.
 - [Compress Image to 50KB](https://toolpixi.com/compress-image-to-50kb/): Shrink a photo to exactly 50KB for exam, visa and job portals — free, in your browser.
 - [Compress Image to 100KB](https://toolpixi.com/compress-image-to-100kb/): Shrink a photo to exactly 100KB for job portals, older government forms and document scans — free, in your browser.
 - [Compress JPG to 100KB](https://toolpixi.com/compress-jpg-to-100kb/): Shrink a JPG photo to exactly 100KB for social posts, email attachments and upload forms — free, in your browser.
-- [Compress PNG to 100KB](https://toolpixi.com/compress-png-to-100kb/): Shrink a PNG photo to exactly 100KB for forms, uploads and sharing — free, in your browser.
 - [Compress Video for Discord](https://toolpixi.com/compress-video-for-discord/): Shrink a video to fit Discord’s upload limit — free, in your browser, nothing uploaded.
 - [Spin the Wheel](https://toolpixi.com/spin-the-wheel/): Spin a custom wheel with your own names or choices — raffles, giveaways, classrooms and decisions. Free, in your browser.
 - [Random Name Generator](https://toolpixi.com/random-name-generator/): Pick random names from your own list — raffle winners, teams, classroom cold-calls. Free, in your browser.

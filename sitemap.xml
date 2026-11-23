@@ -5,7 +5,6 @@
   <url><loc>https://toolpixi.com/compress-image-to-50kb/</loc></url>
   <url><loc>https://toolpixi.com/compress-image-to-100kb/</loc></url>
   <url><loc>https://toolpixi.com/compress-jpg-to-100kb/</loc></url>
-  <url><loc>https://toolpixi.com/compress-png-to-100kb/</loc></url>
   <url><loc>https://toolpixi.com/compress-video-for-discord/</loc></url>
   <url><loc>https://toolpixi.com/png-to-jpg/</loc></url>
   <url><loc>https://toolpixi.com/jpg-to-png/</loc></url>
@@ -23,8 +22,6 @@
   <url><loc>https://toolpixi.com/days-between-dates/</loc></url>
   <url><loc>https://toolpixi.com/days-until-christmas/</loc></url>
   <url><loc>https://toolpixi.com/christmas-countdown/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-new-year/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-ramadan/</loc></url>
   <url><loc>https://toolpixi.com/days-until/</loc></url>
   <url><loc>https://toolpixi.com/timer/</loc></url>
   <url><loc>https://toolpixi.com/word-counter/</loc></url>
@@ -41,7 +38,6 @@
   <url><loc>https://toolpixi.com/image-resizer/</loc></url>
   <url><loc>https://toolpixi.com/pdf-to-png/</loc></url>
   <url><loc>https://toolpixi.com/rotate-pdf/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-eid/</loc></url>
   <url><loc>https://toolpixi.com/date-calculator/</loc></url>
   <url><loc>https://toolpixi.com/age-difference-calculator/</loc></url>
   <url><loc>https://toolpixi.com/case-converter/</loc></url>
@@ -59,70 +55,42 @@
   <url><loc>https://toolpixi.com/binary-converter/</loc></url>
   <url><loc>https://toolpixi.com/hex-converter/</loc></url>
   <url><loc>https://toolpixi.com/svg-to-png/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-halloween/</loc></url>
   <url><loc>https://toolpixi.com/days-until-thanksgiving/</loc></url>
-  <url><loc>https://toolpixi.com/text-diff-checker/</loc></url>
   <url><loc>https://toolpixi.com/json-formatter/</loc></url>
   <url><loc>https://toolpixi.com/favicon-generator/</loc></url>
   <url><loc>https://toolpixi.com/pdf-to-text/</loc></url>
   <url><loc>https://toolpixi.com/add-page-numbers-to-pdf/</loc></url>
-  <url><loc>https://toolpixi.com/dice-roller/</loc></url>
   <url><loc>https://toolpixi.com/spin-the-wheel/</loc></url>
   <url><loc>https://toolpixi.com/lorem-ipsum-generator/</loc></url>
   <url><loc>https://toolpixi.com/compound-interest-calculator/</loc></url>
   <url><loc>https://toolpixi.com/salary-converter/</loc></url>
   <url><loc>https://toolpixi.com/sunrise-sunset-calculator/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-diwali/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-eid-al-adha/</loc></url>
   <url><loc>https://toolpixi.com/gif-to-jpg/</loc></url>
   <url><loc>https://toolpixi.com/avif-to-jpg/</loc></url>
   <url><loc>https://toolpixi.com/svg-to-jpg/</loc></url>
   <url><loc>https://toolpixi.com/png-to-ico/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-easter/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-valentines-day/</loc></url>
   <url><loc>https://toolpixi.com/weekday-calculator/</loc></url>
   <url><loc>https://toolpixi.com/business-days-calculator/</loc></url>
   <url><loc>https://toolpixi.com/pregnancy-due-date-calculator/</loc></url>
   <url><loc>https://toolpixi.com/zodiac-sign-calculator/</loc></url>
   <url><loc>https://toolpixi.com/gif-to-png/</loc></url>
-  <url><loc>https://toolpixi.com/gif-to-webp/</loc></url>
   <url><loc>https://toolpixi.com/avif-to-png/</loc></url>
-  <url><loc>https://toolpixi.com/avif-to-webp/</loc></url>
-  <url><loc>https://toolpixi.com/svg-to-webp/</loc></url>
-  <url><loc>https://toolpixi.com/pdf-to-webp/</loc></url>
-  <url><loc>https://toolpixi.com/heic-to-webp/</loc></url>
   <url><loc>https://toolpixi.com/base64-encoder-decoder/</loc></url>
-  <url><loc>https://toolpixi.com/url-encoder-decoder/</loc></url>
   <url><loc>https://toolpixi.com/time-zone-converter/</loc></url>
   <url><loc>https://toolpixi.com/bmp-to-jpg/</loc></url>
   <url><loc>https://toolpixi.com/bmp-to-png/</loc></url>
-  <url><loc>https://toolpixi.com/bmp-to-webp/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-mothers-day/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-fathers-day/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-independence-day/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-black-friday/</loc></url>
   <url><loc>https://toolpixi.com/vat-calculator/</loc></url>
   <url><loc>https://toolpixi.com/image-cropper/</loc></url>
   <url><loc>https://toolpixi.com/time-duration-calculator/</loc></url>
   <url><loc>https://toolpixi.com/uuid-generator/</loc></url>
   <url><loc>https://toolpixi.com/hash-generator/</loc></url>
   <url><loc>https://toolpixi.com/color-converter/</loc></url>
-  <url><loc>https://toolpixi.com/slug-generator/</loc></url>
-  <url><loc>https://toolpixi.com/image-to-base64/</loc></url>
-  <url><loc>https://toolpixi.com/base64-to-image/</loc></url>
-  <url><loc>https://toolpixi.com/remove-duplicate-lines/</loc></url>
-  <url><loc>https://toolpixi.com/sort-lines/</loc></url>
-  <url><loc>https://toolpixi.com/reverse-text/</loc></url>
   <url><loc>https://toolpixi.com/stopwatch/</loc></url>
-  <url><loc>https://toolpixi.com/json-minifier/</loc></url>
-  <url><loc>https://toolpixi.com/csv-to-json/</loc></url>
-  <url><loc>https://toolpixi.com/json-to-csv/</loc></url>
   <url><loc>https://toolpixi.com/markdown-to-html/</loc></url>
   <url><loc>https://toolpixi.com/image-watermark/</loc></url>
   <url><loc>https://toolpixi.com/text-to-speech/</loc></url>
   <url><loc>https://toolpixi.com/roman-numeral-converter/</loc></url>
   <url><loc>https://toolpixi.com/number-to-words-converter/</loc></url>
-  <url><loc>https://toolpixi.com/morse-code-translator/</loc></url>
   <url><loc>https://toolpixi.com/unix-timestamp-converter/</loc></url>
   <url><loc>https://toolpixi.com/background-remover/</loc></url>
   <url><loc>https://toolpixi.com/image-tools/</loc></url>
@@ -143,9 +111,6 @@
   <url><loc>https://toolpixi.com/inches-to-cm/</loc></url>
   <url><loc>https://toolpixi.com/percentage-increase-calculator/</loc></url>
   <url><loc>https://toolpixi.com/character-counter/</loc></url>
-  <url><loc>https://toolpixi.com/reading-time-calculator/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-hanukkah/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-st-patricks-day/</loc></url>
   <url><loc>https://toolpixi.com/mm-to-inches/</loc></url>
   <url><loc>https://toolpixi.com/inches-to-mm/</loc></url>
   <url><loc>https://toolpixi.com/meters-to-feet/</loc></url>
@@ -160,12 +125,9 @@
   <url><loc>https://toolpixi.com/meters-to-yards/</loc></url>
   <url><loc>https://toolpixi.com/cups-to-ml/</loc></url>
   <url><loc>https://toolpixi.com/ml-to-cups/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-chinese-new-year/</loc></url>
-  <url><loc>https://toolpixi.com/days-until-summer/</loc></url>
   <url><loc>https://toolpixi.com/add-text-to-pdf/</loc></url>
   <url><loc>https://toolpixi.com/add-watermark-to-pdf/</loc></url>
   <url><loc>https://toolpixi.com/passport-photo-maker/</loc></url>
-  <url><loc>https://toolpixi.com/xml-formatter/</loc></url>
   <url><loc>https://toolpixi.com/guides/</loc></url>
   <url><loc>https://toolpixi.com/guides/how-to-count-days-between-dates/</loc></url>
   <url><loc>https://toolpixi.com/guides/how-to-add-days-to-a-date/</loc></url>
