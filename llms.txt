@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 149 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 159 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -18,7 +18,7 @@ ToolPixi at https://toolpixi.com/ offers 149 free browser-based tools across 5 c
 - PDF Tools: 14 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 36 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
 - Text & Generator Tools: 28 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 32 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Converters & Calculators: 42 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -171,6 +171,16 @@ ToolPixi at https://toolpixi.com/ offers 149 free browser-based tools across 5 c
 - [GPA Calculator](https://toolpixi.com/gpa-calculator/): Semester and cumulative GPA from your course grades and credits, on the 4.0 scale.
 - [Scientific Calculator](https://toolpixi.com/scientific-calculator/): Trig, logarithms, powers, roots and brackets — a full scientific keypad in your browser.
 - [Auto Loan Calculator](https://toolpixi.com/auto-loan-calculator/): Car loan payments with down payment, trade-in and sales tax all worked in.
+- [Km to Miles](https://toolpixi.com/km-to-miles/): Convert kilometres to miles — 1 km = 0.621371 miles, exact.
+- [Miles to Km](https://toolpixi.com/miles-to-km/): Convert miles to kilometres — 1 mile = 1.609344 km, exact.
+- [Ounces to Grams](https://toolpixi.com/ounces-to-grams/): Convert ounces to grams — 1 oz = 28.349523 g, exact.
+- [Grams to Ounces](https://toolpixi.com/grams-to-ounces/): Convert grams to ounces — 1 g = 0.035274 oz, exact.
+- [Liters to Gallons](https://toolpixi.com/liters-to-gallons/): Convert litres to US gallons — 1 L = 0.264172 gallons.
+- [Gallons to Liters](https://toolpixi.com/gallons-to-liters/): Convert US gallons to litres — 1 gallon = 3.785412 L.
+- [Yards to Meters](https://toolpixi.com/yards-to-meters/): Convert yards to metres — 1 yard = 0.9144 m, exact.
+- [Meters to Yards](https://toolpixi.com/meters-to-yards/): Convert metres to yards — 1 m = 1.093613 yards.
+- [Cups to Ml](https://toolpixi.com/cups-to-ml/): Convert US cups to millilitres — 1 cup = 236.588 mL.
+- [Ml to Cups](https://toolpixi.com/ml-to-cups/): Convert millilitres to US cups — 1 mL = 0.004227 cups.
 
 ## Privacy promise
 

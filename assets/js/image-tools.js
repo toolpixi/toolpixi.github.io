@@ -169,15 +169,18 @@ async function tpCompressToKB(img, targetBytes, onProgress) {
       btn.onclick = async function () {
         btn.disabled = true; btn.textContent = "Converting…";
         var q = parseFloat((document.getElementById("ic-quality") || {}).value || "0.92");
-        var done = 0;
+        var done = 0, failedEncode = false;
         for (var i = 0; i < files.length; i++) {
           try {
             var r = await tpLoadImageFromFile(files[i]);
             var canvas = tpDrawScaled(r.img, 1, toMime === "image/jpeg");
             var blob = await tpCanvasToBlob(canvas, toMime, q);
             URL.revokeObjectURL(r.url);
-            if (blob) tpDownload(blob, tpStripExt(files[i].name) + "." + toExt);
-            done++;
+            // toBlob silently falls back to PNG for a mime the browser cannot
+            // encode (e.g. image/avif in Chrome/Firefox/Safari) — a blob of
+            // the wrong type must never be downloaded under the target name.
+            if (blob && blob.type === toMime) { tpDownload(blob, tpStripExt(files[i].name) + "." + toExt); done++; }
+            else if (blob) failedEncode = true;
           } catch (e) { /* skip unreadable file, reported below */ }
           await new Promise(function (res) { setTimeout(res, 250); });
         }
@@ -186,7 +189,9 @@ async function tpCompressToKB(img, targetBytes, onProgress) {
         res2.classList.add("show");
         res2.querySelector(".note").textContent = done === files.length
           ? "All " + done + " image(s) converted and downloaded."
-          : done + " of " + files.length + " images converted — the rest could not be read as images.";
+          : failedEncode
+            ? "This browser cannot save images as " + toExt.toUpperCase() + " — try a newer browser. " + done + " of " + files.length + " converted."
+            : done + " of " + files.length + " images converted — the rest could not be read as images.";
       };
     }
   });

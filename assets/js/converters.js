@@ -4,7 +4,8 @@ var TP_UNITS = {
   length: { label: "Length", units: { mm: 0.001, cm: 0.01, m: 1, km: 1000, inches: 0.0254, feet: 0.3048, yards: 0.9144, miles: 1609.344 }, def: ["cm", "inches"] },
   weight: { label: "Weight", units: { kg: 1, g: 0.001, lbs: 0.45359237, oz: 0.0283495231, stone: 6.35029318 }, def: ["kg", "lbs"] },
   temperature: { label: "Temperature", units: { "°C": "c", "°F": "f", K: "k" }, def: ["°C", "°F"], temp: true },
-  distance: { label: "Distance", units: { km: 1000, miles: 1609.344, m: 1, feet: 0.3048 }, def: ["km", "miles"] }
+  distance: { label: "Distance", units: { km: 1000, miles: 1609.344, m: 1, feet: 0.3048 }, def: ["km", "miles"] },
+  volume: { label: "Volume", units: { L: 1, mL: 0.001, gallons: 3.785411784, cups: 0.2365882365, "fl oz": 0.0295735295625, pints: 0.473176473, quarts: 0.946352946 }, def: ["L", "gallons"] }
 };
 function tpConvert(catKey, from, to, val) {
   var cat = TP_UNITS[catKey];
