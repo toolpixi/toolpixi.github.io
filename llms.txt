@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 122 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 132 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -14,11 +14,11 @@ ToolPixi at https://toolpixi.com/ offers 122 free browser-based tools across 5 c
 
 ## Categories
 
-- Image Tools: 31 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
+- Image Tools: 37 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 13 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 20 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 16 tools — including Word Counter, QR Code Generator, Barcode Generator, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
-- Converters & Calculators: 42 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
+- Text & Generator Tools: 19 tools — including Word Counter, QR Code Generator, Barcode Generator, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
+- Converters & Calculators: 43 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
 
@@ -144,6 +144,16 @@ ToolPixi at https://toolpixi.com/ offers 122 free browser-based tools across 5 c
 - [Meters to Yards](https://toolpixi.com/meters-to-yards/): Convert metres to yards — 1 m = 1.093613 yards.
 - [Cups to Ml](https://toolpixi.com/cups-to-ml/): Convert US cups to millilitres — 1 cup = 236.588 mL.
 - [Ml to Cups](https://toolpixi.com/ml-to-cups/): Convert millilitres to US cups — 1 mL = 0.004227 cups.
+- [Typing Speed Test](https://toolpixi.com/typing-speed-test/): How fast do you type? A 30 or 60 second test with live WPM and accuracy — no sign-up.
+- [Meme Generator](https://toolpixi.com/meme-generator/): Make a meme in seconds — your photo or a built-in scene, bold top and bottom text, PNG download.
+- [GIF Maker](https://toolpixi.com/gif-maker/): Turn a set of photos into an animated GIF — frame timing and size are yours.
+- [QR Code Scanner](https://toolpixi.com/qr-code-scanner/): Scan a QR code or barcode from an image or your camera — decoded on your device, never uploaded.
+- [Resume Builder](https://toolpixi.com/resume-builder/): Build a clean, professional resume and download the PDF — three templates, no sign-up, no watermark.
+- [Image to Text (OCR)](https://toolpixi.com/image-to-text/): Pull the text out of any photo or screenshot with OCR — copy it or download it as a text file.
+- [Invoice Generator](https://toolpixi.com/invoice-generator/): Fill in the form, download a professional PDF invoice — items, tax and totals worked out for you.
+- [Screen Recorder](https://toolpixi.com/screen-recorder/): Record your screen, a tab or a window right in the browser and download the video — nothing uploaded.
+- [Video to GIF](https://toolpixi.com/video-to-gif/): Turn the best seconds of a video into an animated GIF — trim, size and download in your browser.
+- [Photo Collage Maker](https://toolpixi.com/photo-collage-maker/): Arrange your photos into a clean grid collage and download it as PNG or JPG.
 
 ## Privacy promise
 
