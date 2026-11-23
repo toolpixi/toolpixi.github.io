@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 132 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 139 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -15,7 +15,7 @@ ToolPixi at https://toolpixi.com/ offers 132 free browser-based tools across 5 c
 ## Categories
 
 - Image Tools: 37 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
-- PDF Tools: 13 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
+- PDF Tools: 20 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 20 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
 - Text & Generator Tools: 19 tools — including Word Counter, QR Code Generator, Barcode Generator, Random Number Generator, Case Converter. Word counts, QR codes, thumbnails and random numbers.
 - Converters & Calculators: 43 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
@@ -108,6 +108,13 @@ ToolPixi at https://toolpixi.com/ offers 132 free browser-based tools across 5 c
 - [MP4 to MP3](https://toolpixi.com/mp4-to-mp3/): Extract the audio from an MP4 video as an MP3 file — right in your browser.
 - [Video Compressor](https://toolpixi.com/video-compressor/): Compress an MP4 video in your browser — shrink it for Discord, email or uploads.
 - [PDF to Word](https://toolpixi.com/pdf-to-word/): Convert a text-based PDF into an editable Word (.docx) document.
+- [Crop PDF](https://toolpixi.com/crop-pdf/): Trim margins and unwanted edges off PDF pages with a visual crop box.
+- [Organize PDF](https://toolpixi.com/organize-pdf/): Reorder, rotate and delete PDF pages with visual thumbnails.
+- [Compare PDF](https://toolpixi.com/compare-pdf/): See the exact text differences between two PDFs, side by side.
+- [Unlock PDF](https://toolpixi.com/unlock-pdf/): Remove a PDF password and its print/copy restrictions.
+- [Protect PDF](https://toolpixi.com/protect-pdf/): Add 256-bit AES password protection and permission flags to a PDF.
+- [Repair PDF](https://toolpixi.com/repair-pdf/): Rebuild a corrupted PDF so it opens again.
+- [PDF to Excel](https://toolpixi.com/pdf-to-excel/): Convert PDF tables into real Excel spreadsheets — scanned pages too, via OCR.
 - [Celsius to Fahrenheit](https://toolpixi.com/celsius-to-fahrenheit/): Convert °C to °F — the formula, the table, and an instant two-way converter.
 - [Fahrenheit to Celsius](https://toolpixi.com/fahrenheit-to-celsius/): Convert °F to °C — the formula, the table, and an instant two-way converter.
 - [Kg to Lbs](https://toolpixi.com/kg-to-lbs/): Convert kilograms to pounds — 1 kg = 2.20462 lbs, exact.
