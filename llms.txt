@@ -2,7 +2,7 @@
 
 > ToolPixi is a free collection of online tools — image compressors, PDF tools, calculators and converters — that run 100% in your browser. Your files never leave your device: no uploads, no servers, no sign-ups.
 
-ToolPixi at https://toolpixi.com/ offers 147 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
+ToolPixi at https://toolpixi.com/ offers 149 free browser-based tools across 5 categories: image compression and conversion, PDF merge/split/compress, date and age calculators, countdowns, and everyday converters. No sign-up, no upload — processing happens on your device.
 
 ## Key pages
 
@@ -17,7 +17,7 @@ ToolPixi at https://toolpixi.com/ offers 147 free browser-based tools across 5 c
 - Image Tools: 39 tools — including Image Compressor to KB, PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG. Compress photos to an exact KB size, convert formats and fix iPhone HEIC photos.
 - PDF Tools: 14 tools — including JPG to PDF, Merge PDF, Split PDF, PDF to JPG, Compress PDF. Build, merge, split and shrink PDFs — right in your browser.
 - Date & Time Tools: 36 tools — including Age Calculator, Age on a Specific Date, Days Between Dates, Days Until Christmas, Christmas Countdown. Ages, countdowns and date differences, calculated instantly.
-- Text & Generator Tools: 26 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
+- Text & Generator Tools: 28 tools — including Word Counter, QR Code Generator, Random Number Generator, Case Converter, Password Generator. Word counts, QR codes, thumbnails and random numbers.
 - Converters & Calculators: 32 tools — including Unit Converter, BMI Calculator, Percentage Calculator, Tip Calculator, Discount Calculator. Units, BMI, percentages and everyday money maths.
 
 ## All tools
@@ -164,6 +164,8 @@ ToolPixi at https://toolpixi.com/ offers 147 free browser-based tools across 5 c
 - [Compress JPG to 100KB](https://toolpixi.com/compress-jpg-to-100kb/): Shrink a JPG photo to exactly 100KB for social posts, email attachments and upload forms — free, in your browser.
 - [Compress PNG to 100KB](https://toolpixi.com/compress-png-to-100kb/): Shrink a PNG photo to exactly 100KB for forms, uploads and sharing — free, in your browser.
 - [Compress Video for Discord](https://toolpixi.com/compress-video-for-discord/): Shrink a video to fit Discord’s upload limit — free, in your browser, nothing uploaded.
+- [Spin the Wheel](https://toolpixi.com/spin-the-wheel/): Spin a custom wheel with your own names or choices — raffles, giveaways, classrooms and decisions. Free, in your browser.
+- [Random Name Generator](https://toolpixi.com/random-name-generator/): Pick random names from your own list — raffle winners, teams, classroom cold-calls. Free, in your browser.
 - [Mortgage Calculator](https://toolpixi.com/mortgage-calculator/): Your real monthly mortgage payment — tax, insurance and PMI included, with the full amortization schedule.
 - [Currency Converter](https://toolpixi.com/currency-converter/): Live exchange rates for 30+ currencies — dollars, euros, pounds, rupees, dirhams and more.
 - [GPA Calculator](https://toolpixi.com/gpa-calculator/): Semester and cumulative GPA from your course grades and credits, on the 4.0 scale.
