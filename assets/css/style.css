@@ -567,6 +567,10 @@ pre.out.show{display:block}
 .pxfield{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 .pxfield i{position:absolute;display:block;border-radius:3px}
 .hero>*:not(.pxfield),.hub-hero>*:not(.pxfield),.privacy-band>*:not(.pxfield){position:relative;z-index:1}
+/* Search box must sit ABOVE its hero siblings, or the suggestions dropdown
+   (z-60 inside this stacking context) is painted over by the trust row,
+   quick chips and stats strip that follow it (bug found by Hamza 2026-11-24). */
+.hero .search-box,.hub-hero .search-box{position:relative;z-index:70}
 
 /* Header: filled Toolbox pill + desktop search field */
 .toolbox-btn{background:var(--grad);color:#fff;border-color:transparent;
