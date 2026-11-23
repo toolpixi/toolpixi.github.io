@@ -1,7 +1,10 @@
 /* ToolPixi — main stylesheet (mobile-first)
-   Brand (2026-11-23 v2 redesign): ink navy + teal→cyan gradient on a soft
-   off-white background, Inter type, 18px corners, layered soft shadows and
-   a glassy header. The logo lockup itself is unchanged from the live brand. */
+   Brand (2026-11-24 v3 redesign, TinyWow-style structure): near-white
+   background, flat slim header, no hero panel — the search box is the
+   hero — a Popular tile row under it, then the compact catalogue.
+   ToolPixi teal stays the brand accent; Inter type; soft hairline
+   borders instead of heavy shadows. The logo lockup itself is
+   unchanged from the live brand. */
 @font-face{font-family:"Inter";src:url("/assets/fonts/inter-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Inter";src:url("/assets/fonts/inter-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
 @font-face{font-family:"Inter";src:url("/assets/fonts/inter-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
@@ -11,14 +14,14 @@
   --primary:#0d9488; --primary-dark:#0b7c72; --primary-soft:#e7f5f2; --teal:#0d9488;
   --accent:#0891b2; --accent-dark:#0e7490; --accent-soft:#e2f3f8;
   --ink:#0b1526; --ink-2:#3c4a61; --muted:#46586e; --faint:#6b7a90;
-  --bg:#f7f9fb; --card:#ffffff; --line:#e3e9f0; --line-soft:#ebeff4;
+  --bg:#fbfcfd; --card:#ffffff; --line:#e2e9f1; --line-soft:#edf1f6;
   --green:#0e9f6e; --red:#dc2626; --amber:#b45309;
   --grad:linear-gradient(120deg,#0d9488 0%,#06a8c7 55%,#0ea5c9 100%);
   --grad-text:linear-gradient(94deg,#0d9488 10%,#06b6d4 55%,#38bdf8 100%);
-  --radius:18px;
-  --shadow-sm:0 1px 2px rgba(11,21,38,.05),0 4px 14px -6px rgba(11,21,38,.08);
-  --shadow:0 1px 2px rgba(11,21,38,.05),0 16px 36px -16px rgba(11,21,38,.16);
-  --shadow-hover:0 2px 4px rgba(11,21,38,.05),0 24px 44px -16px rgba(8,145,178,.28);
+  --radius:16px;
+  --shadow-sm:0 1px 2px rgba(11,21,38,.04),0 3px 10px -6px rgba(11,21,38,.07);
+  --shadow:0 1px 2px rgba(11,21,38,.04),0 14px 32px -18px rgba(11,21,38,.18);
+  --shadow-hover:0 2px 4px rgba(11,21,38,.04),0 18px 34px -16px rgba(8,145,178,.25);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -33,22 +36,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 img{max-width:100%}
 .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
 
-/* Header — glassy, sticky */
-.site-header{background:rgba(255,255,255,.86);backdrop-filter:blur(14px) saturate(1.5);-webkit-backdrop-filter:blur(14px) saturate(1.5);
-  border-bottom:1px solid rgba(227,233,240,.9);position:sticky;top:0;z-index:60;
-  box-shadow:0 1px 12px rgba(11,21,38,.05)}
-.site-header>.wrap{display:flex;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px}
-.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;color:#12211e;letter-spacing:-.02em;flex:none}
+/* Header — flat, slim, sticky (v3) */
+.site-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:60}
+.site-header>.wrap{display:flex;align-items:center;gap:12px;padding-top:8px;padding-bottom:8px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:20px;color:#12211e;letter-spacing:-.02em;flex:none}
 .logo:hover{text-decoration:none}
-.logo-mark{width:38px;height:38px;flex:none;display:block}
-.logo-mark svg{width:38px;height:38px;display:block}
+.logo-mark{width:34px;height:34px;flex:none;display:block}
+.logo-mark svg{width:34px;height:34px;display:block}
 .logo-word em{font-style:normal;color:#0d7377}
 .main-nav{display:none;gap:2px;margin-left:auto}
 .main-nav a{color:var(--ink-2);font-size:14.5px;font-weight:600;padding:8px 13px;border-radius:10px;white-space:nowrap}
 .main-nav a:hover{background:#eef4f6;color:var(--ink);text-decoration:none}
 .menu-btn{display:inline-flex;align-items:center;gap:8px;margin-left:auto;background:#fff;color:var(--ink);
-  border:1px solid var(--line);border-radius:12px;padding:9px 16px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;
-  box-shadow:var(--shadow-sm)}
+  border:1px solid var(--line);border-radius:11px;padding:8px 15px;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
 .menu-btn:hover{border-color:#bcd6dd;color:var(--primary-dark);background:#f4faf9}
 .menu-btn svg{flex:none}
 .menu-btn .ic-close{display:none}
@@ -78,20 +78,15 @@ a.menu-cat:hover{color:var(--primary);text-decoration:none}
 .menu-group .mtxt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .menu-note{margin:14px 0 0;color:var(--faint);font-size:13px;border-top:1px dashed var(--line);padding-top:12px}
 
-/* Hero — gradient-mesh panel (same copy, new skin) */
-.hero{margin-top:22px;padding:44px 20px 30px;text-align:center;border-radius:28px;border:1px solid var(--line-soft);
-  box-shadow:var(--shadow-sm);
-  background:
-    radial-gradient(560px 300px at 8% -120px,rgba(45,212,191,.20),rgba(45,212,191,0) 62%),
-    radial-gradient(620px 330px at 92% -140px,rgba(56,189,248,.18),rgba(56,189,248,0) 62%),
-    radial-gradient(440px 280px at 55% -160px,rgba(167,139,250,.12),rgba(167,139,250,0) 65%),
-    linear-gradient(180deg,#fdfefe 0%,#f4f9fa 100%)}
-.hero h1{font-size:32px;line-height:1.14;margin:0 0 14px;letter-spacing:-.03em;font-weight:800}
+/* Hero — minimal strip (v3): no panel, no mesh. One headline line, the
+   search box IS the hero element, trust chips under it. Same copy. */
+.hero{margin-top:4px;padding:36px 6px 6px;text-align:center}
+.hero h1{font-size:31px;line-height:1.16;margin:0 0 12px;letter-spacing:-.03em;font-weight:800}
 .hero h1 .hl{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{color:var(--ink-2);max-width:660px;margin:0 auto 22px;font-size:16.5px;line-height:1.62}
+.hero p{color:var(--muted);max-width:620px;margin:0 auto 22px;font-size:15.5px;line-height:1.6}
 .search-box{max-width:520px;margin:0 auto 6px;position:relative;background:#fff;
-  border:1px solid #d8e4ea;border-radius:20px;padding:8px;
-  box-shadow:0 24px 48px -20px rgba(8,145,178,.30),0 2px 8px rgba(11,21,38,.05)}
+  border:1.5px solid #d5e0ea;border-radius:18px;padding:7px;
+  box-shadow:0 16px 36px -16px rgba(8,145,178,.28),0 2px 8px rgba(11,21,38,.05)}
 .search-box input{width:100%;padding:11px 108px 11px 44px;border:0;border-radius:13px;
   font-size:16.5px;background:transparent;color:var(--ink);font-family:inherit;outline:none}
 .search-box input::placeholder{color:#93a3b8}
@@ -113,8 +108,8 @@ a.menu-cat:hover{color:var(--primary);text-decoration:none}
 .ss-desc{color:var(--muted);font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ss-empty{padding:12px 14px;color:var(--muted);font-size:14px}
 .trust-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0 4px}
-.trust-row span{background:rgba(255,255,255,.85);border:1px solid var(--line);color:var(--ink-2);
-  font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;box-shadow:var(--shadow-sm)}
+.trust-row span{background:#fff;border:1px solid var(--line);color:var(--ink-2);
+  font-size:13px;font-weight:600;padding:6px 13px;border-radius:999px}
 .trust-row span::before{content:"✓";color:var(--primary);font-weight:800;margin-right:6px}
 .ext-line{text-align:center;font-size:14px;margin:10px 0 0;color:var(--muted)}
 .ext-line a{font-weight:700;color:var(--primary)}
@@ -254,18 +249,18 @@ progress::-moz-progress-bar{background:var(--primary);border-radius:99px}
 .privacy-badge{background:linear-gradient(135deg,rgba(13,148,136,.10),rgba(6,182,212,.10));border:1px solid #cfe8e4;border-radius:14px;padding:12px 14px;
   font-size:14px;color:#123f3a;margin:16px 0}
 
-/* Footer — ink navy with a gradient hairline, brand-only */
-.site-footer{background:#0b1526;color:#aebdd0;margin-top:44px;position:relative}
+/* Footer — light and clean with a gradient hairline, brand-only (v3) */
+.site-footer{background:#f3f6f9;color:#52637a;margin-top:52px;position:relative}
 .site-footer::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
 .site-footer .wrap{padding-top:34px;padding-bottom:26px}
 .foot-grid{display:grid;grid-template-columns:1fr;gap:20px}
-.site-footer h4{color:#fff;font-size:12.5px;font-weight:750;margin:0 0 11px;text-transform:uppercase;letter-spacing:.1em}
-.site-footer a{color:#a3b4c7;font-size:14px;display:block;padding:2.5px 0}
-.site-footer a:hover{color:#5eead4;text-decoration:none}
-.site-footer .logo{color:#fff}
-.site-footer .logo-word em{color:#7fd1c0}
-.foot-brand p{font-size:13.8px;color:#8496ad;margin:8px 0 0;max-width:340px;line-height:1.6}
-.foot-bottom{border-top:1px solid rgba(255,255,255,.08);margin-top:22px;padding-top:14px;font-size:13px;color:#7186a0;
+.site-footer h4{color:var(--ink);font-size:12.5px;font-weight:750;margin:0 0 11px;text-transform:uppercase;letter-spacing:.1em}
+.site-footer a{color:#52637a;font-size:14px;display:block;padding:2.5px 0}
+.site-footer a:hover{color:var(--primary-dark);text-decoration:none}
+.site-footer .logo{color:#12211e}
+.site-footer .logo-word em{color:#0d7377}
+.foot-brand p{font-size:13.8px;color:#7286a0;margin:8px 0 0;max-width:340px;line-height:1.6}
+.foot-bottom{border-top:1px solid var(--line);margin-top:22px;padding-top:14px;font-size:13px;color:#7286a0;
   display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .foot-bottom a{display:inline}
 
@@ -274,7 +269,7 @@ progress::-moz-progress-bar{background:var(--primary);border-radius:99px}
   .grid{grid-template-columns:1fr 1fr}
   .related{grid-template-columns:1fr 1fr}
   .foot-grid{grid-template-columns:1.4fr 1fr 1fr 1fr}
-  .hero h1{font-size:44px}
+  .hero h1{font-size:40px}
   .page-head h1{font-size:36px}
   .timer-face{font-size:66px}
   .menu-grid{grid-template-columns:1fr 1fr}
@@ -418,14 +413,16 @@ pre.out.show{display:block}
 /* Homepage compact all-tools catalogue (2026-11-13) — every tool visible
    at once, grouped by family as small tiles so the homepage stays short.
    Homepage only, scoped under .home. */
-.home .cat-group{margin:30px 0 0}
-.home .cat-group h2{font-size:20px;font-weight:800;margin:0 0 3px;letter-spacing:-.02em}
+.home .cat-group{margin:38px 0 0}
+.home .cat-group h2{font-size:21px;font-weight:800;margin:0 0 3px;letter-spacing:-.02em}
+.home .pop-sec{margin-top:26px}
+.home .pop-sec h2::before{content:"★";color:var(--accent);margin-right:7px}
 .home .cat-group .hub-line{margin:10px 0 0}
 .home .tiles{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
 .home .tile{position:relative;min-width:0;display:flex;gap:10px;align-items:center;background:var(--card);
   border:1px solid var(--line);border-radius:14px;padding:9px 30px 9px 10px;color:var(--ink);
   box-shadow:var(--shadow-sm);transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease}
-.home .tile:hover{transform:translateY(-1px);border-color:#cfdde6;text-decoration:none;
+.home .tile:hover{transform:translateY(-1px);border-color:#a9d8d2;text-decoration:none;
   box-shadow:var(--shadow-hover)}
 .home .tile .tic{width:34px;height:34px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;
   box-shadow:inset 0 0 0 1px rgba(11,21,38,.05)}
