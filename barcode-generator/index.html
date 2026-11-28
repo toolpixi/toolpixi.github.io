@@ -460,12 +460,12 @@
 .ckb-btns button.ckb-accept{background:#2563eb;border-color:#2563eb;color:#fff}
 .ckb-setbtn{cursor:pointer;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:600;border:1px solid #2563eb;background:#2563eb;color:#fff}
 </style>
-<div class="ckb" id="ckb" role="region" aria-label="Cookie consent" hidden>
+<div class="ckb" id="tpckb" role="region" aria-label="Cookie consent" hidden>
 <div class="ckb-in">
 <p>We use cookies to run ToolPixi, measure visits and — if you accept — show ads. Read our <a href="/cookie-policy/">Cookie Policy</a>.</p>
 <div class="ckb-btns"><button type="button" id="ckb-reject">Reject</button><button type="button" id="ckb-accept" class="ckb-accept">Accept</button></div>
 </div>
 </div>
-<script>(function(){var KEY='tp-consent',bar=document.getElementById('ckb');if(!bar)return;function stored(){try{return localStorage.getItem(KEY);}catch(e){return null;}}function save(v){try{localStorage.setItem(KEY,v);}catch(e){}}function apply(v){if(window.gtag){gtag('consent','update',{'ad_storage':v,'ad_user_data':v,'ad_personalization':v,'analytics_storage':v});}}function show(){bar.hidden=false;}function hide(){bar.hidden=true;}if(!stored()){show();}var acc=document.getElementById('ckb-accept'),rej=document.getElementById('ckb-reject');if(acc){acc.addEventListener('click',function(){save('granted');apply('granted');hide();});}if(rej){rej.addEventListener('click',function(){save('denied');apply('denied');hide();});}window.openCookieSettings=show;var links=document.querySelectorAll('[data-cookie-settings]');for(var i=0;i<links.length;i++){links[i].addEventListener('click',function(e){e.preventDefault();show();});}})();</script>
+<script>(function(){var KEY='tp-consent',bar=document.getElementById('tpckb');if(!bar)return;function stored(){try{return localStorage.getItem(KEY);}catch(e){return null;}}function save(v){try{localStorage.setItem(KEY,v);}catch(e){}}function apply(v){if(window.gtag){gtag('consent','update',{'ad_storage':v,'ad_user_data':v,'ad_personalization':v,'analytics_storage':v});}}function show(){bar.hidden=false;}function hide(){bar.hidden=true;}if(!stored()){show();}var acc=document.getElementById('ckb-accept'),rej=document.getElementById('ckb-reject');if(acc){acc.addEventListener('click',function(){save('granted');apply('granted');hide();});}if(rej){rej.addEventListener('click',function(){save('denied');apply('denied');hide();});}window.openCookieSettings=show;var links=document.querySelectorAll('[data-cookie-settings]');for(var i=0;i<links.length;i++){links[i].addEventListener('click',function(e){e.preventDefault();show();});}})();</script>
 </body>
 </html>
