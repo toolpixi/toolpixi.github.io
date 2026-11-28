@@ -25,6 +25,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/css/style.css?v=20261124g">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Zodiac Sign Calculator \u2014 What Is My Star Sign?", "url": "https://toolpixi.com/zodiac-sign-calculator/", "description": "Find your zodiac sign from your date of birth: sign, date range, element and a one-line read. Free, fun and instant.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What are the zodiac date ranges?", "acceptedAnswer": {"@type": "Answer", "text": "Aries 21 Mar\u201319 Apr, Taurus 20 Apr\u201320 May, Gemini 21 May\u201320 Jun, Cancer 21 Jun\u201322 Jul, Leo 23 Jul\u201322 Aug, Virgo 23 Aug\u201322 Sep, Libra 23 Sep\u201322 Oct, Scorpio 23 Oct\u201321 Nov, Sagittarius 22 Nov\u201321 Dec, Capricorn 22 Dec\u201319 Jan, Aquarius 20 Jan\u201318 Feb, Pisces 19 Feb\u201320 Mar."}}, {"@type": "Question", "name": "What if I'm born on a boundary day?", "acceptedAnswer": {"@type": "Answer", "text": "Sign changes happen at specific times of day, so boundary dates can flip either way depending on the year. The ranges here follow the standard dates most horoscopes use."}}, {"@type": "Question", "name": "Is any of this real?", "acceptedAnswer": {"@type": "Answer", "text": "No \u2014 and we won't pretend otherwise. Zodiac signs are a thousands-of-years-old storytelling tradition with no scientific basis. This tool is for fun."}}, {"@type": "Question", "name": "Why do some websites give slightly different zodiac dates?", "acceptedAnswer": {"@type": "Answer", "text": "Sources round the changeover days differently, sometimes by a day. This calculator uses the widely published tropical zodiac ranges and shows the exact range your birthday falls in."}}]}]}</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'granted','security_storage':'granted','wait_for_update':500});try{var _tpck=localStorage.getItem('tp-consent');if(_tpck==='granted'){gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'});}}catch(e){}</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9717573976248563" crossorigin="anonymous"></script>
 <script data-grow-initializer="">!(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTpmMWViNDczZS1mZmY4LTRjYmEtYTczNy1hZDM0ODVmZTQ0M2M=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QR47HYDMDZ"></script>
@@ -406,5 +407,22 @@
 <script src="/assets/js/dates.js"></script>
 <script src="/assets/js/favs.js"></script>
 <script src="/assets/js/ratings.js"></script>
+<style>
+.ckb{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#0f1b2d;color:#eef3f9;box-shadow:0 -4px 24px rgba(0,0,0,.35);font-size:14px;line-height:1.5}
+.ckb-in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.ckb p{margin:0;flex:1 1 320px}
+.ckb a{color:#8fc1ff;text-decoration:underline}
+.ckb-btns{display:flex;gap:8px;flex-wrap:wrap}
+.ckb-btns button{cursor:pointer;border-radius:8px;padding:8px 18px;font-size:14px;font-weight:600;border:1px solid #8fc1ff;background:transparent;color:#eef3f9}
+.ckb-btns button.ckb-accept{background:#2563eb;border-color:#2563eb;color:#fff}
+.ckb-setbtn{cursor:pointer;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:600;border:1px solid #2563eb;background:#2563eb;color:#fff}
+</style>
+<div class="ckb" id="ckb" role="region" aria-label="Cookie consent" hidden>
+<div class="ckb-in">
+<p>We use cookies to run ToolPixi, measure visits and — if you accept — show ads. Read our <a href="/cookie-policy/">Cookie Policy</a>.</p>
+<div class="ckb-btns"><button type="button" id="ckb-reject">Reject</button><button type="button" id="ckb-accept" class="ckb-accept">Accept</button></div>
+</div>
+</div>
+<script>(function(){var KEY='tp-consent',bar=document.getElementById('ckb');if(!bar)return;function stored(){try{return localStorage.getItem(KEY);}catch(e){return null;}}function save(v){try{localStorage.setItem(KEY,v);}catch(e){}}function apply(v){if(window.gtag){gtag('consent','update',{'ad_storage':v,'ad_user_data':v,'ad_personalization':v,'analytics_storage':v});}}function show(){bar.hidden=false;}function hide(){bar.hidden=true;}if(!stored()){show();}var acc=document.getElementById('ckb-accept'),rej=document.getElementById('ckb-reject');if(acc){acc.addEventListener('click',function(){save('granted');apply('granted');hide();});}if(rej){rej.addEventListener('click',function(){save('denied');apply('denied');hide();});}window.openCookieSettings=show;var links=document.querySelectorAll('[data-cookie-settings]');for(var i=0;i<links.length;i++){links[i].addEventListener('click',function(e){e.preventDefault();show();});}})();</script>
 </body>
 </html>

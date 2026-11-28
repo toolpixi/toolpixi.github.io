@@ -25,6 +25,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/css/style.css?v=20261124g">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@context": "https://schema.org", "@type": "WebApplication", "name": "Time Zone Converter \u2014 Convert Time Between Zones", "url": "https://toolpixi.com/time-zone-converter/", "description": "Convert a date and time between time zones free in your browser. Daylight saving is handled automatically, with the UTC-offset difference shown.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How is daylight saving handled?", "acceptedAnswer": {"@type": "Answer", "text": "By your browser's own time-zone database: the conversion uses the rules in force on the date you enter \u2014 so a meeting in a gap week, when the US has switched clocks but Europe has not yet, converts differently from the same meeting a month later, exactly as it should."}}, {"@type": "Question", "name": "What does the offset difference mean?", "acceptedAnswer": {"@type": "Answer", "text": "It is how far ahead or behind the destination zone is compared with the source zone at that moment. If London is 5 hours ahead of New York on that date, a 12:00 New York time becomes 17:00 in London."}}, {"@type": "Question", "name": "Can I convert a past or future date?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 any date the browser's time-zone data covers. Very old dates and far-future dates use the rules as currently published, which governments occasionally change."}}, {"@type": "Question", "name": "Is the conversion done online?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser; the date and zones you pick never leave the page."}}]}]}</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'granted','security_storage':'granted','wait_for_update':500});try{var _tpck=localStorage.getItem('tp-consent');if(_tpck==='granted'){gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'});}}catch(e){}</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9717573976248563" crossorigin="anonymous"></script>
 <script data-grow-initializer="">!(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZTpmMWViNDczZS1mZmY4LTRjYmEtYTczNy1hZDM0ODVmZTQ0M2M=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QR47HYDMDZ"></script>
@@ -414,5 +415,22 @@
 <script src="/assets/js/dates.js"></script>
 <script src="/assets/js/favs.js"></script>
 <script src="/assets/js/ratings.js"></script>
+<style>
+.ckb{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#0f1b2d;color:#eef3f9;box-shadow:0 -4px 24px rgba(0,0,0,.35);font-size:14px;line-height:1.5}
+.ckb-in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.ckb p{margin:0;flex:1 1 320px}
+.ckb a{color:#8fc1ff;text-decoration:underline}
+.ckb-btns{display:flex;gap:8px;flex-wrap:wrap}
+.ckb-btns button{cursor:pointer;border-radius:8px;padding:8px 18px;font-size:14px;font-weight:600;border:1px solid #8fc1ff;background:transparent;color:#eef3f9}
+.ckb-btns button.ckb-accept{background:#2563eb;border-color:#2563eb;color:#fff}
+.ckb-setbtn{cursor:pointer;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:600;border:1px solid #2563eb;background:#2563eb;color:#fff}
+</style>
+<div class="ckb" id="ckb" role="region" aria-label="Cookie consent" hidden>
+<div class="ckb-in">
+<p>We use cookies to run ToolPixi, measure visits and — if you accept — show ads. Read our <a href="/cookie-policy/">Cookie Policy</a>.</p>
+<div class="ckb-btns"><button type="button" id="ckb-reject">Reject</button><button type="button" id="ckb-accept" class="ckb-accept">Accept</button></div>
+</div>
+</div>
+<script>(function(){var KEY='tp-consent',bar=document.getElementById('ckb');if(!bar)return;function stored(){try{return localStorage.getItem(KEY);}catch(e){return null;}}function save(v){try{localStorage.setItem(KEY,v);}catch(e){}}function apply(v){if(window.gtag){gtag('consent','update',{'ad_storage':v,'ad_user_data':v,'ad_personalization':v,'analytics_storage':v});}}function show(){bar.hidden=false;}function hide(){bar.hidden=true;}if(!stored()){show();}var acc=document.getElementById('ckb-accept'),rej=document.getElementById('ckb-reject');if(acc){acc.addEventListener('click',function(){save('granted');apply('granted');hide();});}if(rej){rej.addEventListener('click',function(){save('denied');apply('denied');hide();});}window.openCookieSettings=show;var links=document.querySelectorAll('[data-cookie-settings]');for(var i=0;i<links.length;i++){links[i].addEventListener('click',function(e){e.preventDefault();show();});}})();</script>
 </body>
 </html>
